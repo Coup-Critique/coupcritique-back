@@ -6,10 +6,6 @@ site:
   resource: ../../src/Controller/SiteController.php
   type: annotation
 
-ssr:
-  resource: ../../src/Controller/SsrController.php
-  type: annotation
-
 kernel:
   resource: ../../src/Kernel.php
   type: annotation

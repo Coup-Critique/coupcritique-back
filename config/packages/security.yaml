@@ -2,7 +2,7 @@ security:
   enable_authenticator_manager: true
 
   password_hashers:
-      App\Entity\User: 'bcrypt'
+    App\Entity\User: "bcrypt"
 
   # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
 
@@ -51,44 +51,29 @@ security:
       jwt: ~
       entry_point: jwt
       refresh_jwt:
-          check_path: /api/token/refresh
-          provider: app_user_provider
+        check_path: /api/token/refresh
+        provider: app_user_provider
 
     test:
       stateless: true
       pattern: ^/api/(test|refresh-token)
-      guard:
-        authenticators:
-          - lexik_jwt_authentication.jwt_token_authenticator
 
     own_user:
       stateless: true
       pattern: ^/api/own-user
-      guard:
-        authenticators:
-          - lexik_jwt_authentication.jwt_token_authenticator
-    
+
     notifications:
       stateless: true
       pattern: ^/api/notifications
-      guard:
-        authenticators:
-          - lexik_jwt_authentication.jwt_token_authenticator
 
     teams:
       stateless: true
       pattern: ^/api/teams/favorite
-      guard:
-        authenticators:
-          - lexik_jwt_authentication.jwt_token_authenticator
 
     user_check:
       stateless: true
       pattern: ^/api/(teams|users|comments)
       methods: [GET]
-      guard:
-        authenticators:
-          - lexik_jwt_authentication.jwt_token_authenticator
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -103,79 +88,27 @@ security:
   access_control:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-    - {
-        path: ^/api/pokemons,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
+    - { path: ^/api/pokemons, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
     - {
         path: ^/api/pokemon_set,
         methods: [POST, PUT, DELETE],
         roles: ROLE_MODO,
       }
-    - {
-        path: ^/api/moves,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/abilities,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/types,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/natures,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/items,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/tiers,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/tags,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/resources,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
+    - { path: ^/api/moves, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/abilities, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/types, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/natures, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/items, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/tiers, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/tags, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/resources, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
     - {
         path: ^/api/actualities,
         methods: [POST, PUT, DELETE],
         roles: ROLE_MODO,
       }
-    - {
-        path: ^/api/guides,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/tournament,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/videos,
-        methods: [POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
-    - {
-        path: ^/api/drive,
-        methods: [GET, POST, PUT, DELETE],
-        roles: ROLE_MODO,
-      }
+    - { path: ^/api/guides, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/tournament, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/videos, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
+    - { path: ^/api/drive, methods: [GET, POST, PUT, DELETE], roles: ROLE_MODO }
   # - { path: ^/profile, roles: ROLE_USER }

@@ -38,3 +38,6 @@
 .php-cs-fixer.php
 grumphp.yml
 phpstan.neon
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
