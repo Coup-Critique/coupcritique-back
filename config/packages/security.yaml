@@ -1,0 +1,181 @@
+security:
+  enable_authenticator_manager: true
+
+  password_hashers:
+      App\Entity\User: 'bcrypt'
+
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+
+  providers:
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: username
+    # used to reload user from session & other features (e.g. switch_user)
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    login:
+      pattern: ^/api/login
+      user_checker: App\Security\UserChecker
+      stateless: true
+      methods: [POST]
+      json_login:
+        check_path: /api/login
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+    api_token_refresh:
+      pattern: ^/api/token/refresh
+      stateless: true
+      user_checker: App\Security\UserChecker
+      refresh_jwt: ~
+
+    register:
+      pattern: ^/api/users
+      stateless: true
+      methods: [POST]
+
+    forgotten_password:
+      pattern: ^/api/(reset-password|check-renew-password-token|update-forgotten-password)
+      stateless: true
+      methods: [POST, GET, PUT]
+
+    api:
+      pattern: ^/api
+      stateless: true
+      methods: [POST, PUT, DELETE]
+      jwt: ~
+      entry_point: jwt
+      refresh_jwt:
+          check_path: /api/token/refresh
+          provider: app_user_provider
+
+    test:
+      stateless: true
+      pattern: ^/api/(test|refresh-token)
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
+    own_user:
+      stateless: true
+      pattern: ^/api/own-user
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+    
+    notifications:
+      stateless: true
+      pattern: ^/api/notifications
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
+    teams:
+      stateless: true
+      pattern: ^/api/teams/favorite
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
+    user_check:
+      stateless: true
+      pattern: ^/api/(teams|users|comments)
+      methods: [GET]
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
+
+  role_hierarchy:
+    ROLE_ADMIN: [ROLE_MODO]
+
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  access_control:
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+    - {
+        path: ^/api/pokemons,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/pokemon_set,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/moves,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/abilities,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/types,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/natures,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/items,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/tiers,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/tags,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/resources,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/actualities,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/guides,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/tournament,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/videos,
+        methods: [POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+    - {
+        path: ^/api/drive,
+        methods: [GET, POST, PUT, DELETE],
+        roles: ROLE_MODO,
+      }
+  # - { path: ^/profile, roles: ROLE_USER }

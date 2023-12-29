@@ -1,0 +1,15 @@
+grumphp:
+  tasks:
+    # phpcsfixer:
+    #   allow_risky: true
+    #   triggered_by: ['php']
+    #   config: .php-cs-fixer.dist.php
+    phpstan:
+      configuration: phpstan.neon.dist
+    phpcs:
+    phpunit:
+      group: ['Unit']
+    environment:
+      files:
+        - .env.test
+        - .env.test.local

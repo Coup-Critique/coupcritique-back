@@ -1,0 +1,13 @@
+{# "button" component will be in fact an "a" element #}
+{% set style = 'color:white; text-decoration: none; font-weight: bolder; font-size: 100%; border: none; padding: 10px; border-radius: 30px; ' %}
+{% set background = '#f26202;' %}
+{% if mode is defined %}
+    {% if mode == 'danger' %}
+        {% set background = '#db2828;' %}
+    {% elseif mode == 'info' %}
+        {% set background = '#2185d0;' %}
+    {% elseif mode == 'success' %}
+        {% set background = '#21ba45;' %}
+    {% endif %}
+{% endif %}
+<a style="{{ style ~ 'background: ' ~ background  }}" href="{{ href }}">{{ text }}</a>

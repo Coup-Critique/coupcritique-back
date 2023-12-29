@@ -1,0 +1,20 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block title %}
+	Coup Critique - confirmation de l'inscription
+{% endblock title %}
+
+{% block body %}
+	<p>Bonjour {{ user.username }} !</p>
+	<p>Votre inscription a bien été enregistrée.
+        <br/>
+        Pour la finaliser, merci de confirmer votre compte en cliquant sur le lien suivant&nbsp;:</p>
+    <br/>
+    <div style="text-align: center">
+		{% include 'emails/components/button.html.twig' with { 'href': absolute_url("/activate-user/" ~ token), 'text': 'Confirmer mon inscription' } %}
+    </div>
+	<br/>
+	<p><strong>Ce lien n'est valide que sous 48h.</strong></p>
+
+	<p>À très vite sur CoupCritique !</p>
+{% endblock body %}

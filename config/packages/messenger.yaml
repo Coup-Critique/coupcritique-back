@@ -1,0 +1,36 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        failure_transport: failed
+        # default_bus: messenger.bus.default
+        # buses:
+        #     command.bus:
+        #         middleware:
+        #             - validation
+        #             - doctrine_transaction
+
+        # async is name of transport -> call in commands
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            async:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                # retry_strategy:
+                #     max_retries: 2
+                #     delay: 1000
+                #     multiplier: 2
+                options:
+                    queue_name: "async"
+
+            sync: "sync://" # use this for testing
+
+            failed:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                options:
+                    queue_name: "failed"
+
+        routing:
+            # Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            Symfony\Component\Notifier\Message\ChatMessage: async
+
+            # Route your messages to the transports
+            # App\Message\CommentMessage: async

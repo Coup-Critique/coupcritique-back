@@ -1,0 +1,50 @@
+App\Entity\User:
+  admin:
+    username: 'admin'
+    email: 'admin@coupcritique.fr'
+    roles: ['ROLE_ADMIN']
+    is_tiper: false
+    password: '\$2y\$13\$MXkB/9Ag8TTzfIWr5DZaoODdrlRVmLUZdrkIjIw10anHcahZ32MVO'
+    banned: false
+    deleted: false
+    activated: false
+    date_creation: <(new DateTime())>
+    ips: []
+
+  user (template):
+    username: <username()>
+    email: '<email()>'
+    roles: ['ROLE_USER']
+    is_tiper: false
+    password: '\$2y\$13\$yLVa4kL6ljMPnrRqEhRKEO1bRoxA9zAWJ/J6skmCEcY/V17usXkNy'
+    deleted: false
+    banned: <banned()>
+    activated: <activated()>
+    date_creation: <(new DateTime())>
+    ips: []
+
+  user_{1..3} (extends user):
+    username: user_<current()>
+    email: 'user_<current()>\@coupcritique.fr'
+    banned: false
+    deleted: false
+    activated: true
+  
+  fresh_user (extends user):
+    username: fresh_user
+    email: 'fresh_user\@coupcritique.fr'
+    banned: false
+    activated: false
+
+  tiper_user (extends user):
+    username: tiper_user
+    email: 'tiper_user\@coupcritique.fr'
+    is_tiper: true
+    banned: false
+    activated: true
+
+  banned_user (extends user):
+    username: banned_user
+    email: 'banned_user\@coupcritique.fr'
+    banned: true
+    activated: true

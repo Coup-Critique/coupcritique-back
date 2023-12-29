@@ -1,0 +1,20 @@
+doctrine:
+    orm:
+        auto_generate_proxy_classes: false
+        # To interpret classes metadata
+        # Can be useful if their metadata doesn't change a lot
+        metadata_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        # For DQL to SQL transformation
+        # Useful if DQL queries don't change a lot
+        query_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        # For results produced by Doctrine (the output is very often hydrated)
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
+
+        # For more info :
+        # https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/reference/caching.html

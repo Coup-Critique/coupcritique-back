@@ -1,0 +1,104 @@
+{% set PwaButton = 'includes/pwa_button.html.twig' %}
+{% set title = 'Coup Critique | Votre référence en stratégie Pokémon' %}
+{% set description = "Le site de référence en stratégie Pokémon française. Vous pourrez y trouver et partager des équipes efficaces en combat classé sur des tiers Smogon comme l'OverUsed ou sur console avec le VGC et le BSS." %}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+		<link rel="manifest" href="{{ asset('manifest.json') }}" crossorigin="use-crendentials"/>
+		<meta name="theme-color" content="#ef6e33" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="MobileOptimized" content="width" />
+		<meta property="og:locale" content="fr_FR">
+		<meta property="og:type" content="article">
+		<meta property="og:site_name" content="Coup Critique">
+		{{ redux_store('store', props) }}
+		{% set react = react_component_array('Main') %}
+		{% if react.title is defined %}
+			{{ react.title | raw }}
+		{% else %}
+			<title data-react-helmet="true">{{ title }}</title>
+		{% endif %}
+		{% if react.meta is defined %}
+			{{ react.meta | raw }}
+		{% else %}
+			<meta name="title" content="{{ title }}"  data-react-helmet="true"/>
+			<meta name="og:title" content="{{ title }}"  data-react-helmet="true"/>
+			<meta name="description" content="{{ description }}" data-react-helmet="true" />
+			<meta name="og:description" content="{{ description }}" data-react-helmet="true" />
+			<meta property="og:image" content="https://www.coupcritique.fr/images/keldeo-landorus.png" data-react-helmet="true"/>
+			<meta name="robots" content="index, follow"  data-react-helmet="true">
+		{% endif %}
+		<link href="https://fonts.googleapis.com" rel="preconnect">
+		<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+		{% if app.environment != "dev" %}
+			{# <script src="https://hb.vntsm.com/v3/live/ad-manager.min.js" type="text/javascript" data-site-id="62bd5bf30973c71b798005d7" data-mode="scan" async></script> #}
+			<script>
+				var _paq = window._paq = window._paq || [];
+				// CODE CNIL OBLIGATOIRE
+				_paq.push([function() {
+					var self = this;
+					function getOriginalVisitorCookieTimeout() {
+						var now = new Date(),
+						nowTs = Math.round(now.getTime() / 1000),
+						visitorInfo = self.getVisitorInfo();
+						var createTs = parseInt(visitorInfo[2]);
+						var cookieTimeout = 33696000; // 13 mois en secondes
+						var originalTimeout = createTs + cookieTimeout - nowTs;
+						return originalTimeout;
+					}
+					this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
+				}]);
+				// FIN DU CODE CNIL
+				//  Matomo
+				/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+				_paq.push(['trackPageView']);
+				_paq.push(['enableLinkTracking']);
+				_paq.push(['HeatmapSessionRecording::disable']);
+				(function() {
+					var u="//matomo.coupcritique.fr/";
+					_paq.push(['setTrackerUrl', u+'matomo.php']);
+					_paq.push(['setSiteId', '1']);
+					var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+					g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+				})();
+				// End Matomo Code
+			</script>
+		{% endif %}
+	</head>
+	<body>
+		{% block body %}
+			<div id="root">
+				{{ react.componentHtml | raw }}
+			</div>
+		
+			{% for label, messages in app.flashes %}
+				<div class="flash-message-wrapper">
+					{% for message in messages %}
+						<div class="flash-message flash-message-symfony {{ label }} ui message">
+							{{ message }}
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+		{% endblock %}
+
+		{% if app.environment != "dev" %}
+			{% include PwaButton %}
+		{% endif %}
+		
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+			<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4492453388939100" crossorigin="anonymous"></script>
+			{% if app.environment != "dev" %}
+				<script src="{{ asset('init-sw.js') }}"></script>
+				{# Separated because it should be defer #}
+				<script src="{{ asset('pwa-button.js') }}" defer></script>
+			{% endif %}
+		{% endblock %}
+	</body>
+</html>

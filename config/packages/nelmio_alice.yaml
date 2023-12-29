@@ -1,0 +1,13 @@
+when@dev: &dev
+    nelmio_alice:
+        locale: fr_FR
+        functions_blacklist: # Some Faker formatter may have the same name as PHP
+        - 'current'          # native functions. PHP functions have the priority
+        - 'shuffle'          # so if you want to use a Faker formatter instead,
+        - 'date'             # blacklist this function here
+        - 'time'
+        - 'file'
+        - 'md5'
+        - 'sha1'
+
+when@test: *dev

@@ -1,0 +1,12 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block title %}
+	Coup Critique - confirmation de l'activation de votre compte
+{% endblock title %}
+
+{% block body %}
+	<p>Bonjour {{ user.username }} !</p>
+	<p>Votre compte a bel et bien été activé. Vous pouvez désormais vous connecter sur <a href="{{ path('home') }}">coupcritique.fr</a>.</p>
+
+	<p>À très vite sur CoupCritique !</p>
+{% endblock body %}
