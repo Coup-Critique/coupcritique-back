@@ -25,12 +25,11 @@ class TeamRepository extends ServiceEntityRepository
 
 	private bool $hasTeamId = false;
 
-	private PokemonInstanceRepository $pokemonInstanceRepo;
-
-	public function __construct(ManagerRegistry $registry, PokemonInstanceRepository $pokemonInstanceRepo)
-	{
+	public function __construct(
+		ManagerRegistry $registry,
+		private readonly PokemonInstanceRepository $pokemonInstanceRepo
+	) {
 		parent::__construct($registry, Team::class);
-		$this->pokemonInstanceRepo = $pokemonInstanceRepo;
 	}
 
 	public function setHasTeamId(bool $hasTeamId): self
@@ -215,9 +214,6 @@ class TeamRepository extends ServiceEntityRepository
 		return $this->paginate('t', $query, $this->getPage());
 	}
 
-	/**
-	 * @return Team|null
-	 */
 	public function getLastTopWeek(): ?Team
 	{
 		$result = $this->baseQuery()
@@ -295,7 +291,6 @@ class TeamRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * @param Pokemon $pokemon
 	 * @return array
 	 */
 	public function findCertifiedTeamsByPokemon(Pokemon $pokemon): array
@@ -317,12 +312,7 @@ class TeamRepository extends ServiceEntityRepository
 		return $this->paginate('t', $query, $this->getPage());
 	}
 
-	/**
-	 * Find by multiple pokemons
-	 * @param array $pokemons
-	 * @return array
-	 */
-	public function findByPokemons($pokemons): array
+	public function findByPokemons(array $pokemons): array
 	{
 		$query = $this->baseListQuery()
 			->where('t.banned IS NULL OR t.banned = 0');
@@ -389,11 +379,7 @@ class TeamRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
-	/**
-	 * @param User $user
-	 * @return Team|null
-	 */
-	public function findLastUserTeam(User $user)
+	public function findLastUserTeam(User $user):?Team
 	{
 		$result = $this->baseListQuery()
 			->where('t.user = :user')

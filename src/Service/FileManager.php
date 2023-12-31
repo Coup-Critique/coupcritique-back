@@ -9,12 +9,9 @@ class FileManager
 {
 	protected string $publicPath;
 
-	protected ImageManager $imageManager;
-
-	public function __construct(string $projectDir, ImageManager $imageManager)
+	public function __construct(string $projectDir, protected ImageManager $imageManager)
 	{
 		$this->publicPath = "$projectDir/public";
-		$this->imageManager = $imageManager;
 	}
 
 	public function upload(UploadedFile $file, string $dirName): string
@@ -43,13 +40,7 @@ class FileManager
 		return "$dirDest/$fileName";
 	}
 
-	/**
-	 * @param string $filePath 
-	 * @param int $size 
-	 * @throw Exception
-	 * @return void 
-	 */
-	public function resize(string $filePath, int $size)
+	public function resize(string $filePath, int $size): void
 	{
 		$fullPath = "{$this->publicPath}/$filePath";
 		$resized_image = $this->imageManager->resizeImage($fullPath, $size);

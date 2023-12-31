@@ -11,23 +11,18 @@ use Symfony\Component\Notifier\Message\MessageOptionsInterface;
 
 abstract class AbstractDiscordMessage extends AbstractMessage
 {
-    public const POST = 'POST';
-    public const PUT = 'PUT';
-    public const MAX_MSG_LEN = 300;
-
-    protected string $domain;
-    protected string $method;
-    protected User $user;
+    final public const POST = 'POST';
+    final public const PUT = 'PUT';
+    final public const MAX_MSG_LEN = 300;
 
     /** @var DiscordOptions $options */
     protected MessageOptionsInterface $options;
 
-    public function __construct(string $domain, string $method, User $user)
-    {
-        $this->domain = $domain;
-        $this->method = $method;
-        $this->user = $user;
-
+    public function __construct(
+        protected string $domain,
+        protected string $method,
+        protected User $user
+    ) {
         $this->options = new DiscordOptions();
         $this->fillOptions();
     }

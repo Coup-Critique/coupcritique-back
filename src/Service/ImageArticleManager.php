@@ -9,14 +9,11 @@ use Symfony\Component\HttpFoundation\FileBag;
 
 class ImageArticleManager
 {
-    const IMAGE_SIZE        = 900;
-    const TEASER_IMAGE_SIZE = 375;
+    final public const IMAGE_SIZE        = 900;
+    final public const TEASER_IMAGE_SIZE = 375;
 
-    protected FileManager $fileManager;
-
-    public function __construct(FileManager $fileManager)
+    public function __construct(protected FileManager $fileManager)
     {
-        $this->fileManager = $fileManager;
     }
 
     public function setImagesToEntity(object $entity, FileBag $files, string $storageFolderName): void
@@ -41,7 +38,7 @@ class ImageArticleManager
         $entity->setImages($images);
     }
 
-    public function upload(FileBag $files, string $storageFolderName = 'drive', $size = self::IMAGE_SIZE): array
+    public function upload(FileBag $files, string $storageFolderName = 'drive', int $size = self::IMAGE_SIZE): array
     {
         $images = [];
         /** @var UploadedFile $file */
@@ -58,12 +55,9 @@ class ImageArticleManager
     }
 
     /**
-     * @param $entity
-     * @param array $imagesToCheck
-     * @return void
      * leave empty $imagesToCheck for remove all
      */
-    public function removeImagesFromEntity($entity, $storageFolderName, array $imagesToCheck = [])
+    public function removeImagesFromEntity($entity, string $storageFolderName, array $imagesToCheck = []): void
     {
         $imagesToRemove = count($imagesToCheck)
             ? array_diff($imagesToCheck, $entity->getImages())

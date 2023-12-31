@@ -9,74 +9,44 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=VideoRepository::class)
- */
+#[ORM\Entity(repositoryClass: VideoRepository::class)]
 class Video
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:video", "read:list"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:video', 'read:list'])]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=128, nullable=true)
-     * @Groups({"read:video", "insert:video", "read:list"})
-     * @Assert\Length(
-     *    max = 128,
-     *    maxMessage="Le titre peut faire au maximum 128 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 128, nullable: true)]
+    #[Groups(['read:video', 'insert:video', 'read:list'])]
+    #[Assert\Length(max: 128, maxMessage: 'Le titre peut faire au maximum 128 caractères.')]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"read:video", "insert:video", "read:list"})
-     * @Assert\Length(
-     *    max = 255,
-     *    maxMessage="L'url peut faire au maximum 255 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:video', 'insert:video', 'read:list'])]
+    #[Assert\Length(max: 255, maxMessage: "L'url peut faire au maximum 255 caractères.")]
     private $url;
 
-    /**
-     * @ORM\Column(type="text", length=600, nullable=true)
-     * @Groups({"read:video", "insert:video", "read:list"})
-     * @Assert\Length(
-     *    max = 600,
-     *    maxMessage="La description peut faire au maximum 600 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'text', length: 600, nullable: true)]
+    #[Groups(['read:video', 'insert:video', 'read:list'])]
+    #[Assert\Length(max: 600, maxMessage: 'La description peut faire au maximum 600 caractères.')]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=128, nullable=true)
-     * @Groups({"read:video", "insert:video", "read:list"})
-     * @Assert\Length(
-     *    max = 128,
-     *    maxMessage="L'auteur peut faire au maximum 128 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 128, nullable: true)]
+    #[Groups(['read:video', 'insert:video', 'read:list'])]
+    #[Assert\Length(max: 128, maxMessage: "L'auteur peut faire au maximum 128 caractères.")]
     private $author;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VideoTag::class)
-     * @Groups({"read:video", "read:list", "insert:video", "update:video"})
-     */
+    #[ORM\ManyToMany(targetEntity: VideoTag::class)]
+    #[Groups(['read:video', 'read:list', 'insert:video', 'update:video'])]
     private $tags;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $youtube_date;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"read:video", "read:list"})
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:video', 'read:list'])]
     private $date_creation;
 
     public function __construct()
@@ -146,8 +116,7 @@ class Video
     }
 
     /**
-     * 
-     * @param VideoTag $tag 
+     *
      * @return Video 
      */
     public function addTag(VideoTag $tag): self
@@ -160,8 +129,7 @@ class Video
     }
 
     /**
-     * 
-     * @param VideoTag $tag 
+     *
      * @return Video 
      */
     public function removeTag(VideoTag $tag): self

@@ -10,101 +10,63 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=MoveRepository::class)
- * @ORM\Table(
- *    name="move", 
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(
- *            name="move_name_gen_unique",
- *            columns={"name", "gen"}
- *        )
- *     }
- * )
- */
+#[ORM\Entity(repositoryClass: MoveRepository::class)]
+#[ORM\Table(name: 'move')]
+#[ORM\UniqueConstraint(name: 'move_name_gen_unique', columns: ['name', 'gen'])]
 class Move
 {
     use GenProperty;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups({"read:move", "read:list", "read:name", "read:usage", "read:team", "insert:team"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:move', 'read:list', 'read:name', 'read:usage', 'read:team', 'insert:team'])]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"read:move", "read:list", "read:name", "read:usage", "read:team"})
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['read:move', 'read:list', 'read:name', 'read:usage', 'read:team'])]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read:move", "read:list", "read:usage", "read:team"})
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:move', 'read:list', 'read:usage', 'read:team'])]
     private $nom;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"read:move"})
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['read:move'])]
     private $usageName;
 
-    /**
-     * @ORM\Column(type="text", length=3000, nullable=true)
-     * @Groups({"read:move", "read:usage", "read:team"})
-     * @Assert\Length(
-     *    max = 3000,
-     *    maxMessage="La description peut faire au maximum 3000 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'text', length: 3000, nullable: true)]
+    #[Groups(['read:move', 'read:usage', 'read:team'])]
+    #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
     private $description;
 
-    /**
-     * @ORM\Column(type="text", length=3000, nullable=true)
-     */
+    #[ORM\Column(type: 'text', length: 3000, nullable: true)]
     private $save_descr;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:move", "read:list", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:move', 'read:list', 'read:team'])]
     private $pp;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:move", "read:list", "read:team"})
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:move', 'read:list', 'read:team'])]
     private $power;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:move", "read:list", "read:team"})
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:move', 'read:list', 'read:team'])]
     private $accuracy;
 
-    /**
-     * @ORM\Column(type="string", length=8, nullable=true)
-     * @Groups({"read:move", "read:list", "read:team"})
-     */
+    #[ORM\Column(type: 'string', length: 8, nullable: true)]
+    #[Groups(['read:move', 'read:list', 'read:team'])]
     private $category;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Type::class)
-     * @Groups({"read:move", "read:list", "read:usage", "read:team"})
-     */
+    #[ORM\ManyToOne(targetEntity: Type::class)]
+    #[Groups(['read:move', 'read:list', 'read:usage', 'read:team'])]
     private $type;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $update_date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $user;
 
     public function __construct()

@@ -12,13 +12,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ContributionListener
 {
-    private TokenStorageInterface $tokenStorageInterface;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(TokenStorageInterface $tokenStorageInterface, EntityManagerInterface $entityManager)
-    {
-        $this->tokenStorageInterface = $tokenStorageInterface;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorageInterface,
+        private readonly EntityManagerInterface $entityManager
+    ) {
     }
 
     public function onKernelController(ControllerEvent $event)
@@ -36,8 +33,12 @@ class ContributionListener
 
     public function onKernelResponse(ResponseEvent $event)
     {
-        if ($event->getRequest()->getContentType() != 'application/json'
-            && $event->getRequest()->getContentType() != 'json') return;
+        if (
+            $event->getRequest()->getContentTypeFormat() != 'application/json'
+            && $event->getRequest()->getContentTypeFormat() != 'json'
+        ) {
+            return;
+        }
         if ($event->getRequest()->getMethod() === 'GET') return;
 
         /**

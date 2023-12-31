@@ -50,7 +50,6 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
      * Check if the array of moves doesn't contain duplicates
      * @param PokemonInstance $pkm_inst
      * @param array $moves
-     * @param Constraint $constraint
      */
     private function checkMovesDuplicated($pkm_inst, $moves, Constraint $constraint)
     {
@@ -76,11 +75,9 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
 
     /**
      * Check if each move in the array is compatible with the Pokemon's movepool
-     * @param PokemonInstance $pkm_inst
-     * @param array $moves
-     * @param Constraint $constraint
+     * @param Move[] $moves
      */
-    private function checkMovesLearned($pkm_inst, $moves, Constraint $constraint)
+    private function checkMovesLearned(PokemonInstance $pkm_inst, array $moves, Constraint $constraint)
     {
         $pokemon  = $pkm_inst->getPokemon();
         $movepool = $this->moveRepository->findByPokemon($pokemon);
@@ -141,7 +138,6 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
 
     /**
      * @param Move[] $moves
-     * @param Move $move
      * @return boolean
      */
     public function containsMove(array $moves, Move $move)

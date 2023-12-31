@@ -3,11 +3,10 @@
 namespace App\EventSubscriber\Abstracts;
 
 use App\DTO\Message\AbstractMessage;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,16 +15,14 @@ use Symfony\Component\Notifier\Message\ChatMessage;
 
 abstract class AbstractMessengerSubscriber implements EventSubscriberInterface
 {
-    public const STR_LEN_COMPARISON = 100;
-
-    protected ChatterInterface $chatter;
-    protected Security $security;
+    final public const STR_LEN_COMPARISON = 100;
     protected ?Request $request;
 
-    public function __construct(Security $security, ChatterInterface $chatter, RequestStack $requestStack)
-    {
-        $this->security = $security;
-        $this->chatter = $chatter;
+    public function __construct(
+        protected Security $security,
+        protected ChatterInterface $chatter,
+        RequestStack $requestStack
+    ) {
         $this->request = $requestStack->getCurrentRequest();
     }
 

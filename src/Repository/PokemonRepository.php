@@ -255,12 +255,9 @@ class PokemonRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Ability $ability
-     * @return array
-     *
      * Custom because pokemons have several ability attrributes
      */
-    public function findByAbility(Ability $ability)
+    public function findByAbility(Ability $ability): array
     {
         $gen = $ability->getGen();
         /** @var TierRepository */
@@ -341,7 +338,6 @@ class PokemonRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Move $move
      * @return array
      */
     public function findByMove(Move $move)
@@ -431,7 +427,6 @@ class PokemonRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Item $item
      * @return array
      */
     public function findByItem(Item $item)

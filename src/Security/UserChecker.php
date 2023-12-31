@@ -13,13 +13,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserChecker implements UserCheckerInterface
 {
 
-    private Request $request;
-    private EntityManagerInterface $em;
+    private readonly Request $request;
 
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $em)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        private readonly EntityManagerInterface $em
+    ) {
         $this->request = $requestStack->getCurrentRequest();
-        $this->em = $em;
     }
 
 

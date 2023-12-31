@@ -11,24 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-/**
- * @ORM\Entity(repositoryClass=TournamentRepository::class)
- */
+#[ORM\Entity(repositoryClass: TournamentRepository::class)]
 class Tournament extends AbstractArticle
 {
-    /**
-     * @ORM\ManyToMany(targetEntity=TournamentTag::class)
-     * @Groups({"read:article", "read:list", "read:list:article", "update:article", "insert:article"})
-     */
+    #[ORM\ManyToMany(targetEntity: TournamentTag::class)]
+    #[Groups(['read:article', 'read:list', 'read:list:article', 'update:article', 'insert:article'])]
     private $tags;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity=Comment::class, 
-     *      mappedBy="tournament", 
-     *      cascade={"persist", "remove"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'tournament', cascade: ['persist', 'remove'])]
     protected $comments;
 
     public function __construct()

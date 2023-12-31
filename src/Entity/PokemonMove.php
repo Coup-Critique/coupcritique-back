@@ -7,47 +7,30 @@ use App\Repository\PokemonMoveRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=PokemonMoveRepository::class)
- * @ORM\Table(
- *    name="pokemon_move", 
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(
- *            name="pokemon_move_name_gen_unique",
- *            columns={"pokemon_id", "move_id", "gen"}
- *        )
- *    }
- * )
- */
+#[ORM\Entity(repositoryClass: PokemonMoveRepository::class)]
+#[ORM\Table(name: 'pokemon_move')]
+#[ORM\UniqueConstraint(name: 'pokemon_move_name_gen_unique', columns: ['pokemon_id', 'move_id', 'gen'])]
 class PokemonMove
 {
     use GenProperty;
     
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Pokemon::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"read:list", "read:move"})
-     */
+    #[ORM\ManyToOne(targetEntity: Pokemon::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups(['read:list', 'read:move'])]
     private $pokemon;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"read:list", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups(['read:list', 'read:pokemon'])]
     private $move;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:pokemon"})
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['read:pokemon'])]
     private $way;
 
     public function getId() : ?int

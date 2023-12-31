@@ -6,11 +6,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class EntityMerger
 {
-    protected SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(protected SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
     }
 
     public function merge($data, $mainClass, $context = [], ?callable $makeKey = null)
@@ -19,7 +16,7 @@ class EntityMerger
         foreach ($data as $datum) {
             if (is_null($datum)) continue;
             $value = $this->serializer->normalize($datum, 'json', $context);
-            $class = get_class($datum);
+            $class = $datum::class;
             if ($datum instanceof $mainClass) {
                 $return[] = $value;
             } else if (count($return) && $class) {

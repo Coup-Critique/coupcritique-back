@@ -25,16 +25,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PokemonSetController extends AbstractController implements ContributeControllerInterface
 {
-    private PokemonSetRepository $repo;
-
-    public function __construct(PokemonSetRepository $repo)
+    public function __construct(private readonly PokemonSetRepository $repo)
     {
-        $this->repo = $repo;
     }
 
-    /**
-     * @Route("/pokemon_set/{id}", name="pokemon_sets_by_pokemon_id", methods={"GET"})
-     */
+    #[Route(path: '/pokemon_set/{id}', name: 'pokemon_sets_by_pokemon_id', methods: ['GET'])]
     public function getPokemonSetsByPokemonId($id, PokemonRepository $pokemonRepo)
     {
         $pokemon = $pokemonRepo->find($id);
@@ -55,9 +50,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
         );
     }
 
-    /**
-     * @Route("/pokemon_set/{id}", name="insert_pokemon_set", methods={"POST"})
-     */
+    #[Route(path: '/pokemon_set/{id}', name: 'insert_pokemon_set', methods: ['POST'])]
     public function insertPokemonSet(
         int $id,
         Request $request,
@@ -84,7 +77,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
                     AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -132,9 +125,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
         );
     }
 
-    /**
-     * @Route("/pokemon_set/{id}", name="update_pokemon_set", methods={"PUT"})
-     */
+    #[Route(path: '/pokemon_set/{id}', name: 'update_pokemon_set', methods: ['PUT'])]
     public function updatePokemonSet(
         int $id,
         Request $request,
@@ -165,7 +156,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
                     EntityNormalizer::UPDATE_ENTITIES => [PokemonSet::class, PokemonInstance::class]
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(
             //     ['message' => $e->getMessage()],
             //     Response::HTTP_BAD_REQUEST
@@ -203,9 +194,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
         );
     }
 
-    /**
-     * @Route("/pokemon_set/{id}", name="delete_pokemon_set", methods={"DELETE"})
-     */
+    #[Route(path: '/pokemon_set/{id}', name: 'delete_pokemon_set', methods: ['DELETE'])]
     public function deletePokemonSet(int $id, EntityManagerInterface $em)
     {
         $pokemonSet = $this->repo->find($id);
@@ -225,9 +214,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
         );
     }
 
-    /**
-     * @Route("/pokemon_set/export/{id}", name="pokemon_set_export", methods={"POST"})
-     */
+    #[Route(path: '/pokemon_set/export/{id}', name: 'pokemon_set_export', methods: ['POST'])]
     public function checkPokemonSetExport(
         int $id,
         Request $request,
@@ -245,7 +232,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
                 'json',
                 ['groups' => ['read:team', 'read:pokemon-set', 'read:list']]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 

@@ -10,278 +10,194 @@ use App\Validator\Constraints as CustomAssert;
 
 // TODO remettre ce constraint en place quand import Learns fonctionnera de nouveau
 /**
- * @ORM\Entity(repositoryClass=PokemonInstanceRepository::class)
  * @CustomAssert\InstancePokemonConstraint
  * @CustomAssert\InstanceAbilityConstraint
  * @CustomAssert\InstanceNatureConstraint
  * @CustomAssert\InstanceItemConstraint)
  * @CustomAssert\InstanceMoveConstraint
  */
+#[ORM\Entity(repositoryClass: PokemonInstanceRepository::class)]
 class PokemonInstance
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:team", "read:list:team", "update:team"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:team', 'read:list:team', 'update:team'])]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Pokemon::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:list", "read:team", "read:list:team", "insert:team"})
-     * @Assert\NotNull(message="Le Pokémon est manquant")
-     * @Assert\Type(
-     *     type="App\Entity\Pokemon",
-     *     message="Le Pokémon {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Pokemon::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:list', 'read:team', 'read:list:team', 'insert:team'])]
+    #[Assert\NotNull(message: 'Le Pokémon est manquant')]
+    #[Assert\Type(type: \App\Entity\Pokemon::class, message: "Le Pokémon {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $pokemon;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
     private $nickname;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
     private $level = 100;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     */
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
     private $shiny = false;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
     private $sex;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
     private $happiness = 255;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Ability::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Ability",
-     *     message="Le talent {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Ability::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Ability::class, message: "Le talent {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $ability;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Nature::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Nature",
-     *     message="La nature {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Nature::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Nature::class, message: "La nature {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $nature;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Item::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Item",
-     *     message="L'objet' {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Item::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Item::class, message: "L'objet' {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $item;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Type::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Type",
-     *     message="Le type {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Type::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Type::class, message: "Le type {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $tera;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=31, message="Les ivs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les ivs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 31, message: 'Les ivs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les ivs doivent être positifs.')]
     private $hp_iv = 31;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=31, message="Les ivs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les ivs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 31, message: 'Les ivs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les ivs doivent être positifs.')]
     private $atk_iv = 31;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=31, message="Les ivs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les ivs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 31, message: 'Les ivs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les ivs doivent être positifs.')]
     private $def_iv = 31;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=31, message="Les ivs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les ivs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 31, message: 'Les ivs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les ivs doivent être positifs.')]
     private $spa_iv = 31;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=31, message="Les ivs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les ivs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 31, message: 'Les ivs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les ivs doivent être positifs.')]
     private $spd_iv = 31;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=31, message="Les ivs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les ivs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 31, message: 'Les ivs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les ivs doivent être positifs.')]
     private $spe_iv = 31;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=252, message="Les evs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les evs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 252, message: 'Les evs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $hp_ev;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=252, message="Les evs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les evs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 252, message: 'Les evs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $atk_ev;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=252, message="Les evs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les evs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 252, message: 'Les evs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $def_ev;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=252, message="Les evs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les evs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 252, message: 'Les evs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $spa_ev;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=252, message="Les evs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les evs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 252, message: 'Les evs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $spd_ev;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:team", "insert:team", "insert:instance"})
-     * @Assert\LessThanOrEqual(value=252, message="Les evs doivent être inférieurs ou égales à {{ compared_value }}.")
-     * @Assert\GreaterThanOrEqual(value=0, message="Les evs doivent être positifs.")
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'insert:instance'])]
+    #[Assert\LessThanOrEqual(value: 252, message: 'Les evs doivent être inférieurs ou égales à {{ compared_value }}.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $spe_ev;
 
     /**
      * Description cannot be required for PokemonSet
-     * @ORM\Column(type="text", nullable=true, length=5000)
-     * @Groups({"read:team", "insert:team", "update:team"})
      * @CustomAssert\TextConstraint(
      *    message="Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
      * )
-     * @Assert\Length(
-     *    max = 5000,
-     *    maxMessage="La description peut faire au maximum 5000 caractères."
-     * )
      */
+    #[ORM\Column(type: 'text', nullable: true, length: 5000)]
+    #[Groups(['read:team', 'insert:team', 'update:team'])]
+    #[Assert\Length(max: 5000, maxMessage: 'La description peut faire au maximum 5000 caractères.')]
     private $description;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Move",
-     *     message="La capacité {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Move::class, message: "La capacité {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $move_1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Move",
-     *     message="La capacité {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Move::class, message: "La capacité {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $move_2;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Move",
-     *     message="La capacité {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Move::class, message: "La capacité {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $move_3;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\Type(
-     *     type="App\Entity\Move",
-     *     message="La capacité {{ value }} n'existe pas"
-     * )
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\Type(type: \App\Entity\Move::class, message: "La capacité {{ value }} n'existe pas")]
+    #[Assert\Valid]
     private $move_4;
 
     /**
      * Used as a OneToOne
-     * @ORM\ManyToOne(targetEntity=Team::class)
-     * @Groups({"insert:team"})
      * @var Team $team
      */
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[Groups(['insert:team'])]
     private $team;
 
     /**
      * Used as a OneToOne
-     * @ORM\ManyToOne(targetEntity=PokemonSet::class)
-     * @Groups({"insert:team"})
      * @var PokemonSet $pokemon_set
      */
+    #[ORM\ManyToOne(targetEntity: PokemonSet::class)]
+    #[Groups(['insert:team'])]
     private $pokemon_set;
 
     public function getId(): ?int

@@ -9,21 +9,12 @@ use App\Repository\TypeRepository;
 
 class PokemonManager
 {
-    protected PokemonRepository $pokemonRepository;
-    protected TypeRepository $typeRepository;
-    protected TierUsageRepository $tierUsageRepository;
-    protected WeaknessManager $weaknessManager;
-
     public function __construct(
-        PokemonRepository $pokemonRepository,
-        TypeRepository $typeRepository,
-        TierUsageRepository $tierUsageRepository,
-        WeaknessManager $weaknessManager
+        protected PokemonRepository $pokemonRepository,
+        protected TypeRepository $typeRepository,
+        protected TierUsageRepository $tierUsageRepository,
+        protected WeaknessManager $weaknessManager
     ) {
-        $this->typeRepository = $typeRepository;
-        $this->pokemonRepository = $pokemonRepository;
-        $this->tierUsageRepository = $tierUsageRepository;
-        $this->weaknessManager = $weaknessManager;
     }
 
     public function buildOnePokemonReturn(Pokemon $pokemon): array

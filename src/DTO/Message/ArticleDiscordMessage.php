@@ -10,11 +10,12 @@ use App\Entity\User;
 
 class ArticleDiscordMessage extends AbstractDiscordMessage
 {
-    protected AbstractArticle $entity;
-
-    public function __construct(string $domain, string $method, User $user, AbstractArticle $entity)
-    {
-        $this->entity = $entity;
+    public function __construct(
+        string $domain,
+        string $method,
+        User $user,
+        protected AbstractArticle $entity
+    ) {
         parent::__construct($domain, $method, $user);
     }
 

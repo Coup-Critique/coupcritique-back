@@ -13,20 +13,13 @@ use Throwable;
 
 class ExceptionListener
 {
-    private Kernel $kernel;
-    private LoggerInterface $logger;
-
-    public function __construct(Kernel $kernel, LoggerInterface $logger)
-    {
-        $this->kernel = $kernel;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly Kernel $kernel,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
-    /**
-     * @param ExceptionEvent $event 
-     * @return null|void 
-     */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
@@ -46,8 +39,7 @@ class ExceptionListener
 
         $infos = [$request->getRequestUri(), $this->getStatusCode($exception), $exception->getMessage()];
 
-        if ($this->kernel->isDebug())
-        {
+        if ($this->kernel->isDebug()) {
             $infos[] = $exception->getTraceAsString();
         }
 

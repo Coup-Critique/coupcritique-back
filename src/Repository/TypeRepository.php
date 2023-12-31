@@ -25,7 +25,6 @@ class TypeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Type $type
      * @return Type
      */
     public function insert(Type $type)
@@ -35,9 +34,6 @@ class TypeRepository extends ServiceEntityRepository
         return $type;
     }
 
-    /**
-     * @param Type $type
-     */
     public function delete(Type $type)
     {
         $this->_em->remove($type);

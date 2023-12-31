@@ -19,10 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GlobalController extends AbstractController
 {
-	/**
-	 * @Route("/test", name="test")
-	 */
-	public function test()
+	#[Route(path: '/test', name: 'test')]
+ public function test()
 	{
 		return $this->json(
 			['success' => true],
@@ -30,10 +28,8 @@ class GlobalController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/search/{string}", name="search")
-	 */
-	public function search(
+	#[Route(path: '/search/{string}', name: 'search')]
+ public function search(
 		$string,
 		GenRequestManager $genRequestManager,
 		PokemonRepository $pokemonRepository,
@@ -84,10 +80,8 @@ class GlobalController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/search/previews/{string}", name="previews")
-	 */
-	public function getPreviews(
+	#[Route(path: '/search/previews/{string}', name: 'previews')]
+ public function getPreviews(
 		$string,
 		GlobalRepository $globalRepository
 	) {

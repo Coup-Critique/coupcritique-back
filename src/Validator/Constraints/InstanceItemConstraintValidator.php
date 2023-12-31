@@ -12,11 +12,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class InstanceItemConstraintValidator extends ConstraintValidator
 {
-    private $itemRepository;
-
-    public function __construct(ItemRepository $itemRepository)
+    public function __construct(private readonly ItemRepository $itemRepository)
     {
-        $this->itemRepository = $itemRepository;
     }
 
     /**

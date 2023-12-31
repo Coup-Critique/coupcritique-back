@@ -20,7 +20,6 @@ class NatureRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Nature $nature
      * @return Nature
      */
     public function insert(Nature $nature)
@@ -30,9 +29,6 @@ class NatureRepository extends ServiceEntityRepository
         return $nature;
     }
 
-    /**
-     * @param Nature $nature
-     */
     public function delete(Nature $nature)
     {
         $this->_em->remove($nature);

@@ -16,38 +16,30 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class VideoController extends AbstractController implements ContributeControllerInterface
 {
-	/** @var VideoRepository */
-	private $repo;
-
-	public function __construct(VideoRepository $repo)
+	public function __construct(private readonly VideoRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/videos", name="videos", methods={"GET"})
-	 */
+	#[Route(path: '/videos', name: 'videos', methods: ['GET'])]
 	public function getAll(Request $request): Response
 	{
 		if (!empty($request->get('maxLength')))
 			$this->repo->setMaxLength($request->get('maxLength'));
 
-        $criteria = null;
-        if (!empty($request->get('tags')))
-            $criteria = explode(',', $request->get('tags'));
+		$criteria = null;
+		if (!empty($request->get('tags')))
+			$criteria = explode(',', $request->get('tags'));
 
-        $author = $request->get('author');
-        return $this->json(
-            ['videos' => $this->repo->findWithQuery($criteria,$author)],
+		$author = $request->get('author');
+		return $this->json(
+			['videos' => $this->repo->findWithQuery($criteria, $author)],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:video']
 		);
 	}
 
-	/**
-	 * @Route("/videos", name="insert_video", methods={"POST"})
-	 */
+	#[Route(path: '/videos', name: 'insert_video', methods: ['POST'])]
 	public function insertVideo(
 		Request $request,
 		SerializerInterface $serializer
@@ -63,7 +55,7 @@ class VideoController extends AbstractController implements ContributeController
 			);
 
 			$this->repo->insert($video);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -78,9 +70,7 @@ class VideoController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/videos/{id}", name="update_video", methods={"PUT"})
-	 */
+	#[Route(path: '/videos/{id}', name: 'update_video', methods: ['PUT'])]
 	public function updateVideo(
 		$id,
 		Request $request,
@@ -100,7 +90,7 @@ class VideoController extends AbstractController implements ContributeController
 				]
 			);
 			$this->repo->update($newVideo);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -113,9 +103,7 @@ class VideoController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/videos/{id}", name="delete_video", methods={"DELETE"})
-	 */
+	#[Route(path: '/videos/{id}', name: 'delete_video', methods: ['DELETE'])]
 	public function deleteVideo($id)
 	{
 		$video = $this->repo->find($id);
@@ -134,16 +122,14 @@ class VideoController extends AbstractController implements ContributeController
 		);
 	}
 
-    /**
-     * @Route("/videos/authors", name="videos_authors", methods={"GET"})
-     */
-    public function getAllAuthors()
-    {
-        return $this->json(
-            ['authors' => $this->repo->findAllAuthors()],
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'read:video']
-        );
-    }
+	#[Route(path: '/videos/authors', name: 'videos_authors', methods: ['GET'])]
+	public function getAllAuthors()
+	{
+		return $this->json(
+			['authors' => $this->repo->findAllAuthors()],
+			Response::HTTP_OK,
+			[],
+			['groups' => 'read:video']
+		);
+	}
 }

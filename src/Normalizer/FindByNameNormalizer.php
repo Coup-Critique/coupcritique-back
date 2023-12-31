@@ -16,12 +16,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
  */
 class FindByNameNormalizer extends ObjectNormalizer
 {
-    protected EntityManagerInterface $em;
-    protected GenRequestManager $genRequestManager;
-
     public function __construct(
-        EntityManagerInterface $em,
-        GenRequestManager $genRequestManager,
+        protected EntityManagerInterface $em,
+        protected GenRequestManager $genRequestManager,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
         PropertyAccessorInterface $propertyAccessor = null,
@@ -39,8 +36,6 @@ class FindByNameNormalizer extends ObjectNormalizer
             $objectClassResolver,
             $defaultContext
         );
-        $this->em = $em;
-        $this->genRequestManager = $genRequestManager;
     }
 
     /**
@@ -52,7 +47,7 @@ class FindByNameNormalizer extends ObjectNormalizer
      */
     public function supportsDenormalization($data, $type, string $format = null): bool
     {
-        return strpos($type, 'App\\Entity\\') === 0 && is_string($data);
+        return str_starts_with($type, 'App\\Entity\\') && is_string($data);
     }
 
     /**

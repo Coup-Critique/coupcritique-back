@@ -86,7 +86,6 @@ class VideoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Video $video
      * @return Video
      */
     public function insert(Video $video)
@@ -97,9 +96,6 @@ class VideoRepository extends ServiceEntityRepository
         return $video;
     }
 
-    /**
-     * @param Video $video
-     */
     public function delete(Video $video)
     {
         $this->_em->remove($video);
@@ -107,7 +103,6 @@ class VideoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Video $video
      * @return Video
      */
     public function update(Video $video): Video

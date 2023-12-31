@@ -34,7 +34,7 @@ class Utils
     {
 
         if (!preg_match('/[\x80-\xff]/', $str)) return $str;
-        return preg_replace("/[?]/", '', utf8_decode($str));
+        return preg_replace("/[?]/", '', mb_convert_encoding($str, 'ISO-8859-1'));
 
         /**
          * $str = strtr(

@@ -21,19 +21,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TypeController extends AbstractController
 {
-	private TypeRepository $repo;
-	private GenRequestManager $genRequestManager;
-
-	public function __construct(TypeRepository $repo, GenRequestManager $genRequestManager)
+	public function __construct(private readonly TypeRepository $repo, private readonly GenRequestManager $genRequestManager)
 	{
-		$this->genRequestManager = $genRequestManager;
-		$this->repo = $repo;
 	}
 
 	/**
 	 * Types chart
-	 * @Route("/types", name="types", methods={"GET"})
 	 */
+	#[Route(path: '/types', name: 'types', methods: ['GET'])]
 	public function getTypes(SerializerInterface $serializer)
 	{
 		// $gen = $this->genRequestManager->getGenFromRequest();
@@ -60,9 +55,7 @@ class TypeController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/types/{id}", name="type_by_id", methods={"GET"})
-	 */
+	#[Route(path: '/types/{id}', name: 'type_by_id', methods: ['GET'])]
 	public function getTypeById($id, SerializerInterface $serializer)
 	{
 		$type = $this->repo->find($id);
@@ -97,9 +90,7 @@ class TypeController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/types", name="insert_type", methods={"POST"})
-	 */
+	#[Route(path: '/types', name: 'insert_type', methods: ['POST'])]
 	public function insertType(
 		Request $request,
 		SerializerInterface $serializer,
@@ -110,7 +101,7 @@ class TypeController extends AbstractController
 		try {
 			/** @var Type $type */
 			$type = $serializer->deserialize($json, Type::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 		$errors = $validator->validate($type);
@@ -131,9 +122,7 @@ class TypeController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/types/{id}", name="update_type", methods={"PUT"})
-	 */
+	#[Route(path: '/types/{id}', name: 'update_type', methods: ['PUT'])]
 	public function updateType(
 		$id,
 		Request $request,
@@ -158,7 +147,7 @@ class TypeController extends AbstractController
 					EntityNormalizer::UPDATE_ENTITIES => [Type::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 
@@ -180,9 +169,7 @@ class TypeController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/types/{id}", name="delete_type", methods={"DELETE"})
-	 */
+	#[Route(path: '/types/{id}', name: 'delete_type', methods: ['DELETE'])]
 	public function deleteType($id, Request $request, TypeRepository $type_repo)
 	{
 		$type = $this->repo->find($id);

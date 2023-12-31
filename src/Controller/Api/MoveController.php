@@ -24,18 +24,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MoveController extends AbstractController implements ContributeControllerInterface
 {
-    private MoveRepository $repo;
-    private GenRequestManager $genRequestManager;
-
-    public function __construct(MoveRepository $repo, GenRequestManager $genRequestManager)
+    public function __construct(private readonly MoveRepository $repo, private readonly GenRequestManager $genRequestManager)
     {
-        $this->repo = $repo;
-        $this->genRequestManager = $genRequestManager;
     }
 
-    /**
-     * @Route("/moves", name="moves", methods={"GET"})
-     */
+    #[Route(path: '/moves', name: 'moves', methods: ['GET'])]
     public function getMoves()
     {
         $gen = $this->genRequestManager->getGenFromRequest();
@@ -48,9 +41,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/moves/{id}", name="move_by_id", methods={"GET"})
-     */
+    #[Route(path: '/moves/{id}', name: 'move_by_id', methods: ['GET'])]
     public function getMoveById($id, Request $request)
     {
         $move = $this->repo->find($id);
@@ -75,9 +66,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/moves/pokemon/{id}", name="moves_by_pokemon", methods={"GET"})
-     */
+    #[Route(path: '/moves/pokemon/{id}', name: 'moves_by_pokemon', methods: ['GET'])]
     public function getMovesByPokemon(
         $id,
         PokemonRepository $pokemonRepository,
@@ -107,9 +96,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/moves/type/{id}", name="moves_by_type", methods={"GET"})
-     */
+    #[Route(path: '/moves/type/{id}', name: 'moves_by_type', methods: ['GET'])]
     public function getMovesByType($id, TypeRepository $typeRepository)
     {
         $type = $typeRepository->find($id);
@@ -127,9 +114,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/moves", name="insert_move", methods={"POST"})
-     */
+    #[Route(path: '/moves', name: 'insert_move', methods: ['POST'])]
     public function insertMove(
         Request $request,
         SerializerInterface $serializer,
@@ -140,7 +125,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         try {
             /** @var Move $move */
             $move = $serializer->deserialize($json, Move::class, 'json');
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
         $errors = $validator->validate($move);
@@ -161,9 +146,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/moves/{id}", name="update_move", methods={"PUT"})
-     */
+    #[Route(path: '/moves/{id}', name: 'update_move', methods: ['PUT'])]
     public function updateMove(
         $id,
         Request $request,
@@ -188,7 +171,7 @@ class MoveController extends AbstractController implements ContributeControllerI
                     EntityNormalizer::UPDATE_ENTITIES => [Move::class]
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -200,7 +183,7 @@ class MoveController extends AbstractController implements ContributeControllerI
             );
         }
 
-		$this->repo->update($move, $this->getUser());
+        $this->repo->update($move, $this->getUser());
 
         return $this->json(
             ['move' => $move],
@@ -210,9 +193,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/moves/{id}", name="delete_move", methods={"DELETE"})
-     */
+    #[Route(path: '/moves/{id}', name: 'delete_move', methods: ['DELETE'])]
     public function deleteMove($id, Request $request)
     {
         $move = $this->repo->find($id);

@@ -6,80 +6,54 @@ use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=NotificationRepository::class)
- */
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list'])]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
     
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=true)
-	 * @Groups({"read:list"})
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['read:list'])]
     private ?User $notifier = null;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-	 * @Groups({"read:list"})
-     */
-
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[Groups(['read:list'])]
     private ?string $subject = null;
     
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups({"read:list"})
-     */
-
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['read:list'])]
     private ?string $content = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:list'])]
     private ?\Datetime $date = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['read:list'])]
     private bool $viewed = false;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:list'])]
     private $entityName;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:list'])]
     private $entityId;
 
-    /**
-     * @ORM\Column(type="string", length=15, nullable=true)
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'string', length: 15, nullable: true)]
+    #[Groups(['read:list'])]
     private $color;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-	 * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:list'])]
     private $icon;
 
     public function getId(): ?int

@@ -23,7 +23,6 @@ class TierUsageRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * @param TierUsage $tierUsage
 	 * @return TierUsage
 	 */
 	public function insert(TierUsage $tierUsage)
@@ -33,9 +32,6 @@ class TierUsageRepository extends ServiceEntityRepository
 		return $tierUsage;
 	}
 
-	/**
-	 * @param TierUsage $tierUsage
-	 */
 	public function delete(TierUsage $tierUsage)
 	{
 		$this->_em->remove($tierUsage);
@@ -111,7 +107,6 @@ class TierUsageRepository extends ServiceEntityRepository
 
 	/**
 	 * La gen est inclu dans le tier id
-	 * @param Tier $tier
 	 * @return array
 	 */
 	public function findByTier(Tier $tier)

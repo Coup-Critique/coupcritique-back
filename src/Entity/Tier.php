@@ -10,176 +10,83 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TierRepository::class)
- * @ORM\Table(
- *    name="tier", 
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(
- *            name="tier_name_gen_unique",
- *            columns={"name", "gen"}
- *        )
- *    }
- * )
- */
+#[ORM\Entity(repositoryClass: TierRepository::class)]
+#[ORM\Table(name: 'tier')]
+#[ORM\UniqueConstraint(name: 'tier_name_gen_unique', columns: ['name', 'gen'])]
 class Tier
 {
 
-	const BASE_LADDER_REF = 1630;
+	final public const BASE_LADDER_REF = 1630;
 
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 * @Groups({
-	 *   "read:tier", 
-	 *   "read:list", 
-	 *   "read:list:usage", 
-	 *   "read:usage",
-	 *   "read:usage:short",
-	 *   "read:name",
-	 *   "read:pokemon", 
-	 *   "read:team", 
-	 *   "insert:team", 
-	 *   "read:resource", 
-	 *   "read:list:team"
-	 * })
-	 */
-	private $id;
+	#[ORM\Id]
+ #[ORM\GeneratedValue]
+ #[ORM\Column(type: 'integer')]
+ #[Groups(['read:tier', 'read:list', 'read:list:usage', 'read:usage', 'read:usage:short', 'read:name', 'read:pokemon', 'read:team', 'insert:team', 'read:resource', 'read:list:team'])]
+ private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=100)
-	 * @Groups({
-	 *   "read:tier", 
-	 *   "read:list", 
-	 *   "read:list:usage", 
-	 *   "read:usage", 
-	 *   "read:usage:short",
-	 *   "read:name", 
-	 *   "read:pokemon", 
-	 *   "read:team", 
-	 *   "read:resource", 
-	 *   "read:list:team"
-	 * })
-	 */
-	private $name;
+	#[ORM\Column(type: 'string', length: 100)]
+ #[Groups(['read:tier', 'read:list', 'read:list:usage', 'read:usage', 'read:usage:short', 'read:name', 'read:pokemon', 'read:team', 'read:resource', 'read:list:team'])]
+ private $name;
 
-	/**
-	 * @ORM\Column(type="string", 
-	 *   length=30, 
-	 *   nullable=true)
-	 * @Groups({
-	 *   "read:tier", 
-	 *   "read:list", 
-	 *   "read:list:usage", 
-	 *   "read:usage:short",
-	 *   "read:usage", 
-	 *   "read:name", 
-	 *   "read:pokemon", 
-	 *   "read:team", 
-	 *   "read:resource", 
-	 *   "read:list:team"
-	 * })
-	 */
-	private $shortName;
+	#[ORM\Column(type: 'string', length: 30, nullable: true)]
+ #[Groups(['read:tier', 'read:list', 'read:list:usage', 'read:usage:short', 'read:usage', 'read:name', 'read:pokemon', 'read:team', 'read:resource', 'read:list:team'])]
+ private $shortName;
 
-	/**
-	 * @ORM\Column(type="string", length=100, nullable=true)
-	 * @Groups({"read:tier", "read:pokemon"})
-	 */
-	private $usageName;
+	#[ORM\Column(type: 'string', length: 100, nullable: true)]
+ #[Groups(['read:tier', 'read:pokemon'])]
+ private $usageName;
 
-	/**
-	 * @ORM\Column(type="text", length=3000, nullable=true)
-	 * @Groups({"read:tier"})
-	 * @Assert\Length(
-	 *    max = 3000,
-	 *    maxMessage="La description peut faire au maximum 3000 caractères."
-	 * )
-	 */
-	private $description;
+	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
+ #[Groups(['read:tier'])]
+ #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
+ private $description;
 
-	/**
-	 * @ORM\Column(type="boolean")
-	 * Cannot create a team for unplayable tier but it's not usable show in tier detail
-	 * @Groups({"read:list", "read:pokemon"})
-	 */
-	private ?bool $playable = false;
+	#[ORM\Column(type: 'boolean')]
+ #[Groups(['read:list', 'read:pokemon'])]
+ private ?bool $playable = false;
 
-	/**
-	 * @ORM\Column(type="integer", nullable=true)
-	 */
-	private ?int $maxPokemon = 6;
+	#[ORM\Column(type: 'integer', nullable: true)]
+ private ?int $maxPokemon = 6;
 
-	/**
-	 * @ORM\Column(type="integer", nullable=true)
-	 * @Groups({"read:tier", "read:pokemon"})
-	 */
-	private ?int $ladderRef = self::BASE_LADDER_REF;
+	#[ORM\Column(type: 'integer', nullable: true)]
+ #[Groups(['read:tier', 'read:pokemon'])]
+ private ?int $ladderRef = self::BASE_LADDER_REF;
 
-	/**
-	 * @ORM\Column(type="smallint", nullable=true)
-	 * @Groups({"read:list", "read:list:usage", "read:team"})
-	 */
-	private $rank;
+	#[ORM\Column(type: 'smallint', nullable: true)]
+ #[Groups(['read:list', 'read:list:usage', 'read:team'])]
+ private $rank;
 
-	/**
-	 * @ORM\Column(type="smallint", nullable=true)
-	 * @Groups({"read:list", "read:list:usage", "read:team", "read:resource"})
-	 */
-	private $sortOrder;
+	#[ORM\Column(type: 'smallint', nullable: true)]
+ #[Groups(['read:list', 'read:list:usage', 'read:team', 'read:resource'])]
+ private $sortOrder;
 
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 * @Groups({"read:list", "read:team"})
-	 */
-	private ?bool $isDouble = false;
+	#[ORM\Column(type: 'boolean', nullable: true)]
+ #[Groups(['read:list', 'read:team'])]
+ private ?bool $isDouble = false;
 
-	/**
-	 * @ORM\OneToMany(targetEntity=Resource::class, mappedBy="tier")
-	 * @Groups({"read:tier"})
-	 */
-	private $resources;
+	#[ORM\OneToMany(targetEntity: Resource::class, mappedBy: 'tier')]
+ #[Groups(['read:tier'])]
+ private $resources;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity=Tier::class, cascade={"persist"})
-	 * @Groups({"read:pokemon"})
-	 */
-	private $parent;
+	#[ORM\ManyToOne(targetEntity: Tier::class, cascade: ['persist'])]
+ #[Groups(['read:pokemon'])]
+ private $parent;
 
-	/**
-	 * @ORM\Column(type="integer",nullable=true)
-	 * @Groups({
-	 *   "read:tier", 
-	 *   "read:list", 
-	 *   "read:list:usage", 
-	 *   "read:usage", 
-	 *   "read:usage:short",
-	 *   "read:pokemon", 
-	 *   "insert:pokemon", 
-	 *   "read:team", 
-	 *   "read:list:team"
-	 * })
-	 */
-	private int $gen;
+	#[ORM\Column(type: 'integer', nullable: true)]
+ #[Groups(['read:tier', 'read:list', 'read:list:usage', 'read:usage', 'read:usage:short', 'read:pokemon', 'insert:pokemon', 'read:team', 'read:list:team'])]
+ private int $gen;
 
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 * @Groups({"read:team"})
-	 */
-	private ?bool $teraBan = false;
+	#[ORM\Column(type: 'boolean', nullable: true)]
+ #[Groups(['read:team'])]
+ private ?bool $teraBan = false;
 
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 * @Groups({"read:list"})
-	 */
-	private ?bool $official = false;
+	#[ORM\Column(type: 'boolean', nullable: true)]
+ #[Groups(['read:list'])]
+ private ?bool $official = false;
 
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 * @Groups({"read:list"})
-	 */
-	private ?bool $main = false;
+	#[ORM\Column(type: 'boolean', nullable: true)]
+ #[Groups(['read:list'])]
+ private ?bool $main = false;
 
 	public function setGen(int $gen): self
 	{

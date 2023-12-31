@@ -7,11 +7,8 @@ use PDO;
 
 class GlobalRepository
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     public function search(string $search, $gen)
@@ -44,8 +41,6 @@ class GlobalRepository
         $stmt->bindValue('search', "%{$search}%", PDO::PARAM_STR);
         $stmt->bindValue('gen', $gen, PDO::PARAM_STR);
         $stmt->bindValue('previews_limit', $NUMBER_OF_PREVIEWS, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 }

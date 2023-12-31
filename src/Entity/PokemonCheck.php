@@ -6,35 +6,25 @@ use App\Repository\PokemonCheckRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=PokemonCheckRepository::class)
- */
+#[ORM\Entity(repositoryClass: PokemonCheckRepository::class)]
 class PokemonCheck
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TierUsage::class, inversedBy="pokemonChecks")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: TierUsage::class, inversedBy: 'pokemonChecks')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private $tierUsage;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Pokemon::class)
-     * @ORM\JoinColumn(nullable=false)
-	 * @Groups({"read:usage", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Pokemon::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:usage', 'read:pokemon'])]
     private $pokemon;
 
-    /**
-     * @ORM\Column(type="float")
-	 * @Groups({"read:usage", "read:pokemon"})
-     */
+    #[ORM\Column(type: 'float')]
+    #[Groups(['read:usage', 'read:pokemon'])]
     private $percent;
 
     public function getId(): ?int

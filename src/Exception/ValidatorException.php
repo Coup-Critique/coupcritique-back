@@ -6,36 +6,30 @@ use Exception;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ValidatorException extends \Exception
-{   
-    /**
-     * @var ConstraintViolationListInterface $constraintListObject
-     */
-    private $constraintListObject;
+{
+    protected string $message;
 
-    /**
-     * @var string $message
-     */
-    protected $message;
-
-    public function __construct(ConstraintViolationListInterface $constraintListObject, $code = 0, Exception $previous = null)
-    {
-        $this->constraintListObject = $constraintListObject;
-        if($constraintListObject->count() > 0){
-        //   $errors = [];
-        //     $errors["message"] = [];
-        //     foreach($this->constraintListObject as $constraintError)
-        //     {
-        //         array_unshift($errors["message"],$constraintError->getMessage());
-        //     }
-        //     $this->message = $errors;
-        // }elseif($constraintListObject->count() == 1){
+    public function __construct(
+        private readonly ConstraintViolationListInterface $constraintListObject,
+        int $code = 0,
+        Exception $previous = null
+    ) {
+        if ($constraintListObject->count() > 0) {
+            //   $errors = [];
+            //     $errors["message"] = [];
+            //     foreach($this->constraintListObject as $constraintError)
+            //     {
+            //         array_unshift($errors["message"],$constraintError->getMessage());
+            //     }
+            //     $this->message = $errors;
+            // }elseif($constraintListObject->count() == 1){
             $this->message = ["message" => $constraintListObject->get(0)->getMessage()];
         }
-        parent::__construct(json_encode($this->message),$code,$previous);
+        parent::__construct(json_encode($this->message), $code, $previous);
     }
 
     public function getDecodedMessage(): ?array
     {
-        return json_decode($this->message,true);
+        return json_decode($this->message, true);
     }
 }

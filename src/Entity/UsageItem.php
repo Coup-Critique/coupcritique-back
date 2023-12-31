@@ -6,35 +6,25 @@ use App\Repository\UsageItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=UsageItemRepository::class)
- */
+#[ORM\Entity(repositoryClass: UsageItemRepository::class)]
 class UsageItem
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TierUsage::class, inversedBy="usageItems")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: TierUsage::class, inversedBy: 'usageItems')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private $tierUsage;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Item::class)
-     * @ORM\JoinColumn(nullable=false)
-	 * @Groups({"read:usage", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Item::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:usage', 'read:pokemon'])]
     private $item;
 
-    /**
-     * @ORM\Column(type="float")
-	 * @Groups({"read:usage", "read:pokemon", "read:usageItem"})
-     */
+    #[ORM\Column(type: 'float')]
+    #[Groups(['read:usage', 'read:pokemon', 'read:usageItem'])]
     private $percent;
 
     public function getId(): ?int

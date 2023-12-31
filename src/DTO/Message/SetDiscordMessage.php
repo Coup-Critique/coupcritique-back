@@ -7,11 +7,12 @@ use App\Entity\User;
 
 class SetDiscordMessage extends AbstractDiscordMessage
 {
-    protected PokemonSet $entity;
-
-    public function __construct(string $domain, string $method, User $user, PokemonSet $entity)
-    {
-        $this->entity = $entity;
+    public function __construct(
+        string $domain,
+        string $method,
+        User $user,
+        protected PokemonSet $entity
+    ) {
         parent::__construct($domain, $method, $user);
     }
 

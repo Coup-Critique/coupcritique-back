@@ -18,11 +18,10 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-	private $passwordEncoder;
-
-	public function __construct(ManagerRegistry $registry, UserPasswordHasherInterface $passwordEncoder)
-	{
-		$this->passwordEncoder = $passwordEncoder;
+	public function __construct(
+		ManagerRegistry $registry,
+		private readonly UserPasswordHasherInterface $passwordEncoder
+	) {
 		parent::__construct($registry, User::class);
 	}
 
@@ -43,7 +42,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	}
 
 	/**
-	 * @param User $user
 	 * @return User
 	 */
 	public function insert(User $user): User
@@ -58,9 +56,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return $user;
 	}
 
-	/**
-	 * @param User $user
-	 */
 	public function delete(User $user)
 	{
 		$user->setDeleted(true);
@@ -69,7 +64,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	}
 
 	/**
-	 * @param User $user
 	 * @return User
 	 */
 	public function update(User $user): User
@@ -80,8 +74,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	}
 
 	/**
-	 * @param User $user
-	 * @param string $password
 	 * @return User
 	 */
 	public function updatePassword(User $user, string $password): User
@@ -93,7 +85,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	}
 
 	/**
-	 * @param User $user
 	 * @param array $data
 	 */
 	public function checkPassword(User $user, string $password)

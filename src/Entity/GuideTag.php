@@ -7,9 +7,7 @@ use App\Repository\GuideTagRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=GuideTagRepository::class)
- */
+#[ORM\Entity(repositoryClass: GuideTagRepository::class)]
 class GuideTag extends AbstractTag
 {
 }

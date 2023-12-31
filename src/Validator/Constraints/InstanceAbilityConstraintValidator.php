@@ -12,11 +12,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class InstanceAbilityConstraintValidator extends ConstraintValidator
 {
-    private $abilityRepository;
-
-    public function __construct(AbilityRepository $abilityRepository)
+    public function __construct(private readonly AbilityRepository $abilityRepository)
     {
-        $this->abilityRepository = $abilityRepository;
     }
 
     /**

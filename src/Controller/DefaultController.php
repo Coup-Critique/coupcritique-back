@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\ActivateUserTokenRepository;
 use App\Service\CcMailer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mime\Address;
@@ -12,20 +13,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class DefaultController extends AbstractController
 {
-	/**
-	 * @Route(
-	 *     "/activate-user/renew/{token}",
-	 *     name="renew_activate_user_token"
-	 * )
-	 * @Route(
-	 *     "/api/activate-user/renew/{token}/{api_mode}",
-	 *     name="api_renew_activate_user_token"
-	 * )
-	 */
+	#[Route(path: '/activate-user/renew/{token}', name: 'renew_activate_user_token')]
+	#[Route(
+		path: '/api/activate-user/renew/{token}/{api_mode}',
+		name: 'api_renew_activate_user_token'
+	)]
 	public function renewActivateUserToken(
 		$token,
 		?bool $api_mode,
 		CcMailer $mailer,
+		EntityManagerInterface $em,
 		ActivateUserTokenRepository $activateUserTokenRepository
 	) {
 		$token = $activateUserTokenRepository->findOneByToken($token);
@@ -46,7 +43,6 @@ class DefaultController extends AbstractController
 
 		$token = $token->createToken($token->getUser());
 
-		$em = $this->getDoctrine()->getManager();
 		$em->persist($token);
 		$em->flush();
 
@@ -71,15 +67,11 @@ class DefaultController extends AbstractController
 		}
 	}
 
-	/**
-	 * @Route(
-	 *     "/activate-user/{token}",
-	 *     name="activate_user_token"
-	 * )
-	 */
+	#[Route(path: '/activate-user/{token}', name: 'activate_user_token')]
 	public function activateUserToken(
 		$token,
 		CcMailer $mailer,
+		EntityManagerInterface $em,
 		ActivateUserTokenRepository $activateUserTokenRepository
 	) {
 		$token = $activateUserTokenRepository->findOneByToken($token);
@@ -114,7 +106,7 @@ class DefaultController extends AbstractController
 			$mailer->send($email);
 
 
-			$this->getDoctrine()->getManager()->flush();
+			$em->flush();
 			$this->addFlash('success', 'Votre compte a été activé. Vous pouvez désormais vous connecter.');
 
 			return $this->redirectToRoute('home');

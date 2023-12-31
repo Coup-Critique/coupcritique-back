@@ -31,10 +31,7 @@ class SiteController extends AbstractController
     // {
     //     return $this->redirect("https://adstxt.venatusmedia.com/{$venatusId}_ads.txt");
     // }
-
-    /**
-     * @Route("/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
-     */
+    #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
     public function sitemap(
         Request $request,
         PokemonRepository $pokemonRepository,

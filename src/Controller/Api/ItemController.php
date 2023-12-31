@@ -19,18 +19,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ItemController extends AbstractController
 {
-	private ItemRepository $repo;
-	private GenRequestManager $genRequestManager;
-
-	public function __construct(ItemRepository $repo, GenRequestManager $genRequestManager)
+	public function __construct(private readonly ItemRepository $repo, private readonly GenRequestManager $genRequestManager)
 	{
-		$this->genRequestManager = $genRequestManager;
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/items", name="items", methods={"GET"})
-	 */
+	#[Route(path: '/items', name: 'items', methods: ['GET'])]
 	public function getItems()
 	{
 		$gen = $this->genRequestManager->getGenFromRequest();
@@ -43,9 +36,7 @@ class ItemController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/items/{id}", name="item_by_id", methods={"GET"})
-	 */
+	#[Route(path: '/items/{id}', name: 'item_by_id', methods: ['GET'])]
 	public function getItemById($id, Request $request)
 	{
 		// gen include in id
@@ -62,7 +53,7 @@ class ItemController extends AbstractController
 		return $this->json(
 			[
 				'item' => $item,
-				'gen' => $item->getGen(), 
+				'gen' => $item->getGen(),
 				'availableGens' => $availableGens
 			],
 			Response::HTTP_OK,
@@ -71,9 +62,7 @@ class ItemController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/items", name="insert_item", methods={"POST"})
-	 */
+	#[Route(path: '/items', name: 'insert_item', methods: ['POST'])]
 	public function insertItem(
 		Request $request,
 		SerializerInterface $serializer,
@@ -84,7 +73,7 @@ class ItemController extends AbstractController
 		try {
 			/** @var Item $item */
 			$item = $serializer->deserialize($json, Item::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 		$errors = $validator->validate($item);
@@ -105,9 +94,7 @@ class ItemController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/items/{id}", name="update_item", methods={"PUT"})
-	 */
+	#[Route(path: '/items/{id}', name: 'update_item', methods: ['PUT'])]
 	public function updateItem(
 		$id,
 		Request $request,
@@ -132,7 +119,7 @@ class ItemController extends AbstractController
 					EntityNormalizer::UPDATE_ENTITIES => [Item::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 
@@ -154,9 +141,7 @@ class ItemController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/items/{id}", name="delete_item", methods={"DELETE"})
-	 */
+	#[Route(path: '/items/{id}', name: 'delete_item', methods: ['DELETE'])]
 	public function deleteItem($id, Request $request)
 	{
 		$item = $this->repo->find($id);

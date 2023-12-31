@@ -13,12 +13,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class TeamInstanceAndTierConstraintValidator extends ConstraintValidator
 {
-    /** @var TierRepository */
-    private $tierRepository;
-
-    public function __construct(TierRepository $tierRepository)
+    public function __construct(private readonly TierRepository $tierRepository)
     {
-        $this->tierRepository = $tierRepository;
     }
 
     /**

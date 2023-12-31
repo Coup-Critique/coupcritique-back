@@ -14,8 +14,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 abstract class AbstractArticleRepository extends ServiceEntityRepository
 {
-    const ASC = 'ASC';
-    const DESC = 'DESC';
+    final public const ASC = 'ASC';
+    final public const DESC = 'DESC';
+
     protected int $maxLength = 500;
     protected string $order = self::DESC;
 
@@ -27,12 +28,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @param AbstractArticle $article
-     * @param User $user
-     * @return AbstractArticle
-     */
-    public function insert(AbstractArticle $article, User $user)
+    public function insert(AbstractArticle $article, User $user): AbstractArticle
     {
         $article->setDateCreation(new \DateTime());
         $article->setUser($user);
@@ -41,20 +37,16 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
         return $article;
     }
 
-    /**
-     * @param AbstractArticle $article
-     */
-    public function delete(AbstractArticle $article)
+    public function delete(AbstractArticle $article): void
     {
         $this->_em->remove($article);
         $this->_em->flush();
     }
 
     /**
-     * @param string $keywords
      * @return AbstractArticle[] Returns an array of Article objects
      */
-    public function search(string $keywords, int $limit = null)
+    public function search(string $keywords, int $limit = null): array
     {
         $keywords = trim($keywords);
         $statement = $this->createQueryBuilder('a')
@@ -69,7 +61,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
     }
 
 
-    public function findOne($id)
+    public function findOne($id): ?AbstractArticle
     {
         return  $this->createQueryBuilder('a')
             ->addSelect(['tag', 'u'])
@@ -84,7 +76,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
     /**
      * @return AbstractArticle[] Returns an array of Article objects
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->createQueryBuilder('a')
             ->addSelect(['tag', 'u'])
@@ -97,7 +89,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
     }
 
 
-    public function findWithMax($max)
+    public function findWithMax($max): array
     {
         $ids = $this->createQueryBuilder('a')
             ->select('a.id')
@@ -121,7 +113,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
-    public function findWithQuery(?array $tags = null, ?string $search = null)
+    public function findWithQuery(?array $tags = null, ?string $search = null): array
     {
         $query = $this->createQueryBuilder('a')
             ->addSelect(['tag', 'u'])

@@ -12,206 +12,146 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
 /**
- * @ORM\Entity(repositoryClass=TeamRepository::class)
  * @CustomAssert\TeamInstanceAndTierConstraint
  * @CustomAssert\TeamTagConstraint
  */
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team implements CommentParentInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups({"read:team", "read:list", "read:list:team"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:team", "read:list", "read:list:team"})
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\NotNull(message="Le nom de l'équipe est requis")
-     * @Assert\Length(
-     *    max = 50,
-     *    maxMessage="Le nom de l'équipe peut faire au maximum 50 caractères."
-     * )
      * @CustomAssert\TextConstraint(
      *    message="Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
      * )
      */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\NotNull(message: "Le nom de l'équipe est requis")]
+    #[Assert\Length(max: 50, maxMessage: "Le nom de l'équipe peut faire au maximum 50 caractères.")]
     private $name;
 
     /**
-     * @ORM\Column(type="text", length=5000, nullable=true)
-     * @Groups({"read:team", "insert:team", "update:team"})
-     * @Assert\NotNull(message="La description est requise")
-     * @Assert\Length(
-     *    max = 5000,
-     *    maxMessage="La description peut faire au maximum 5000 caractères."
-     * )
      * @CustomAssert\TextConstraint(
      *    message="Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
      * )
      */
+    #[ORM\Column(type: 'text', length: 5000, nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'update:team'])]
+    #[Assert\NotNull(message: 'La description est requise')]
+    #[Assert\Length(max: 5000, maxMessage: 'La description peut faire au maximum 5000 caractères.')]
     private $description;
 
-    /**
-     * @ORM\Column(type="text", length=500)
-     * @Groups({"read:team", "insert:team"})
-     * @Assert\NotNull(message="L'export de l'équipe par pokemonshowdown est requis")
-     */
+    #[ORM\Column(type: 'text', length: 500)]
+    #[Groups(['read:team', 'insert:team'])]
+    #[Assert\NotNull(message: "L'export de l'équipe par pokemonshowdown est requis")]
     private $export;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"read:team", "read:list", "read:list:team"})
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $date_creation;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:team"})
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['read:team'])]
     private $update_date;
 
-    /**
-     * @ORM\OneToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\NotNull(message="Il doit y avoir au moins un Pokémon dans l'équipe")
-     * @Assert\Valid
-     */
+    #[ORM\OneToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\NotNull(message: "Il doit y avoir au moins un Pokémon dans l'équipe")]
+    #[Assert\Valid]
     private $pkm_inst_1;
 
-    /**
-     * @ORM\OneToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\Valid
-     */
+    #[ORM\OneToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\Valid]
     private $pkm_inst_2;
 
-    /**
-     * @ORM\OneToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\Valid
-     */
+    #[ORM\OneToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\Valid]
     private $pkm_inst_3;
 
-    /**
-     * @ORM\OneToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\Valid
-     */
+    #[ORM\OneToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\Valid]
     private $pkm_inst_4;
 
-    /**
-     * @ORM\OneToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\Valid
-     */
+    #[ORM\OneToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\Valid]
     private $pkm_inst_5;
 
-    /**
-     * @ORM\OneToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     * @Assert\Valid
-     */
+    #[ORM\OneToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
+    #[Assert\Valid]
     private $pkm_inst_6;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Tier::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team"})
-     * @Assert\NotNull(message="Le tier est requis.")
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Tier::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team'])]
+    #[Assert\NotNull(message: 'Le tier est requis.')]
+    #[Assert\Valid]
     private $tier;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Tag::class)
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team", "update:team"})
-     */
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
     private $tags;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"read:team", "read:list", "read:list:team"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $certified;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"read:team", "read:team:admin", "read:list", "read:list:team"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:team', 'read:team:admin', 'read:list', 'read:list:team'])]
     private $banned;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:team"})
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['read:team'])]
     private $top_week;
 
-    /**
-     * @ORM\Column(type="string", length=17, nullable=true)
-     * @Groups({"read:team", "insert:team", "update:team"})
-     * @Assert\Length(min = 6, max = 17, exactMessage="L'id équipe doit faire {{ limit }} caractères.")
-     */
+    #[ORM\Column(type: 'string', length: 17, nullable: true)]
+    #[Groups(['read:team', 'insert:team', 'update:team'])]
+    #[Assert\Length(min: 6, max: 17, exactMessage: "L'id équipe doit faire {{ limit }} caractères.")]
     private $team_id;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity=Replay::class, 
-     *      mappedBy="team", 
-     *      cascade={"persist", "remove"}, 
-     *      orphanRemoval=true
-     * )
-     * @Assert\Valid
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Vous ne pouvez pas ajouter plus de {{ limit }} replays."
-     * )
-     * @Groups({"read:team", "insert:team", "update:team"})
-     */
+    #[ORM\OneToMany(targetEntity: Replay::class, mappedBy: 'team', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
+    #[Assert\Count(max: 5, maxMessage: 'Vous ne pouvez pas ajouter plus de {{ limit }} replays.')]
+    #[Groups(['read:team', 'insert:team', 'update:team'])]
     private $replays;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:team:admin"})
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['read:team:admin'])]
     private $history;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favorites")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     private $enjoyers;
 
     /**
      * @var bool|null $isOwnUserFavorite
-     * @Groups({"read:team", "read:list", "read:list:team"})
      */
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $isOwnUserFavorite = false;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity=Comment::class, 
-     *      mappedBy="team", 
-     *      cascade={"persist", "remove"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'team', cascade: ['persist', 'remove'])]
     private $comments;
 
     /**
-     * @ORM\Column(type="smallint")
-     * @Groups({"read:team", "read:list", "read:list:team", "insert:team"})
-     * @Assert\NotNull(message="La génération est requise.")
      * @CustomAssert\GenConstraint()
      */
+    #[ORM\Column(type: 'smallint')]
+    #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team'])]
+    #[Assert\NotNull(message: 'La génération est requise.')]
     private $gen;
 
     public function __construct()

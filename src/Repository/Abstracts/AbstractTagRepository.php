@@ -15,27 +15,20 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 abstract class AbstractTagRepository extends ServiceEntityRepository
 {
-    /**
-     * @param AbstractTag $abstractTag
-     * @return AbstractTag
-     */
-    public function insert(AbstractTag $abstractTag)
+    public function insert(AbstractTag $abstractTag): AbstractTag
     {
         $this->_em->persist($abstractTag);
         $this->_em->flush();
         return $abstractTag;
     }
 
-    /**
-     * @param AbstractTag $abstractTag
-     */
-    public function delete(AbstractTag  $abstractTag)
+    public function delete(AbstractTag  $abstractTag): void
     {
         $this->_em->remove($abstractTag);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('t')
             ->delete()

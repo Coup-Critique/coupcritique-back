@@ -29,18 +29,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PokemonController extends AbstractController implements ContributeControllerInterface
 {
-    private PokemonRepository $repo;
-    private GenRequestManager $genRequestManager;
-
-    public function __construct(PokemonRepository $repo, GenRequestManager $genRequestManager)
-    {
-        $this->repo = $repo;
-        $this->genRequestManager = $genRequestManager;
+    public function __construct(
+        private readonly PokemonRepository $repo,
+        private readonly GenRequestManager $genRequestManager
+    ) {
     }
 
-    /**
-     * @Route("/pokemons", name="pokemons", methods={"GET"})
-     */
+    #[Route(path: '/pokemons', name: 'pokemons', methods: ['GET'])]
     public function getPokemons()
     {
         $gen = $this->genRequestManager->getGenFromRequest();
@@ -53,9 +48,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons/{id}", name="pokemon_by_id", methods={"GET"})
-     */
+    #[Route(path: '/pokemons/{id}', name: 'pokemon_by_id', methods: ['GET'])]
     public function getPokemonById(
         $id,
         SerializerInterface $serializer,
@@ -70,16 +63,16 @@ class PokemonController extends AbstractController implements ContributeControll
         $availableGens = $this->genRequestManager->formatAvailableGens(
             $this->repo->getAvailableGens($pokemon->getUsageName())
         );
-        
-		$return = $pokemonManager->buildOnePokemonReturn($pokemon);
-		$return = $serializer->normalize(
-			$return,
-			'json',
-			['groups' => 'read:pokemon']
-		);
 
-		$return['gen'] = $pokemon->getGen();
-		$return['availableGens'] = $availableGens;
+        $return = $pokemonManager->buildOnePokemonReturn($pokemon);
+        $return = $serializer->normalize(
+            $return,
+            'json',
+            ['groups' => 'read:pokemon']
+        );
+
+        $return['gen'] = $pokemon->getGen();
+        $return['availableGens'] = $availableGens;
 
         return $this->json(
             $return,
@@ -87,9 +80,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemon-name/{name}", name="pokemon_by_name", methods={"GET"})
-     */
+    #[Route(path: '/pokemon-name/{name}', name: 'pokemon_by_name', methods: ['GET'])]
     public function getPokemonByName(
         $name,
         SerializerInterface $serializer,
@@ -106,16 +97,16 @@ class PokemonController extends AbstractController implements ContributeControll
         $availableGens = $this->genRequestManager->formatAvailableGens(
             $this->repo->getAvailableGens($pokemon->getUsageName())
         );
-        
-		$return = $pokemonManager->buildOnePokemonReturn($pokemon);
-		$return = $serializer->normalize(
-			$return,
-			'json',
-			['groups' => 'read:pokemon']
-		);
 
-		$return['gen'] = $pokemon->getGen();
-		$return['availableGens'] = $availableGens;
+        $return = $pokemonManager->buildOnePokemonReturn($pokemon);
+        $return = $serializer->normalize(
+            $return,
+            'json',
+            ['groups' => 'read:pokemon']
+        );
+
+        $return['gen'] = $pokemon->getGen();
+        $return['availableGens'] = $availableGens;
 
         return $this->json(
             $return,
@@ -140,9 +131,7 @@ class PokemonController extends AbstractController implements ContributeControll
         return $pokemon;
     }
 
-    /**
-     * @Route("/pokemons/type/{id}", name="pokemon_by_type", methods={"GET"})
-     */
+    #[Route(path: '/pokemons/type/{id}', name: 'pokemon_by_type', methods: ['GET'])]
     public function getPokemonsByType($id, TypeRepository $typeRepository)
     {
         $type = $typeRepository->find($id);
@@ -158,9 +147,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons/ability/{id}", name="pokemon_by_ability", methods={"GET"})
-     */
+    #[Route(path: '/pokemons/ability/{id}', name: 'pokemon_by_ability', methods: ['GET'])]
     public function getPokemonsByAbility(
         $id,
         AbilityRepository $abilityRepository,
@@ -189,9 +176,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons/move/{id}", name="pokemon_by_move", methods={"GET"})
-     */
+    #[Route(path: '/pokemons/move/{id}', name: 'pokemon_by_move', methods: ['GET'])]
     public function getPokemonsByMove(
         $id,
         MoveRepository $moveRepository,
@@ -223,9 +208,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons/item/{id}", name="pokemon_by_item", methods={"GET"})
-     */
+    #[Route(path: '/pokemons/item/{id}', name: 'pokemon_by_item', methods: ['GET'])]
     public function getPokemonsByItem(
         $id,
         ItemRepository $itemRepository,
@@ -254,9 +237,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons", name="insert_pokemon", methods={"POST"})
-     */
+    #[Route(path: '/pokemons', name: 'insert_pokemon', methods: ['POST'])]
     public function insertPokemon(
         Request $request,
         SerializerInterface $serializer,
@@ -272,7 +253,7 @@ class PokemonController extends AbstractController implements ContributeControll
                 'json',
                 ['groups' => ['insert:pokemon']]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
         $errors = $validator->validate($pokemon);
@@ -293,9 +274,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons/{id}", name="update_pokemon", methods={"PUT"})
-     */
+    #[Route(path: '/pokemons/{id}', name: 'update_pokemon', methods: ['PUT'])]
     public function updatePokemon(
         $id,
         Request $request,
@@ -323,7 +302,7 @@ class PokemonController extends AbstractController implements ContributeControll
                     EntityNormalizer::UPDATE_ENTITIES      => [Pokemon::class]
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -352,9 +331,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    /**
-     * @Route("/pokemons/{id}", name="delete_pokemon", methods={"DELETE"})
-     */
+    #[Route(path: '/pokemons/{id}', name: 'delete_pokemon', methods: ['DELETE'])]
     public function deletePokemon($id, Request $request)
     {
         $pokemon = $this->repo->find($id);

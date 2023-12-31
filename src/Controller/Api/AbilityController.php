@@ -19,18 +19,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbilityController extends AbstractController
 {
-	private AbilityRepository $repo;
-	private GenRequestManager $genRequestManager;
-
-	public function __construct(AbilityRepository $repo, GenRequestManager $genRequestManager)
-	{
-		$this->repo = $repo;
-		$this->genRequestManager = $genRequestManager;
+	public function __construct(
+		private readonly AbilityRepository $repo,
+		private readonly GenRequestManager $genRequestManager
+	) {
 	}
 
-	/**
-	 * @Route("/abilities", name="abilities", methods={"GET"})
-	 */
+	#[Route(path: '/abilities', name: 'abilities', methods: ['GET'])]
 	public function getAbilities()
 	{
 		$gen = $this->genRequestManager->getGenFromRequest();
@@ -43,9 +38,7 @@ class AbilityController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/abilities/{id}", name="ability_by_id", methods={"GET"})
-	 */
+	#[Route(path: '/abilities/{id}', name: 'ability_by_id', methods: ['GET'])]
 	public function getAbilityById($id, Request $request)
 	{
 		// gen include in id
@@ -62,7 +55,7 @@ class AbilityController extends AbstractController
 		return $this->json(
 			[
 				'ability' => $ability,
-				'gen' => $ability->getGen(), 
+				'gen' => $ability->getGen(),
 				'availableGens' => $availableGens
 			],
 			Response::HTTP_OK,
@@ -71,9 +64,7 @@ class AbilityController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/abilities", name="insert_ability", methods={"POST"})
-	 */
+	#[Route(path: '/abilities', name: 'insert_ability', methods: ['POST'])]
 	public function insertAbility(
 		Request $request,
 		SerializerInterface $serializer,
@@ -84,7 +75,7 @@ class AbilityController extends AbstractController
 		try {
 			/** @var Ability $ability */
 			$ability = $serializer->deserialize($json, Ability::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 		$errors = $validator->validate($ability);
@@ -105,9 +96,7 @@ class AbilityController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/abilities/{id}", name="update_ability", methods={"PUT"})
-	 */
+	#[Route(path: '/abilities/{id}', name: 'update_ability', methods: ['PUT'])]
 	public function updateAbility(
 		$id,
 		Request $request,
@@ -132,7 +121,7 @@ class AbilityController extends AbstractController
 					EntityNormalizer::UPDATE_ENTITIES => [Ability::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 
@@ -154,9 +143,7 @@ class AbilityController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/abilities/{id}", name="delete_ability", methods={"DELETE"})
-	 */
+	#[Route(path: '/abilities/{id}', name: 'delete_ability', methods: ['DELETE'])]
 	public function deleteAbility($id, Request $request)
 	{
 		$ability = $this->repo->find($id);

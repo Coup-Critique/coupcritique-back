@@ -62,12 +62,7 @@ class MoveRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    /**
-     * @param $value Move's name
-     * @param int|null $gen desired generation
-     * @return array
-     */
-    public function search($value, $gen)
+    public function search(string $value, ?int $gen = null): array
     {
         $query = $this->createQueryBuilder('m')
             ->where("REPLACE(m.nom,'-',' ') LIKE :search OR REPLACE(m.name,'-',' ') LIKE :search ")
@@ -81,13 +76,10 @@ class MoveRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Pokemon $pokemon
-     * @return array
-     *
      * Custom because PokemonMove is an entity
      * gen include in id
      */
-    public function findByPokemon(Pokemon $pokemon)
+    public function findByPokemon(Pokemon $pokemon): array
     {
         $query = $this->createQueryBuilder('m')
             ->addSelect('t')

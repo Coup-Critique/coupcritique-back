@@ -9,6 +9,7 @@ use App\Service\DescriptionParser;
 use App\Service\ErrorManager;
 use App\Service\ImageArticleManager;
 use App\Service\GenRequestManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,25 +22,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TournamentController extends AbstractController implements ContributeControllerInterface
 {
-	const TOURNAMENT_IMAGE_SIZE        = 300;
-	const TOURNAMENT_TEASER_IMAGE_SIZE = 250;
+	final public const TOURNAMENT_IMAGE_SIZE        = 300;
+	final public const TOURNAMENT_TEASER_IMAGE_SIZE = 250;
 
-	/** @var TournamentRepository */
-	private $repo;
-
-	public function __construct(TournamentRepository $repo)
+	public function __construct(private readonly TournamentRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/tournaments", name="tournaments", methods={"GET"})
-	 */
+	#[Route(path: '/tournaments', name: 'tournaments', methods: ['GET'])]
 	public function getTournaments(Request $request)
 	{
 		if (!empty($request->get('maxLength'))) {
 			$tournaments = $this->repo->findWithMax($request->get('maxLength'));
-		}else{
+		} else {
 			$criteria = null;
 			if (!empty($request->get('tags'))) {
 				$criteria = explode(',', $request->get('tags'));
@@ -55,9 +50,7 @@ class TournamentController extends AbstractController implements ContributeContr
 		);
 	}
 
-	/**
-	 * @Route("/tournaments/{id}", name="tournament_by_id", methods={"GET"})
-	 */
+	#[Route(path: '/tournaments/{id}', name: 'tournament_by_id', methods: ['GET'])]
 	public function getTournamentById($id)
 	{
 		$tournament = $this->repo->findOne($id);
@@ -73,15 +66,17 @@ class TournamentController extends AbstractController implements ContributeContr
 			['tournament' => $tournament],
 			Response::HTTP_OK,
 			[],
-			['groups' => ['read:article','read:name']]
+			['groups' => ['read:article', 'read:name']]
 		);
 	}
 
-	/**
-	 * @Route("/tournaments/{id}/images", name="tournament_images", methods={"POST"})
-	 */
-	public function setTournamentImages($id, Request $request, ImageArticleManager $imageArticleManager)
-	{
+	#[Route(path: '/tournaments/{id}/images', name: 'tournament_images', methods: ['POST'])]
+	public function setTournamentImages(
+		$id,
+		Request $request,
+		ImageArticleManager $imageArticleManager,
+		EntityManagerInterface $em
+	) {
 		$tournament = $this->repo->findOne($id);
 
 		if (empty($tournament)) {
@@ -98,9 +93,9 @@ class TournamentController extends AbstractController implements ContributeContr
 			);
 		}
 
-        $imageArticleManager->setImagesToEntity($tournament, $request->files,'tournaments');
+		$imageArticleManager->setImagesToEntity($tournament, $request->files, 'tournaments');
 
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['tournament' => $tournament],
@@ -110,9 +105,7 @@ class TournamentController extends AbstractController implements ContributeContr
 		);
 	}
 
-	/**
-	 * @Route("/tournaments", name="insert_tournament", methods={"POST"})
-	 */
+	#[Route(path: '/tournaments', name: 'insert_tournament', methods: ['POST'])]
 	public function insertTournament(
 		Request $request,
 		SerializerInterface $serializer,
@@ -125,7 +118,7 @@ class TournamentController extends AbstractController implements ContributeContr
 		try {
 			/** @var Tournament $tournament */
 			$tournament = $serializer->deserialize($json, Tournament::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -146,7 +139,7 @@ class TournamentController extends AbstractController implements ContributeContr
 				$genRequestManager->getGenFromRequest()
 			)
 		);
-		$this->repo->insert($tournament,$this->getUser());
+		$this->repo->insert($tournament, $this->getUser());
 
 		return $this->json(
 			['message' => 'Tournoi enregistré', 'tournament' => $tournament],
@@ -156,12 +149,11 @@ class TournamentController extends AbstractController implements ContributeContr
 		);
 	}
 
-	/**
-	 * @Route("/tournaments/{id}", name="update_tournament", methods={"PUT"})
-	 */
+	#[Route(path: '/tournaments/{id}', name: 'update_tournament', methods: ['PUT'])]
 	public function updateTournament(
 		$id,
 		Request $request,
+		EntityManagerInterface $em,
 		ImageArticleManager $imageArticleManager,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
@@ -192,7 +184,7 @@ class TournamentController extends AbstractController implements ContributeContr
 					EntityNormalizer::UPDATE_ENTITIES => [Tournament::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -216,10 +208,10 @@ class TournamentController extends AbstractController implements ContributeContr
 			);
 		}
 
-        $imageArticleManager->removeImagesFromEntity($tournament,'tournaments', $originalImages);
+		$imageArticleManager->removeImagesFromEntity($tournament, 'tournaments', $originalImages);
 
 		$tournament->setUpdateDate(new \DateTime());
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['message' => 'Tournoi mis à jour', 'tournament' => $tournament],
@@ -229,9 +221,7 @@ class TournamentController extends AbstractController implements ContributeContr
 		);
 	}
 
-	/**
-	 * @Route("/tournaments/{id}", name="delete_tournament", methods={"DELETE"})
-	 */
+	#[Route(path: '/tournaments/{id}', name: 'delete_tournament', methods: ['DELETE'])]
 	public function deleteTournament($id, ImageArticleManager $imageArticleManager)
 	{
 		$tournament = $this->repo->find($id);
@@ -242,7 +232,7 @@ class TournamentController extends AbstractController implements ContributeContr
 			);
 		}
 
-        $imageArticleManager->removeImagesFromEntity($tournament,'tournaments');
+		$imageArticleManager->removeImagesFromEntity($tournament, 'tournaments');
 
 		$this->repo->delete($tournament);
 

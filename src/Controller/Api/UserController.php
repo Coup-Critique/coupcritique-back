@@ -30,16 +30,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-	private UserRepository $repo;
-
-	public function __construct(UserRepository $repo)
+	public function __construct(private readonly UserRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/users", name="register", methods={"POST"})
-	 */
+	#[Route(path: '/users', name: 'register', methods: ['POST'])]
 	public function register(
 		Request $request,
 		// JWTTokenManagerInterface $JWTManager,
@@ -58,7 +53,7 @@ class UserController extends AbstractController
 				'json',
 				['groups' => ['insert:user']]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 
@@ -122,9 +117,7 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users", name="users", methods={"GET"})
-	 */
+	#[Route(path: '/users', name: 'users', methods: ['GET'])]
 	public function getUsers(Request $request)
 	{
 		// if (!empty($request->get('order'))) {
@@ -153,10 +146,8 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/admin", name="users_admin", methods={"GET"})
-	 * @IsGranted("ROLE_MODO")
-	 */
+	#[IsGranted('ROLE_MODO')]
+	#[Route(path: '/users/admin', name: 'users_admin', methods: ['GET'])]
 	public function getUsersForAdmin(Request $request)
 	{
 
@@ -182,9 +173,7 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/{id}", name="user", methods={"GET"})
-	 */
+	#[Route(path: '/users/{id}', name: 'user', methods: ['GET'])]
 	public function getUserById($id, CommentRepository $tcRepo)
 	{
 		$user = $this->repo->find($id);
@@ -216,10 +205,8 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/picture/{id}", name="delete_user_picture", methods={"DELETE"})
-	 * @IsGranted("ROLE_MODO")
-	 */
+	#[IsGranted('ROLE_MODO')]
+	#[Route(path: '/users/picture/{id}', name: 'delete_user_picture', methods: ['DELETE'])]
 	public function deleteUserPicture(
 		$id,
 		HistoryManager $historyManager,
@@ -249,10 +236,8 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/{id}", name="delete_user", methods={"DELETE"})
-	 * @IsGranted("ROLE_MODO")
-	 */
+	#[IsGranted('ROLE_MODO')]
+	#[Route(path: '/users/{id}', name: 'delete_user', methods: ['DELETE'])]
 	public function deleteUser($id, HistoryManager $historyManager)
 	{
 		$user = $this->repo->find($id);
@@ -274,10 +259,8 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/ban/{id}", name="ban_user", methods={"PUT"})
-	 * @IsGranted("ROLE_MODO")
-	 */
+	#[IsGranted('ROLE_MODO')]
+	#[Route(path: '/users/ban/{id}', name: 'ban_user', methods: ['PUT'])]
 	public function banUser($id, HistoryManager $historyManager)
 	{
 		$user = $this->repo->find($id);
@@ -303,10 +286,7 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/modo/{id}", name="make_user_modo", methods={"PUT"})
-	 * @IsGranted("ROLE_ADMIN")
-	 */
+	#[Route(path: '/users/modo/{id}', name: 'make_user_modo', methods: ['PUT'])]
 	public function makeUserModo(
 		$id,
 		HistoryManager $historyManager,
@@ -369,10 +349,8 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/tiper/{id}", name="make_user_tiper", methods={"PUT"})
-	 * @IsGranted("ROLE_ADMIN")
-	 */
+	#[IsGranted('ROLE_MODO')]
+	#[Route(path: '/users/tiper/{id}', name: 'make_user_tiper', methods: ['PUT'])]
 	public function makeUserTiper(
 		$id,
 		HistoryManager $historyManager,
@@ -422,11 +400,9 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/users/search/{username}", name="search_username", methods={"GET"})
-	 * @Route("/users/search/{username}/{limit}", name="search_username_previews", methods={"GET"})
-	 */
-	public function searchUser($username, $limit = null, Request $request)
+	#[Route(path: '/users/search/{username}', name: 'search_username', methods: ['GET'])]
+	#[Route(path: '/users/search/{username}/{limit}', name: 'search_username_previews', methods: ['GET'])]
+	public function searchUser($username, Request $request, $limit = null)
 	{
 		$users = $this->repo->search($username, $limit);
 
@@ -438,9 +414,7 @@ class UserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/reset-password", name="reset_password", methods={"POST"})
-	 */
+	#[Route(path: '/reset-password', name: 'reset_password', methods: ['POST'])]
 	public function resetPassword(
 		Request $request,
 		CcMailer $mailer,
@@ -487,9 +461,7 @@ class UserController extends AbstractController
 		return new JsonResponse(['message' => "Un mail de renouvellement de mot de passe a bien été envoyé à " . $json["email"] . "."]);
 	}
 
-	/**
-	 * @Route("/check-renew-password-token/{token}", name="check-token", methods={"GET"}) 
-	 */
+	#[Route(path: '/check-renew-password-token/{token}', name: 'check-token', methods: ['GET'])]
 	public function checkToken(PasswordTokenRenewRepository $password_repo, $token)
 	{
 		$token = $password_repo->findOneByToken($token);
@@ -503,9 +475,7 @@ class UserController extends AbstractController
 		}
 	}
 
-	/**
-	 * @Route("/update-forgotten-password", name="update-forgotten-password", methods={"PUT"}) 
-	 */
+	#[Route(path: '/update-forgotten-password', name: 'update-forgotten-password', methods: ['PUT'])]
 	public function updateForgottenPassword(Request $request, PasswordTokenRenewRepository $password_repo)
 	{
 		try {

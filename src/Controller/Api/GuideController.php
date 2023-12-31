@@ -11,6 +11,7 @@ use App\Service\DescriptionParser;
 use App\Service\ErrorManager;
 use App\Service\ImageArticleManager;
 use App\Service\GenRequestManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,17 +26,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GuideController extends AbstractController implements ContributeControllerInterface
 {
-	private GuideRepository $repo;
+	public function __construct(private readonly GuideRepository $repo)
+ {
+ }
 
-	public function __construct(GuideRepository $repo)
-	{
-		$this->repo = $repo;
-	}
-
-	/**
-	 * @Route("/guides", name="guides", methods={"GET"})
-	 */
-	public function getGuides(Request $request)
+	#[Route(path: '/guides', name: 'guides', methods: ['GET'])]
+ public function getGuides(Request $request)
 	{
 		if (!empty($request->get('maxLength'))) {
 			$guides = $this->repo->findWithMax($request->get('maxLength'));
@@ -62,10 +58,8 @@ class GuideController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/guides/{id}", name="guide_by_id", methods={"GET"})
-	 */
-	public function getGuideById($id)
+	#[Route(path: '/guides/{id}', name: 'guide_by_id', methods: ['GET'])]
+ public function getGuideById($id)
 	{
 		$guide = $this->repo->findOne($id);
 
@@ -84,12 +78,11 @@ class GuideController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/guides/{id}/images", name="guide_images", methods={"POST"})
-	 */
-	public function setGuideImages(
+	#[Route(path: '/guides/{id}/images', name: 'guide_images', methods: ['POST'])]
+ public function setGuideImages(
 		$id,
 		Request $request,
+		EntityManagerInterface $em,
 		ImageArticleManager $imageArticleManager
 	) {
 		$guide = $this->repo->findOne($id);
@@ -110,7 +103,7 @@ class GuideController extends AbstractController implements ContributeController
 
 		$imageArticleManager->setImagesToEntity($guide, $request->files, 'guides');
 
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['guide' => $guide],
@@ -120,11 +113,10 @@ class GuideController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/guides", name="insert_guide", methods={"POST"})
-	 */
-	public function insertGuide(
+	#[Route(path: '/guides', name: 'insert_guide', methods: ['POST'])]
+ public function insertGuide(
 		Request $request,
+		EntityManagerInterface $em,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
 		ErrorManager $errorManager,
@@ -135,7 +127,7 @@ class GuideController extends AbstractController implements ContributeController
 		try {
 			/** @var Guide $guide */
 			$guide = $serializer->deserialize($json, Guide::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -177,7 +169,7 @@ class GuideController extends AbstractController implements ContributeController
 			);
 		}
 
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['message' => 'Guide enregistré', 'guide' => $guide],
@@ -187,12 +179,11 @@ class GuideController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/guides/{id}", name="update_guide", methods={"PUT"})
-	 */
-	public function updateGuide(
+	#[Route(path: '/guides/{id}', name: 'update_guide', methods: ['PUT'])]
+ public function updateGuide(
 		$id,
 		Request $request,
+		EntityManagerInterface $em,
 		ImageArticleManager $imageArticleManager,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
@@ -228,7 +219,7 @@ class GuideController extends AbstractController implements ContributeController
 					EntityNormalizer::UPDATE_ENTITIES => [Guide::class, Resource::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -268,7 +259,7 @@ class GuideController extends AbstractController implements ContributeController
 		}
 
 		$guide->setUpdateDate(new \DateTime());
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['message' => 'Guide mis à jour', 'guide' => $guide],
@@ -278,10 +269,8 @@ class GuideController extends AbstractController implements ContributeController
 		);
 	}
 
-	/**
-	 * @Route("/guides/{id}", name="delete_guide", methods={"DELETE"})
-	 */
-	public function deleteGuide($id, ImageArticleManager $imageArticleManager)
+	#[Route(path: '/guides/{id}', name: 'delete_guide', methods: ['DELETE'])]
+ public function deleteGuide($id, ImageArticleManager $imageArticleManager)
 	{
 		$guide = $this->repo->find($id);
 		if (empty($guide)) {

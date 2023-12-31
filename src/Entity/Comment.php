@@ -12,118 +12,76 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 
-/**
- * @ORM\Entity(repositoryClass=CommentRepository::class)
- */
+#[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list'])]
     protected $id;
 
     /**
-     * @ORM\Column(type="text", length=3000)
-     * @Groups({"read:list", "insert:comment"})
-     * @Assert\NotNull(message="Un message est requis.")
-     * @Assert\Length(
-     *    max=3000,
-     *    maxMessage="Le commentaire peut faire au maximum 3000 caractères."
-     * )
      * @CustomAssert\TextConstraint(
      *    message="Ce commentaire n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
      * )
      */
+    #[ORM\Column(type: 'text', length: 3000)]
+    #[Groups(['read:list', 'insert:comment'])]
+    #[Assert\NotNull(message: 'Un message est requis.')]
+    #[Assert\Length(max: 3000, maxMessage: 'Le commentaire peut faire au maximum 3000 caractères.')]
     protected $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:list"})
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:list'])]
     protected $user;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity=Comment::class, 
-     *      mappedBy="originalOne", 
-     *      cascade={"persist", "remove"}, 
-     *      orphanRemoval=true
-     * )
-     * @Groups({"read:list"})
-     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'originalOne', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:list'])]
     protected $replies;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:list'])]
     protected $date_creation;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['read:list'])]
     protected $deleted;
 
     /**
      * @var int $approval
-     * @Groups({"read:list"})
-     * Nombre (positif ou négatif) de vote d'aprobation de ce commentaire
-     * Init by getApproval
      */
+    #[Groups(['read:list'])]
     protected ?int $approval = null;
 
-    /** 
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"read:list"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:list'])]
     protected ?bool $approved_by_author = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="replies")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'replies')]
+    #[ORM\JoinColumn(nullable: true)]
     private $originalOne;
 
-    /**
-     * @ORM\OneToMany(
-     *   targetEntity=Vote::class, 
-     *   mappedBy="comment", 
-     *   orphanRemoval=true, 
-     *   cascade={"persist", "remove"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'comment', orphanRemoval: true, cascade: ['persist', 'remove'])]
     protected $votes;
 
     /** 
      * @var Vote|null $own_user_vote
-     * @Groups({"read:list"})
-     * to init own_user_vote $this->setOwnUserVote($this->getUserVote($Controller->getUser()))
      */
+    #[Groups(['read:list'])]
     protected ?Vote $own_user_vote = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="comments")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'comments')]
     private $team;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Actuality::class, inversedBy="comments")
-     */
+    #[ORM\ManyToOne(targetEntity: Actuality::class, inversedBy: 'comments')]
     private $actuality;
     
-    /**
-     * @ORM\ManyToOne(targetEntity=Guide::class, inversedBy="comments")
-     */
+    #[ORM\ManyToOne(targetEntity: Guide::class, inversedBy: 'comments')]
     private $guide;
     
-    /**
-     * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="comments")
-     */
+    #[ORM\ManyToOne(targetEntity: Tournament::class, inversedBy: 'comments')]
     private $tournament;
 
     public function __construct()
@@ -334,8 +292,7 @@ class Comment
         return $this;
     }
 
-    /**
-     * @param User $user 
+    /** 
      * @return Vote|null 
      */
     public function getUserVote(User $user): ?Vote

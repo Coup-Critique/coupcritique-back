@@ -20,7 +20,6 @@ class WeaknessRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * @param Weakness $weakness
 	 * @return Weakness
 	 */
 	public function insert(Weakness $weakness)

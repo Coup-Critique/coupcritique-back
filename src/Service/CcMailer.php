@@ -12,13 +12,12 @@ use Twig\Environment;
 class CcMailer
 {
     private ?DkimSigner $signer;
-    private MailerInterface $mailer;
-    private Environment $twig;
 
-    public function __construct($projectDir, MailerInterface $mailer, Environment $twig)
-    {
-        $this->mailer = $mailer;
-        $this->twig = $twig;
+    public function __construct(
+        $projectDir,
+        private readonly MailerInterface $mailer,
+        private readonly Environment $twig
+    ) {
         $keyPath = $projectDir . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "dkim" . DIRECTORY_SEPARATOR . "private.pem";
         // for ci actions containers
         if (file_exists($keyPath)) {

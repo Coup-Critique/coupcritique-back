@@ -8,74 +8,46 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ItemRepository::class)
- * @ORM\Table(
- *    name="item", 
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(
- *            name="item_name_gen_unique",
- *            columns={"name", "gen"}
- *        )
- *     }
- * )
- */
+#[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\Table(name: 'item')]
+#[ORM\UniqueConstraint(name: 'item_name_gen_unique', columns: ['name', 'gen'])]
 class Item
 {
 	use GenProperty;
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 * @Groups("join")
-	 * @Groups({"read:item", "read:list","read:team", "insert:team", "read:usage"})
-	 */
-	private $id;
+	#[ORM\Id]
+ #[ORM\GeneratedValue]
+ #[ORM\Column(type: 'integer')]
+ #[Groups('join')]
+ #[Groups(['read:item', 'read:list', 'read:team', 'insert:team', 'read:usage'])]
+ private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=75)
-	 * @Groups("join")
-	 * @Groups({"read:item", "read:list", "read:team", "read:usage"})
-	 */
-	private $name;
+	#[ORM\Column(type: 'string', length: 75)]
+ #[Groups('join')]
+ #[Groups(['read:item', 'read:list', 'read:team', 'read:usage'])]
+ private $name;
 
-	/**
-	 * @ORM\Column(type="string", length=75, nullable=true)
-	 * @Groups("join")
-	 * @Groups({"read:item", "read:list", "read:team", "read:usage"})
-	 */
-	private $nom;
+	#[ORM\Column(type: 'string', length: 75, nullable: true)]
+ #[Groups('join')]
+ #[Groups(['read:item', 'read:list', 'read:team', 'read:usage'])]
+ private $nom;
 
-	/**
-	 * @ORM\Column(type="string", length=50)
-	 * @Groups({"read:item"})
-	 */
-	private $usageName;
+	#[ORM\Column(type: 'string', length: 50)]
+ #[Groups(['read:item'])]
+ private $usageName;
 
-	/**
-	 * @ORM\Column(type="text", length=3000, nullable=true)
-	 * @Groups({"read:item", "read:own:list", "read:team", "read:usage"})
-     * @Assert\Length(
-     *    max = 3000,
-     *    maxMessage="La description peut faire au maximum 3000 caractères."
-     * )
-	 */
-	private $description;
+	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
+ #[Groups(['read:item', 'read:own:list', 'read:team', 'read:usage'])]
+ #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
+ private $description;
 	
-	/**
-	 * @ORM\Column(type="text", length=3000, nullable=true)
-	 */
-	private $save_descr;
+	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
+ private $save_descr;
 
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $update_date;
     
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $user;
 
 	public function getId(): ?int

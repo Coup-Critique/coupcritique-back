@@ -6,36 +6,26 @@ use App\Repository\PokemonSetAbilityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=PokemonSetAbilityRepository::class)
- */
+#[ORM\Entity(repositoryClass: PokemonSetAbilityRepository::class)]
 class PokemonSetAbility
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:pokemon-set'])]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=PokemonSet::class, inversedBy="abilities_set")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: PokemonSet::class, inversedBy: 'abilities_set')]
+    #[ORM\JoinColumn(nullable: false)]
     private $pokemonSet;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Ability::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\ManyToOne(targetEntity: Ability::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:pokemon-set'])]
     private $ability;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:pokemon-set'])]
     private $rank;
 
     public function getId(): ?int

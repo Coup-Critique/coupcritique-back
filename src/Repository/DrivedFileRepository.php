@@ -25,7 +25,6 @@ class DrivedFileRepository extends ServiceEntityRepository
 
     /**
      * @param string[] $files
-     * @param bool $flush
      * @return DrivedFile[]
      */
     public function save(array $filenames, bool $flush = true): array
@@ -43,10 +42,6 @@ class DrivedFileRepository extends ServiceEntityRepository
         return $files;
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(DrivedFile $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);

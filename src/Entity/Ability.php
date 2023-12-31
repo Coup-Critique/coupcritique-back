@@ -8,71 +8,43 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=AbilityRepository::class)
- * @ORM\Table(
- *    name="ability", 
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(
- *            name="ability_name_gen_unique",
- *            columns={"name", "gen"}
- *        )
- *    }
- * )
- */
+#[ORM\Entity(repositoryClass: AbilityRepository::class)]
+#[ORM\Table(name: 'ability')]
+#[ORM\UniqueConstraint(name: 'ability_name_gen_unique', columns: ['name', 'gen'])]
 class Ability
 {
 	use GenProperty;
 
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 * @Groups({"read:ability", "read:list", "read:pokemon", "read:team", "insert:team", "read:usage"})
-	 */
-	private $id;
+	#[ORM\Id]
+ #[ORM\GeneratedValue]
+ #[ORM\Column(type: 'integer')]
+ #[Groups(['read:ability', 'read:list', 'read:pokemon', 'read:team', 'insert:team', 'read:usage'])]
+ private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=50)
-	 * @Groups({"read:ability", "read:list", "read:pokemon", "read:team", "read:usage"})
-	 */
-	private $name;
+	#[ORM\Column(type: 'string', length: 50)]
+ #[Groups(['read:ability', 'read:list', 'read:pokemon', 'read:team', 'read:usage'])]
+ private $name;
 
-	/**
-	 * @ORM\Column(type="string", length=50, nullable=true)
-	 * @Groups({"read:ability", "read:list", "read:pokemon", "read:team", "read:usage"})
-	 */
-	private $nom;
+	#[ORM\Column(type: 'string', length: 50, nullable: true)]
+ #[Groups(['read:ability', 'read:list', 'read:pokemon', 'read:team', 'read:usage'])]
+ private $nom;
 
-	/**
-	 * @ORM\Column(type="text", length=3000, nullable=true)
-	 * @Groups({"read:ability", "read:own:list", "read:pokemon", "read:team", "read:usage"})
-     * @Assert\Length(
-     *    max = 3000,
-     *    maxMessage="La description peut faire au maximum 3000 caractères."
-     * )
-	 */
-	private $description;
+	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
+ #[Groups(['read:ability', 'read:own:list', 'read:pokemon', 'read:team', 'read:usage'])]
+ #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
+ private $description;
 	
-	/**
-	 * @ORM\Column(type="text", length=3000, nullable=true)
-	 */
-	private $save_descr;
+	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
+ private $save_descr;
 
-	/**
-	 * @ORM\Column(type="string", length=50)
-	 * @Groups({"read:ability"})
-	 */
-	private $usageName;
+	#[ORM\Column(type: 'string', length: 50)]
+ #[Groups(['read:ability'])]
+ private $usageName;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $update_date;
     
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $user;
 
 	public function getId(): ?int

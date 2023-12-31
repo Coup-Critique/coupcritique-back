@@ -12,78 +12,53 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @MappedSuperclass */
+#[MappedSuperclass]
 abstract class AbstractArticle implements CommentParentInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:article", "read:list"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:article', 'read:list'])]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=150)
-     * @Groups({"read:article", "read:list"})
-     * @Assert\Length(
-     *    max = 255,
-     *    maxMessage="Le titre peut faire au maximum 255 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 150)]
+    #[Groups(['read:article', 'read:list'])]
+    #[Assert\Length(max: 255, maxMessage: 'Le titre peut faire au maximum 255 caractères.')]
     protected $title;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:article"})
-     * @Assert\Length(
-     *    max = 50000,
-     *    maxMessage="La description peut faire au maximum 20000 caractères."
-     * )
      * @CustomAssert\HtmlTagConstraint(
      *    message="Le contenu de cette description n'est pas acceptable pour des contraintes de sécurité, car il contient les termes suivants : {{ banTags }}."
      * )
      */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['read:article'])]
+    #[Assert\Length(max: 50000, maxMessage: 'La description peut faire au maximum 20000 caractères.')]
     protected $description;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:article"})
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['read:article'])]
     protected $parsedDescription;
 
-    /**
-     * @ORM\Column(type="string", length=150, nullable=true)
-     * @Groups({"read:article", "read:list"})
-     * @Assert\Length(
-     *    max = 150,
-     *    maxMessage="La description peut faire au maximum 150 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 150, nullable: true)]
+    #[Groups(['read:article', 'read:list'])]
+    #[Assert\Length(max: 150, maxMessage: 'La description peut faire au maximum 150 caractères.')]
     protected $shortDescription;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Groups({"read:article", "read:list"})
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read:article', 'read:list'])]
     protected $images = [];
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:article", "read:list"})
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:article', 'read:list'])]
     protected $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"read:article", "read:list"})
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:article', 'read:list'])]
     protected $date_creation;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $update_date;
 
     public function getId(): ?int

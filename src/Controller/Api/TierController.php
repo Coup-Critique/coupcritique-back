@@ -22,19 +22,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TierController extends AbstractController implements ContributeControllerInterface
 {
-    private TierRepository $repo;
-
-    private GenRequestManager $genRequestManager;
-
-    public function __construct(TierRepository $repo, GenRequestManager $genRequestManager)
+    public function __construct(private readonly TierRepository $repo, private readonly GenRequestManager $genRequestManager)
     {
-        $this->repo = $repo;
-        $this->genRequestManager = $genRequestManager;
     }
 
-    /**
-     * @Route("/tiers", name="tiers", methods={"GET"})
-     */
+    #[Route(path: '/tiers', name: 'tiers', methods: ['GET'])]
     public function getTiers()
     {
         $gen = $this->genRequestManager->getGenFromRequest();
@@ -46,9 +38,7 @@ class TierController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/tiers-select", name="tiers_select", methods={"GET"})
-     */
+    #[Route(path: '/tiers-select', name: 'tiers_select', methods: ['GET'])]
     public function getTiersSelect()
     {
         $tiers = $this->repo->findByPlayableAccrossGens();
@@ -74,9 +64,7 @@ class TierController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/tiers/{id}", name="tier_by_id", methods={"GET"})
-     */
+    #[Route(path: '/tiers/{id}', name: 'tier_by_id', methods: ['GET'])]
     public function getTierById(
         $id,
         TierManager $tierManager,
@@ -108,9 +96,7 @@ class TierController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/tiers/usages/top", name="tier_top_usages", methods={"GET"})
-     */
+    #[Route(path: '/tiers/usages/top', name: 'tier_top_usages', methods: ['GET'])]
     public function getTierTopUsages(Request $request, TierUsageRepository $tierUsageRepository)
     {
         $gen = $this->genRequestManager->getGenFromRequest();
@@ -157,7 +143,6 @@ class TierController extends AbstractController implements ContributeControllerI
     //         },
     //         []
     //     );
-
     //     return $this->json(
     //         ['tiers' => $tiers_by_gen],
     //         Response::HTTP_OK,
@@ -165,10 +150,7 @@ class TierController extends AbstractController implements ContributeControllerI
     //         ['groups' => 'read:tier']
     //     );
     // }
-
-    /**
-     * @Route("/tiers", name="insert_tier", methods={"POST"})
-     */
+    #[Route(path: '/tiers', name: 'insert_tier', methods: ['POST'])]
     public function insertTier(
         Request $request,
         SerializerInterface $serializer,
@@ -179,7 +161,7 @@ class TierController extends AbstractController implements ContributeControllerI
         try {
             /** @var Tier $tier */
             $tier = $serializer->deserialize($json, Tier::class, 'json');
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
         $errors = $validator->validate($tier);
@@ -200,9 +182,7 @@ class TierController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/tiers/{id}", name="update_tier", methods={"PUT"})
-     */
+    #[Route(path: '/tiers/{id}', name: 'update_tier', methods: ['PUT'])]
     public function updateTier(
         $id,
         Request $request,
@@ -227,7 +207,7 @@ class TierController extends AbstractController implements ContributeControllerI
                     EntityNormalizer::UPDATE_ENTITIES => [Tier::class]
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -249,9 +229,7 @@ class TierController extends AbstractController implements ContributeControllerI
         );
     }
 
-    /**
-     * @Route("/tiers/{id}", name="delete_tier", methods={"DELETE"})
-     */
+    #[Route(path: '/tiers/{id}', name: 'delete_tier', methods: ['DELETE'])]
     public function deleteTier($id, Request $request)
     {
         $tier = $this->repo->find($id);

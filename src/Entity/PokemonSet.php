@@ -12,173 +12,110 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
 /**
- * @ORM\Entity(repositoryClass=PokemonSetRepository::class)
  * @CustomAssert\PokemonSetTierConstraint
  */
+#[ORM\Entity(repositoryClass: PokemonSetRepository::class)]
 class PokemonSet
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:pokemon-set", "update:set"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:pokemon-set', 'update:set'])]
     private $id;
 
     /**
      * ManyToOne because it isn't mapped in PokemonInstance
-     * @ORM\ManyToOne(targetEntity=PokemonInstance::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:pokemon-set", "update:set"})
-     * @Assert\Valid
-     * @Assert\NotNull(message="Le tier est requis.")
      */
+    #[ORM\ManyToOne(targetEntity: PokemonInstance::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:pokemon-set', 'update:set'])]
+    #[Assert\Valid]
+    #[Assert\NotNull(message: 'Le tier est requis.')]
     private $instance;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Tier::class)
-     * @Groups({"read:pokemon-set", "update:set"})
-     * @Assert\NotNull(message="Le tier est requis.")
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: Tier::class)]
+    #[Groups(['read:pokemon-set', 'update:set'])]
+    #[Assert\NotNull(message: 'Le tier est requis.')]
+    #[Assert\Valid]
     private $tier;
 
     /**
-     * @ORM\Column(type="smallint")
-     * @Groups({"read:pokemon-set", "update:set"})
-     * @Assert\NotNull(message="La génération est requise.")
      * @CustomAssert\GenConstraint()
      */
+    #[ORM\Column(type: 'smallint')]
+    #[Groups(['read:pokemon-set', 'update:set'])]
+    #[Assert\NotNull(message: 'La génération est requise.')]
     private $gen;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:pokemon-set", "update:set"})
-     * @Assert\NotNull(message="La description est requise.")
-     * @Assert\Length(
-     *    max = 10000,
-     *    maxMessage="Le contenu peut faire au maximum 10000 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['read:pokemon-set', 'update:set'])]
+    #[Assert\NotNull(message: 'La description est requise.')]
+    #[Assert\Length(max: 10000, maxMessage: 'Le contenu peut faire au maximum 10000 caractères.')]
     private $content;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read:pokemon-set", "update:set"})
-     * @Assert\NotNull(message="Le nom est requis.")
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:pokemon-set', 'update:set'])]
+    #[Assert\NotNull(message: 'Le nom est requis.')]
     private $name;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Groups({"read:pokemon-set", "update:set"})
-     */
+    #[ORM\Column(type: 'text')]
+    #[Groups(['read:pokemon-set', 'update:set'])]
     private $export;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetItem::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Un set comport au maximum {{ limit }} objets."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetItem::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 5, maxMessage: 'Un set comport au maximum {{ limit }} objets.')]
     private $items_set;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetTera::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Un set comport au maximum {{ limit }} teracristaux."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetTera::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 5, maxMessage: 'Un set comport au maximum {{ limit }} teracristaux.')]
     private $teras_set;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetAbility::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 3,
-     *      maxMessage = "Un set comport au maximum {{ limit }} talents."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetAbility::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 3, maxMessage: 'Un set comport au maximum {{ limit }} talents.')]
     private $abilities_set;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetNature::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Un set comport au maximum {{ limit }} natures."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetNature::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 5, maxMessage: 'Un set comport au maximum {{ limit }} natures.')]
     private $natures_set;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetMoveOne::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      min = 1,
-     *      max = 5,
-     *      minMessage = "Un set comporte au moins une capacité.",
-     *      maxMessage = "Un set comport au maximum {{ limit }} capacités par slot."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetMoveOne::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(min: 1, max: 5, minMessage: 'Un set comporte au moins une capacité.', maxMessage: 'Un set comport au maximum {{ limit }} capacités par slot.')]
     private $moves_set_1;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetMoveTwo::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Un set comport au maximum {{ limit }} capacités par slot."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetMoveTwo::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 5, maxMessage: 'Un set comport au maximum {{ limit }} capacités par slot.')]
     private $moves_set_2;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetMoveThree::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Un set comport au maximum {{ limit }} capacités par slot."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetMoveThree::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 5, maxMessage: 'Un set comport au maximum {{ limit }} capacités par slot.')]
     private $moves_set_3;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PokemonSetMoveFour::class, mappedBy="pokemonSet", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"read:pokemon-set"})
-     * @Assert\Count(
-     *      max = 5,
-     *      maxMessage = "Un set comport au maximum {{ limit }} capacités par slot."
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: PokemonSetMoveFour::class, mappedBy: 'pokemonSet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['read:pokemon-set'])]
+    #[Assert\Count(max: 5, maxMessage: 'Un set comport au maximum {{ limit }} capacités par slot.')]
     private $moves_set_4;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read:pokemon-set'])]
     private $contentJson = [];
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[Groups(['read:pokemon-set'])]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['read:pokemon-set'])]
     protected $date_creation;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['read:pokemon-set'])]
     private $update_date;
 
     public function __construct()

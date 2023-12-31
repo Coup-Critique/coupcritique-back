@@ -5,51 +5,33 @@ namespace App\Entity;
 use App\Repository\ContributionLogRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ContributionLogRepository::class)
- */
+#[ORM\Entity(repositoryClass: ContributionLogRepository::class)]
 class ContributionLog
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $username;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $url;
 
-    /**
-     * @ORM\Column(type="string", length=6)
-     */
+    #[ORM\Column(type: 'string', length: 6)]
     private $httpMethod;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $httpResponseCode;
 
-    /**
-     * @ORM\Column(type="json",nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $requestBody = [];
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $responseBody = [];
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
     public function __construct()
@@ -142,9 +124,6 @@ class ContributionLog
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTime $createdAt
-     */
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;

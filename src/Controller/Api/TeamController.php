@@ -31,16 +31,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TeamController extends AbstractController
 {
-    private TeamRepository $repo;
-
-    public function __construct(TeamRepository $repo)
+    public function __construct(private readonly TeamRepository $repo)
     {
-        $this->repo = $repo;
     }
 
-    /**
-     * @Route("/teams", name="teams", methods={"GET"})
-     */
+    #[Route(path: '/teams', name: 'teams', methods: ['GET'])]
     public function getTeams(Request $request)
     {
         if (!empty($request->get('order'))) {
@@ -102,9 +97,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/state", name="teams_by_state", methods={"GET"})
-     */
+    #[Route(path: '/teams/state', name: 'teams_by_state', methods: ['GET'])]
     public function getTeamsByState(Request $request)
     {
         if (!empty($request->get('order'))) {
@@ -161,8 +154,8 @@ class TeamController extends AbstractController
 
     /**
      * Doit se trouver avant /teams/{id}
-     * @Route("/teams/top", name="top_week_team", methods={"GET"})
      */
+    #[Route(path: '/teams/top', name: 'top_week_team', methods: ['GET'])]
     public function getTopTeam()
     {
         return $this->json(
@@ -175,9 +168,9 @@ class TeamController extends AbstractController
 
     /**
      * Modify team attribute top_week to insert current date
-     * @Route("/teams/top/{id}", name="top_week_team_selected", methods={"PUT"})
-     * @IsGranted("ROLE_MODO")
      */
+    #[IsGranted('ROLE_MODO')]
+    #[Route(path: '/teams/top/{id}', name: 'top_week_team_selected', methods: ['PUT'])]
     public function setTopTeamSelected($id, NotificationRepository $notificationRepository)
     {
         $team = $this->repo->find($id);
@@ -223,9 +216,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/user/{id}", name="team_by_user", methods={"GET"})
-     */
+    #[Route(path: '/teams/user/{id}', name: 'team_by_user', methods: ['GET'])]
     public function getTeamsByUser($id, Request $request, UserRepository $userRepository)
     {
         if (!empty($request->get('order'))) {
@@ -261,9 +252,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/pokemons", name="team_by_pokemons", methods={"POST"})
-     */
+    #[Route(path: '/teams/pokemons', name: 'team_by_pokemons', methods: ['POST'])]
     public function getTeamByPokemons(Request $request)
     {
         if (!empty($request->get('order'))) {
@@ -309,13 +298,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route(
-     *   "/teams/certified/pokemons/{id}", 
-     *   name="team_certified_for_pokemon", 
-     *   methods={"GET"}
-     * )
-     */
+    #[Route(path: '/teams/certified/pokemons/{id}', name: 'team_certified_for_pokemon', methods: ['GET'])]
     public function getTeamByPokemonCertified(
         $id,
         Request $request,
@@ -352,8 +335,8 @@ class TeamController extends AbstractController
 
     // /**
     //  * @Route("/teams/banned", name="teams_banned", methods={"GET"})
-    //  * @IsGranted("ROLE_MODO")
     //  */
+    // #[IsGranted('ROLE_MODO')]
     // public function getBannedTeams(Request $request)
     // {
     //     $teams = $this->repo->findBy(
@@ -367,10 +350,7 @@ class TeamController extends AbstractController
     //         ['groups' => ['read:list:team', 'read:team:admin']]
     //     );
     // }
-
-    /**
-     * @Route("/teams/favorite", name="get_favorite_teams", methods={"GET"})
-     */
+    #[Route(path: '/teams/favorite', name: 'get_favorite_teams', methods: ['GET'])]
     public function getFavoriteTeamForUser(Request $request)
     {
         if (!empty($request->get('order'))) {
@@ -403,9 +383,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/favorite/{idteam}/{isfavorite}", name="add-favorite-team", methods={"PUT"}) 
-     */
+    #[Route(path: '/teams/favorite/{idteam}/{isfavorite}', name: 'add-favorite-team', methods: ['PUT'])]
     public function toggleTeamToFavorite(
         int $idteam,
         string $isfavorite,
@@ -434,9 +412,7 @@ class TeamController extends AbstractController
     }
 
 
-    /**
-     * @Route("/teams/{id}", name="team_by_id", methods={"GET"})
-     */
+    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
     public function getTeamById($id)
     {
         $team = $this->repo->findOne($id);
@@ -472,10 +448,8 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/export", name="check_team_export", methods={"POST"})
-     * @Route("/teams/export/{id}", name="check_updated_team_export", methods={"PUT"})
-     */
+    #[Route(path: '/teams/export', name: 'check_team_export', methods: ['POST'])]
+    #[Route(path: '/teams/export/{id}', name: 'check_updated_team_export', methods: ['PUT'])]
     public function checkExport(
         Request $request,
         SerializerInterface $serializer,
@@ -505,7 +479,7 @@ class TeamController extends AbstractController
                     ]
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -548,9 +522,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams", name="insert_team", methods={"POST"})
-     */
+    #[Route(path: '/teams', name: 'insert_team', methods: ['POST'])]
     public function insertTeam(
         Request $request,
         SerializerInterface $serializer,
@@ -572,7 +544,7 @@ class TeamController extends AbstractController
                     AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -614,9 +586,7 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/{id}", name="update_team", methods={"PUT"})
-     */
+    #[Route(path: '/teams/{id}', name: 'update_team', methods: ['PUT'])]
     public function updateTeam(
         $id,
         Request $request,
@@ -660,7 +630,7 @@ class TeamController extends AbstractController
                     ]
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -691,9 +661,7 @@ class TeamController extends AbstractController
     }
 
 
-    /**
-     * @Route("/teams/{id}", name="delete_team", methods={"DELETE"})
-     */
+    #[Route(path: '/teams/{id}', name: 'delete_team', methods: ['DELETE'])]
     public function deleteTeam(
         $id,
         EntityManagerInterface $em
@@ -729,10 +697,8 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/certify/{id}/{certified}", name="certify_team", methods={"PUT"})
-     * @IsGranted("ROLE_MODO")
-     */
+    #[IsGranted('ROLE_MODO')]
+    #[Route(path: '/teams/certify/{id}/{certified}', name: 'certify_team', methods: ['PUT'])]
     public function certifyTeam(
         HistoryManager $historyManager,
         NotificationRepository $notificationRepository,
@@ -783,10 +749,8 @@ class TeamController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/teams/ban/{id}", name="ban_team", methods={"PUT"})
-     * @IsGranted("ROLE_MODO")
-     */
+    #[IsGranted('ROLE_MODO')]
+    #[Route(path: '/teams/ban/{id}', name: 'ban_team', methods: ['PUT'])]
     public function banTeam(
         HistoryManager $historyManager,
         NotificationRepository $notificationRepository,

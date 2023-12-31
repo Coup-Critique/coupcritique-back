@@ -2,17 +2,13 @@
 
 namespace App\Service;
 
+use App\Entity\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
 class StringCollectionDenormalizer
 {
-
-    /** @var EntityManagerInterface */
-    protected $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     public function denormalize($entity, string $className, array $jsonArray, $gen)
@@ -27,7 +23,7 @@ class StringCollectionDenormalizer
             // attribute name not found
             if (!$reflectionClass->hasProperty($attrName)) continue;
 
-            list($getter, $adder, $remover) = $this->getClassMethodes($attrName);
+            [$getter, $adder, $remover] = $this->getClassMethodes($attrName);
 
             // generated adder name not found
             if (!$reflectionClass->hasMethod($adder)) continue;
@@ -42,7 +38,7 @@ class StringCollectionDenormalizer
             $targetEntityClassName = ltrim($attrClassName, 'PokemonSet');
             $targetEntityClassName = preg_replace('/(One|Two|Three|Four)/', '', $targetEntityClassName);
             if ($targetEntityClassName === 'Tera') {
-                $TargetEntityClass = 'App\\Entity\\Type';
+                $TargetEntityClass = Type::class;
             } else {
                 $TargetEntityClass = 'App\\Entity\\' . $targetEntityClassName;
             }
@@ -50,13 +46,9 @@ class StringCollectionDenormalizer
             $targetEntitySetter = 'set' . $targetEntityClassName;
             $targetEntityRepository = $this->em->getRepository($TargetEntityClass);
 
-            $oldValueStr = array_reduce(
-                $entity->$getter()->toArray(),
-                function ($str, $el) use ($targetEntityGetter) {
-                    return $str
-                        ? $str . "/" . $el->$targetEntityGetter()->getName()
-                        : $el->$targetEntityGetter()->getName();
-                },
+            $oldValueStr = $entity->$getter()->reduce(
+                fn ($str, $el) => ($str ? "$str/" : '')
+                    . $el->$targetEntityGetter()->getName(),
                 ''
             );
 

@@ -10,31 +10,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=GuideRepository::class)
- */
+#[ORM\Entity(repositoryClass: GuideRepository::class)]
 class Guide extends AbstractArticle
 {
-    /**
-     * @ORM\OneToOne(targetEntity=Resource::class, inversedBy="guide", cascade={"persist", "remove"}, fetch="EAGER"))
-     * @ORM\JoinColumn(nullable=true)
-     * @Groups({"read:article", "read:list", "read:list:article", "insert:article", "update:article", "read:resource"})
-     */
+    #[ORM\OneToOne(targetEntity: Resource::class, inversedBy: 'guide', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private $resource;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=GuideTag::class)
-     * @Groups({"read:article", "read:list", "read:list:article", "insert:article", "update:article"})
-     */
+    #[ORM\ManyToMany(targetEntity: GuideTag::class)]
+    #[Groups(['read:article', 'read:list', 'read:list:article', 'insert:article', 'update:article'])]
     private $tags;
     
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity=Comment::class, 
-     *      mappedBy="guide", 
-     *      cascade={"persist", "remove"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'guide', cascade: ['persist', 'remove'])]
     protected $comments;
 
     public function __construct()

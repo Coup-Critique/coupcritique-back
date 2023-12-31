@@ -13,16 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NotificationController extends AbstractController
 {
-	private NotificationRepository $repo;
-
-	public function __construct(NotificationRepository $repo)
+	public function __construct(private readonly NotificationRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/notifications", name="notifications", methods={"GET"})
-	 */
+	#[Route(path: '/notifications', name: 'notifications', methods: ['GET'])]
 	public function getUserNotifications()
 	{
 		return $this->json(
@@ -36,9 +31,7 @@ class NotificationController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/notifications/viewed", name="notifications_viewed", methods={"GET"})
-	 */
+	#[Route(path: '/notifications/viewed', name: 'notifications_viewed', methods: ['GET'])]
 	public function getUserViewedNotifications()
 	{
 		return $this->json(
@@ -49,9 +42,7 @@ class NotificationController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/notifications/count", name="notifications_count", methods={"GET"})
-	 */
+	#[Route(path: '/notifications/count', name: 'notifications_count', methods: ['GET'])]
 	public function countUserNotifications()
 	{
 		return $this->json(
@@ -62,9 +53,7 @@ class NotificationController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/notifications/view/{entityName}/{entityId}", name="notifications_view_by_entity", methods={"GET"})
-	 */
+	#[Route(path: '/notifications/view/{entityName}/{entityId}', name: 'notifications_view_by_entity', methods: ['GET'])]
 	public function viewNotificationsByEntity(
 		EntityManagerInterface $em,
 		string $entityName,
@@ -90,9 +79,7 @@ class NotificationController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/notifications/view/{id}", name="notifications_view_one", methods={"GET"})
-	 */
+	#[Route(path: '/notifications/view/{id}', name: 'notifications_view_one', methods: ['GET'])]
 	public function viewOneNotification(EntityManagerInterface $em, int $id)
 	{
 		$notification = $this->repo->findOneByUser($id, $this->getUser());

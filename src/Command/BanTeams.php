@@ -12,16 +12,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class BanTeams extends Command
 {
     protected static $defaultName = 'ban:teams';
-    private TeamRepository $repo;
-    private EntityManagerInterface $em;
 
 
     public function __construct(
-        TeamRepository $repo,
-        EntityManagerInterface $em
+        private readonly TeamRepository $repo,
+        private readonly EntityManagerInterface $em
     ) {
-        $this->repo = $repo;
-        $this->em = $em;
         parent::__construct();
     }
 

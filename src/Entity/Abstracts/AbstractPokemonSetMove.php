@@ -8,30 +8,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/** @MappedSuperclass */
+#[MappedSuperclass]
 abstract class AbstractPokemonSetMove
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:pokemon-set'])]
     protected $id;
 
     protected $pokemonSet;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:pokemon-set'])]
     protected $move;
     
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:pokemon-set"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:pokemon-set'])]
     protected $rank;
 
     public function getId(): ?int

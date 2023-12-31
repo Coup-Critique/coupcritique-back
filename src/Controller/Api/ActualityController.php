@@ -9,6 +9,7 @@ use App\Service\DescriptionParser;
 use App\Service\ErrorManager;
 use App\Service\ImageArticleManager;
 use App\Service\GenRequestManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,25 +22,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ActualityController extends AbstractController implements ContributeControllerInterface
 {
-	const ACTUALITY_IMAGE_SIZE        = 300;
-	const ACTUALITY_TEASER_IMAGE_SIZE = 250;
+	final public const ACTUALITY_IMAGE_SIZE        = 300;
+	final public const ACTUALITY_TEASER_IMAGE_SIZE = 250;
 
-	/** @var ActualityRepository */
-	private $repo;
-
-	public function __construct(ActualityRepository $repo)
+	public function __construct(private readonly ActualityRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/actualities", name="actualities", methods={"GET"})
-	 */
+	#[Route(path: '/actualities', name: 'actualities', methods: ['GET'])]
 	public function getActualities(Request $request)
 	{
 		if (!empty($request->get('maxLength'))) {
 			$actualities = $this->repo->findWithMax($request->get('maxLength'));
-
 		} else {
 			$criteria = null;
 			if (!empty($request->get('tags'))) {
@@ -56,9 +50,7 @@ class ActualityController extends AbstractController implements ContributeContro
 		);
 	}
 
-	/**
-	 * @Route("/actualities/{id}", name="actuality_by_id", methods={"GET"})
-	 */
+	#[Route(path: '/actualities/{id}', name: 'actuality_by_id', methods: ['GET'])]
 	public function getActualityById($id)
 	{
 		$actuality = $this->repo->findOne($id);
@@ -78,11 +70,13 @@ class ActualityController extends AbstractController implements ContributeContro
 		);
 	}
 
-	/**
-	 * @Route("/actualities/{id}/images", name="actuality_images", methods={"POST"})
-	 */
-	public function setActualityImages($id, Request $request, ImageArticleManager $imageArticleManager)
-	{
+	#[Route(path: '/actualities/{id}/images', name: 'actuality_images', methods: ['POST'])]
+	public function setActualityImages(
+		$id,
+		Request $request,
+		ImageArticleManager $imageArticleManager,
+		EntityManagerInterface $em
+	) {
 		$actuality = $this->repo->findOne($id);
 
 		if (empty($actuality)) {
@@ -101,7 +95,7 @@ class ActualityController extends AbstractController implements ContributeContro
 
 		$imageArticleManager->setImagesToEntity($actuality, $request->files, 'actualities');
 
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['actuality' => $actuality],
@@ -111,9 +105,7 @@ class ActualityController extends AbstractController implements ContributeContro
 		);
 	}
 
-	/**
-	 * @Route("/actualities", name="insert_actuality", methods={"POST"})
-	 */
+	#[Route(path: '/actualities', name: 'insert_actuality', methods: ['POST'])]
 	public function insertActuality(
 		Request $request,
 		SerializerInterface $serializer,
@@ -126,7 +118,7 @@ class ActualityController extends AbstractController implements ContributeContro
 		try {
 			/** @var Actuality $actuality */
 			$actuality = $serializer->deserialize($json, Actuality::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -157,12 +149,11 @@ class ActualityController extends AbstractController implements ContributeContro
 		);
 	}
 
-	/**
-	 * @Route("/actualities/{id}", name="update_actuality", methods={"PUT"})
-	 */
+	#[Route(path: '/actualities/{id}', name: 'update_actuality', methods: ['PUT'])]
 	public function updateActuality(
 		$id,
 		Request $request,
+		EntityManagerInterface $em,
 		ImageArticleManager $imageArticleManager,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
@@ -193,7 +184,7 @@ class ActualityController extends AbstractController implements ContributeContro
 					EntityNormalizer::UPDATE_ENTITIES => [Actuality::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
 			// 	Response::HTTP_BAD_REQUEST
@@ -219,9 +210,9 @@ class ActualityController extends AbstractController implements ContributeContro
 
 
 		$imageArticleManager->removeImagesFromEntity($actuality, 'actualities', $originalImages);
-		
+
 		$actuality->setUpdateDate(new \DateTime());
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['message' => 'Actualité mise à jour', 'actuality' => $actuality],
@@ -231,9 +222,7 @@ class ActualityController extends AbstractController implements ContributeContro
 		);
 	}
 
-	/**
-	 * @Route("/actualities/{id}", name="delete_actuality", methods={"DELETE"})
-	 */
+	#[Route(path: '/actualities/{id}', name: 'delete_actuality', methods: ['DELETE'])]
 	public function deleteActuality($id, ImageArticleManager $imageArticleManager)
 	{
 		$actuality = $this->repo->find($id);

@@ -84,7 +84,6 @@ class PokemonSetRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * @param Pokemon $pokemon
 	 * @return array
 	 *
 	 * Custom for double join select

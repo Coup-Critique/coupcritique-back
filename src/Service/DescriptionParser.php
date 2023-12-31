@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DescriptionParser
 {
-    const PARSABLE = ['Pokemon', 'Item', 'Ability', 'Tier', 'Type', 'Move'];
+    final public const PARSABLE = ['Pokemon', 'Item', 'Ability', 'Tier', 'Type', 'Move'];
 
     /** @var EntityManagerInterface */
     protected $em;
@@ -31,7 +31,7 @@ class DescriptionParser
         $repository      = null;
         if (!count($matches) || !count($matches[0])) return $return;
         foreach ($matches[0] as $string) {
-            list($className, $value, $displayName) = $this->splitVar($string);
+            [$className, $value, $displayName] = $this->splitVar($string);
             if (!in_array($className, self::PARSABLE)) continue;
             $fullClassName = "App\\Entity\\$className";
             if (is_null($reflectionClass) || $reflectionClass->getName() !== $fullClassName) {
@@ -68,7 +68,7 @@ class DescriptionParser
             '/\[[^\]^\s]*\:[^\]]*\]/',
             function ($matches) use ($reflectionClass, $repository, $gen) {
                 $match = $matches[0];
-                list($className, $value, $displayName) = $this->splitVar($match);
+                [$className, $value, $displayName] = $this->splitVar($match);
                 if (!in_array($className, self::PARSABLE)) return $match;
                 $fullClassName = "App\\Entity\\$className";
                 if (is_null($reflectionClass) || $reflectionClass->getName() !== $fullClassName) {
@@ -119,7 +119,7 @@ class DescriptionParser
     protected function splitVar(string $string): array
     {
         $split = explode(':', trim($string, '[]'), 3);
-        $displayName = isset($split[2]) ? $split[2] : null;
+        $displayName = $split[2] ?? null;
         return [$split[0], $split[1], $displayName];
     }
 }

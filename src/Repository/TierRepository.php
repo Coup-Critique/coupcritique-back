@@ -26,7 +26,6 @@ class TierRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Tier $tier
      * @return Tier
      */
     public function insert(Tier $tier)
@@ -36,9 +35,6 @@ class TierRepository extends ServiceEntityRepository
         return $tier;
     }
 
-    /**
-     * @param Tier $tier
-     */
     public function delete(Tier $tier)
     {
         $this->_em->remove($tier);

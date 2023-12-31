@@ -10,18 +10,11 @@ use App\Repository\TierUsageRepository;
 
 class TierManager
 {
-    protected TierRepository $tierRepository;
-    protected PokemonRepository $pokemonRepository;
-    protected TierUsageRepository $tierUsageRepository;
-
     public function __construct(
-        TierRepository $tierRepository,
-        PokemonRepository $pokemonRepository,
-        TierUsageRepository $tierUsageRepository
+        protected TierRepository $tierRepository,
+        protected PokemonRepository $pokemonRepository,
+        protected TierUsageRepository $tierUsageRepository
     ) {
-        $this->tierRepository = $tierRepository;
-        $this->pokemonRepository = $pokemonRepository;
-        $this->tierUsageRepository = $tierUsageRepository;
     }
 
     public function getPokemonsFromTier(Tier $tier): array

@@ -7,6 +7,7 @@ use App\Normalizer\EntityNormalizer;
 use App\Repository\UserRepository;
 use App\Service\ErrorManager;
 use App\Service\FileManager;
+use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Generator\RefreshTokenGeneratorInterface;
@@ -22,19 +23,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OwnUserController extends AbstractController
 {
-	private UserRepository $repo;
+	final public const USER_IMAGE_SIZE      = 455;
+	final public const USER_MINI_IMAGE_SIZE = 200;
 
-	const USER_IMAGE_SIZE      = 455;
-	const USER_MINI_IMAGE_SIZE = 200;
-
-	public function __construct(UserRepository $repo)
+	public function __construct(private readonly UserRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/own-user", name="own_user", methods={"GET"})
-	 */
+	#[Route(path: '/own-user', name: 'own_user', methods: ['GET'])]
 	public function getOwnUser()
 	{
 		return $this->json(
@@ -45,9 +41,7 @@ class OwnUserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/own-user", name="delete_own_user", methods={"DELETE"})
-	 */
+	#[Route(path: '/own-user', name: 'delete_own_user', methods: ['DELETE'])]
 	public function deleteOwnUser(FileManager $fileManager)
 	{
 		/** @var User $user */
@@ -64,11 +58,10 @@ class OwnUserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/own-user", name="update_own_user", methods={"PUT"})
-	 */
+	#[Route(path: '/own-user', name: 'update_own_user', methods: ['PUT'])]
 	public function updateUser(
 		Request $request,
+		EntityManagerInterface $em,
 		JWTTokenManagerInterface $JWTManager,
 		RefreshTokenGeneratorInterface $JWTRefreshGenerator,
 		SerializerInterface $serializer,
@@ -88,7 +81,7 @@ class OwnUserController extends AbstractController
 					EntityNormalizer::UPDATE_ENTITIES      => [User::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 
@@ -124,7 +117,6 @@ class OwnUserController extends AbstractController
 		$token = $JWTManager->create($user);
 		$refreshToken = $JWTRefreshGenerator->createForUserWithTtl($user, 2592000);
 
-		$em = $this->getDoctrine()->getManager();
 		$em->persist($refreshToken);
 		$em->flush();
 
@@ -141,9 +133,7 @@ class OwnUserController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/own-user/password", name="update_password", methods={"PUT"})
-	 */
+	#[Route(path: '/own-user/password', name: 'update_password', methods: ['PUT'])]
 	public function updatePassword(Request $request, JWTTokenManagerInterface $JWTManager)
 	{
 		try {
@@ -179,10 +169,13 @@ class OwnUserController extends AbstractController
 
 	/**
 	 * We should use POST instead of PUT due to $_FILE upload support
-	 * @Route("/own-user/picture", name="update_picture", methods={"POST"})
 	 */
-	public function updatePicture(Request $request, FileManager $fileManager)
-	{
+	#[Route(path: '/own-user/picture', name: 'update_picture', methods: ['POST'])]
+	public function updatePicture(
+		Request $request,
+		FileManager $fileManager,
+		EntityManagerInterface $em
+	) {
 		if (!$request->files->has('picture')) {
 			return $this->json(
 				['message' => 'Image non fournie.'],
@@ -204,7 +197,7 @@ class OwnUserController extends AbstractController
 		try {
 			$fileManager->resize($filePath, self::USER_IMAGE_SIZE);
 			$fileManager->resize($fileMiniPath, self::USER_MINI_IMAGE_SIZE);
-		} catch (\Exception $e) {
+		} catch (\Exception) {
 			$fileManager->remove($filePath);
 			return $this->json(
 				['message' => "Le format de l'image est invalide ou elle est trop lourde."],
@@ -217,7 +210,7 @@ class OwnUserController extends AbstractController
 			$fileManager->remove("images/users/" . self::USER_MINI_IMAGE_SIZE . "px/$pastPicture");
 		}
 		$user->setPicture($fileName);
-		$this->getDoctrine()->getManager()->flush();
+		$em->flush();
 
 		return $this->json(
 			['picture' => $user->getPicture(), 'message' => 'Image enregistrée'],

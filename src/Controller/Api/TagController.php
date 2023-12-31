@@ -9,6 +9,7 @@ use App\Entity\Tag;
 use App\Entity\VideoTag;
 use App\Repository\Abstracts\AbstractTagRepository;
 use App\Repository\TagRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,11 @@ class TagController extends AbstractController
 	/** @var AbstractTagRepository */
 	private $repo;
 
+	public function __construct(
+		private readonly EntityManagerInterface $em
+	) {
+	}
+
 	private function setRepository($tags_type)
 	{
 		$tags_class = [
@@ -28,17 +34,10 @@ class TagController extends AbstractController
 			'actuality_tags' => ActualityTag::class,
 			'video_tags' => VideoTag::class
 		];
-		$this->repo = $this->getDoctrine()->getRepository($tags_class[$tags_type]);
+		$this->repo = $this->em->getRepository($tags_class[$tags_type]);
 	}
 
-	/**
-	 * @Route(
-	 * 	"/{tags_type}", 
-	 * 	name="tags", 
-	 * 	methods={"GET"},
-	 *	requirements={"tags_type"="tags|guide_tags|actuality_tags|video_tags"}
-	 * )
-	 */
+	#[Route(path: '/{tags_type}', name: 'tags', methods: ['GET'], requirements: ['tags_type' => 'tags|guide_tags|actuality_tags|video_tags'])]
 	public function getTags($tags_type)
 	{
 		$this->setRepository($tags_type);
@@ -50,15 +49,8 @@ class TagController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route(
-	 * 	"/{tags_type}/{id}", 
-	 * 	name="tag_by_id", 
-	 * 	methods={"GET"},
-	 * 	requirements={"tags_type"="tags|guide_tags|actuality_tags|video_tags"}
-	 * )
-	 */
-	public function getTagById($tags_type, $id, Request $request)
+	#[Route(path: '/{tags_type}/{id}', name: 'tag_by_id', methods: ['GET'], requirements: ['tags_type' => 'tags|guide_tags|actuality_tags|video_tags'])]
+	public function getTagById($tags_type, $id)
 	{
 		$this->setRepository($tags_type);
 		$tag = $this->repo->find($id);

@@ -10,23 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class UsageController extends AbstractController{
+class UsageController extends AbstractController
+{
 
-    private TierUsageRepository $repo;
-    private CacheInterface $usagesCache;
-
-    public function __construct(TierUsageRepository $repo, CacheInterface $usagesCache)
-    {
-        $this->repo = $repo;
-        $this->usagesCache = $usagesCache;
+    public function __construct(
+        private readonly TierUsageRepository $repo,
+        private readonly CacheInterface $usagesCache
+    ) {
     }
 
-    /**
-     * @Route("/usages/{id}", name="usage_by_id", methods={"GET"})
-     */
-    public function getOneById($id){
+    #[Route(path: '/usages/{id}', name: 'usage_by_id', methods: ['GET'])]
+    public function getOneById($id)
+    {
 
-        return $this->usagesCache->get("usage_$id", function () use ($id){
+        return $this->usagesCache->get("usage_$id", function () use ($id) {
             $usage = $this->repo->findOne($id);
 
             if (empty($usage)) {

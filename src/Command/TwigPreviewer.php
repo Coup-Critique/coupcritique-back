@@ -14,12 +14,9 @@ class TwigPreviewer extends Command
 {
     protected static $defaultName = 'twig:preview';
 
-    private $twig;
-
-    public function __construct(Environment $twig)
+    public function __construct(private readonly Environment $twig)
     {
         parent::__construct();
-        $this->twig = $twig;
     }
 
     protected function configure()

@@ -10,10 +10,8 @@ class ErrorManager
 {
 	/**
 	 *  This method is used to transformate the return of symfony validator
-	 * @param ConstraintViolationListInterface $violationList
-	 * @return array
 	 */
-	public function parseErrors(ConstraintViolationListInterface $violationList) : array
+	public function parseErrors(ConstraintViolationListInterface $violationList): array
 	{
 		$return = [];
 		foreach ($violationList as $value) {

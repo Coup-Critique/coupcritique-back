@@ -12,7 +12,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class TeamTagConstraintValidator extends ConstraintValidator
 {
-    private User $user;
+    private readonly User $user;
 
     public function __construct(TokenStorageInterface $tokenStorage)
     {

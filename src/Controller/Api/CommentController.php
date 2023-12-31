@@ -30,17 +30,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CommentController extends AbstractController
 {
-    const PARENTS = ['actuality', 'guide', 'team', 'tournament'];
+    final public const PARENTS = ['actuality', 'guide', 'team', 'tournament'];
 
-    private CommentRepository $repo;
-    private EntityManagerInterface $em;
-
-    public function __construct(
-        CommentRepository $repo,
-        EntityManagerInterface $em
-    ) {
-        $this->repo = $repo;
-        $this->em = $em;
+    public function __construct(private readonly CommentRepository $repo, private readonly EntityManagerInterface $em)
+    {
     }
 
     private function getParentClass(string $entity): ?string
@@ -94,9 +87,7 @@ class CommentController extends AbstractController
             : $content;
     }
 
-    /**
-     * @Route("/comments/{entity}/user/{id}", name="comments_by_user", methods={"GET"})
-     */
+    #[Route(path: '/comments/{entity}/user/{id}', name: 'comments_by_user', methods: ['GET'])]
     public function getCommentsByUser($entity, $id, UserRepository $userRepository)
     {
         $user = $userRepository->find($id);
@@ -122,9 +113,7 @@ class CommentController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/comments/{entity}/{id}", name="comments", methods={"GET"})
-     */
+    #[Route(path: '/comments/{entity}/{id}', name: 'comments', methods: ['GET'])]
     public function getComments($entity, $id)
     {
         $parentRepo = $this->getParentRepo($entity);
@@ -165,9 +154,7 @@ class CommentController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/comments/{entity}/reply/{id}", name="reply_comment", methods={"POST"})
-     */
+    #[Route(path: '/comments/{entity}/reply/{id}', name: 'reply_comment', methods: ['POST'])]
     public function replyComment(
         $entity,
         $id,
@@ -203,7 +190,7 @@ class CommentController extends AbstractController
                     AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => "Erreur lors de la récupération des données"], Response::HTTP_BAD_REQUEST);
         }
 
@@ -264,9 +251,7 @@ class CommentController extends AbstractController
     }
 
 
-    /**
-     * @Route("/comments/{entity}/{id}", name="insert_comment", methods={"POST"})
-     */
+    #[Route(path: '/comments/{entity}/{id}', name: 'insert_comment', methods: ['POST'])]
     public function insertComment(
         $entity,
         $id,
@@ -311,7 +296,7 @@ class CommentController extends AbstractController
                     AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
                 ]
             );
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
@@ -356,9 +341,7 @@ class CommentController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/comments/{entity}/comment/{id}", name="update_comment", methods={"PUT"})
-     */
+    #[Route(path: '/comments/{entity}/comment/{id}', name: 'update_comment', methods: ['PUT'])]
     public function updateComment(
         $entity,
         $id,
@@ -408,9 +391,7 @@ class CommentController extends AbstractController
     }
 
 
-    /**
-     * @Route("/comments/{entity}/comment/{id}", name="delete_comment", methods={"DELETE"})
-     */
+    #[Route(path: '/comments/{entity}/comment/{id}', name: 'delete_comment', methods: ['DELETE'])]
     public function deleteComment($entity, $id)
     {
         $comment = $this->repo->find($id);
@@ -444,9 +425,7 @@ class CommentController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/comments/{entity}/vote/{id}", name="vote_team_comment", methods={"PUT"})
-     */
+    #[Route(path: '/comments/{entity}/vote/{id}', name: 'vote_team_comment', methods: ['PUT'])]
     public function voteComment(
         $entity,
         $id,

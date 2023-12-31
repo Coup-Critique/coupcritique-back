@@ -6,35 +6,25 @@ use App\Repository\UsageMoveRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=UsageMoveRepository::class)
- */
+#[ORM\Entity(repositoryClass: UsageMoveRepository::class)]
 class UsageMove
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TierUsage::class, inversedBy="usageMoves")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: TierUsage::class, inversedBy: 'usageMoves')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private $tierUsage;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Move::class)
-     * @ORM\JoinColumn(nullable=false)
-	 * @Groups({"read:usage", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Move::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:usage', 'read:pokemon'])]
     private $move;
 
-    /**
-     * @ORM\Column(type="float")
-	 * @Groups({"read:usage", "read:pokemon", "read:usageMove"})
-     */
+    #[ORM\Column(type: 'float')]
+    #[Groups(['read:usage', 'read:pokemon', 'read:usageMove'])]
     private $percent;
 
     public function getId(): ?int

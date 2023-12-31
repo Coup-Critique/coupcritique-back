@@ -22,16 +22,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ResourceController extends AbstractController implements ContributeControllerInterface
 {
-    private ResourceRepository $repo;
-
-    public function __construct(ResourceRepository $repo)
+    public function __construct(private readonly ResourceRepository $repo)
     {
-        $this->repo = $repo;
     }
 
-    /**
-     * @Route("/resources", name="resources", methods={"GET"})
-     */
+    #[Route(path: '/resources', name: 'resources', methods: ['GET'])]
     public function getAll()
     {
         $resources = $this->repo->findAll();
@@ -69,10 +64,8 @@ class ResourceController extends AbstractController implements ContributeControl
         );
     }
 
-    /**
-     * @Route("/resources", name="insert_resource", methods={"POST"})
-     * @IsGranted("ROLE_MODO")
-     */
+    #[IsGranted('ROLE_MODO')]
+    #[Route(path: '/resources', name: 'insert_resource', methods: ['POST'])]
     public function insertResource(
         Request $request,
         SerializerInterface $serializer
@@ -87,7 +80,7 @@ class ResourceController extends AbstractController implements ContributeControl
             );
 
             $this->repo->insert($resource);
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(
             //     ['message' => $e->getMessage()],
             //     Response::HTTP_BAD_REQUEST
@@ -104,10 +97,8 @@ class ResourceController extends AbstractController implements ContributeControl
         );
     }
 
-    /**
-     * @Route("/resources/{id}", name="update_resource", methods={"PUT"})
-     * @IsGranted("ROLE_MODO")
-     */
+    #[IsGranted('ROLE_MODO')]
+    #[Route(path: '/resources/{id}', name: 'update_resource', methods: ['PUT'])]
     public function updateResource(
         $id,
         Request $request,
@@ -126,7 +117,7 @@ class ResourceController extends AbstractController implements ContributeControl
                 ]
             );
             $this->repo->update($newResource);
-        } catch (NotEncodableValueException $e) {
+        } catch (NotEncodableValueException) {
             // return $this->json(
             //     ['message' => $e->getMessage()],
             //     Response::HTTP_BAD_REQUEST
@@ -141,10 +132,8 @@ class ResourceController extends AbstractController implements ContributeControl
         );
     }
 
-    /**
-     * @Route("/resources/{id}", name="delete_resource", methods={"DELETE"})
-     * @IsGranted("ROLE_MODO")
-     */
+    #[IsGranted('ROLE_MODO')]
+    #[Route(path: '/resources/{id}', name: 'delete_resource', methods: ['DELETE'])]
     public function deleteResource($id)
     {
         $resource = $this->repo->find($id);

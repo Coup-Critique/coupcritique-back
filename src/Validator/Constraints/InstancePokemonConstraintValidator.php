@@ -12,11 +12,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 class InstancePokemonConstraintValidator extends ConstraintValidator
 {
 
-    private $pokemonRepository;
-
-    public function __construct(PokemonRepository $pokemonRepository)
+    public function __construct(private readonly PokemonRepository $pokemonRepository)
     {
-        $this->pokemonRepository = $pokemonRepository;
     }
 
     /**

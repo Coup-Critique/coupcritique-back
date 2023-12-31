@@ -6,8 +6,8 @@ class ImageManager
 {
     private $current_path;
 
-    const SMALL_SIZE = 220;
-    const NORMAL_SIZE = 455;
+    final public const SMALL_SIZE = 220;
+    final public const NORMAL_SIZE = 455;
 
     public function __construct()
     {

@@ -7,37 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ReplayRepository::class)
- */
+#[ORM\Entity(repositoryClass: ReplayRepository::class)]
 class Replay
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"read:team", "insert:team"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:team', 'insert:team'])]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"read:team", "insert:team", "update:team"})
-     * @Assert\Regex(
-     *      pattern="/^[A-Za-z0-9_-]*$/",
-     *      message="Le mot de passe doit comporter 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et un caractère spécial."
-     * )
-     * @Assert\Length(
-     *    max = 255,
-     *    maxMessage="La description peut faire au maximum 255 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:team', 'insert:team', 'update:team'])]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]*$/', message: 'Le mot de passe doit comporter 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et un caractère spécial.')]
+    #[Assert\Length(max: 255, maxMessage: 'La description peut faire au maximum 255 caractères.')]
     private $uri;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="replays")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'replays')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
     public function getId(): ?int

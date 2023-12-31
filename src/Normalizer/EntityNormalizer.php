@@ -16,30 +16,21 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
  */
 class EntityNormalizer extends ObjectNormalizer
 {
-	const UPDATE_ENTITIES = 'update_entities';
-
-	/** @var EntityManagerInterface */
-	protected $em;
-	/** @var ObjectNormalizer */
-	protected $objectNormalizer;
+	final public const UPDATE_ENTITIES = 'update_entities';
 
 	public function __construct(
-		EntityManagerInterface $em,
-        ?ClassMetadataFactoryInterface $classMetadataFactory = null,
-        ?NameConverterInterface $nameConverter = null,
-        ?PropertyAccessorInterface $propertyAccessor = null,
-        ?PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-        ?ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
-        ?callable $objectClassResolver = null,
+		protected EntityManagerInterface $em,
+		?ClassMetadataFactoryInterface $classMetadataFactory = null,
+		?NameConverterInterface $nameConverter = null,
+		?PropertyAccessorInterface $propertyAccessor = null,
+		?PropertyTypeExtractorInterface $propertyTypeExtractor = null,
+		?ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
+		protected ?callable $objectClassResolver = null,
 		array $defaultContext = []
 	) {
 		$defaultContext = array_merge(
 			$defaultContext,
-			[
-				self::CIRCULAR_REFERENCE_HANDLER => function () {
-					return null;
-				}
-			]
+			[self::CIRCULAR_REFERENCE_HANDLER => fn () => null]
 		);
 		parent::__construct(
 			$classMetadataFactory,
@@ -50,28 +41,24 @@ class EntityNormalizer extends ObjectNormalizer
 			$objectClassResolver,
 			$defaultContext
 		);
-		$this->em = $em;
 	}
 
 	/**
 	 * Use this normalizer as Denormalizer if $data is an array that contain a key 'id'
 	 * And represents a Entity : $type contains 'App\Entity\'
 	 */
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 */
 	public function supportsDenormalization($data, $type, string $format = null): bool
 	{
-		return strpos($type, 'App\\Entity\\') === 0 && !empty($data['id']);
+		return str_starts_with($type, 'App\\Entity\\') && !empty($data['id']);
 	}
 
-    /**
-     * {@inheritdoc}
-     * 
-     * @return mixed
-     * `: mixed` exists in PHP 8
-     */
-	public function denormalize($data, $class, string $format = null, array $context = [])
+	/**
+	 * {@inheritdoc}
+	 */
+	public function denormalize($data, $class, string $format = null, array $context = []): mixed
 	{
 		if (
 			array_key_exists(self::UPDATE_ENTITIES, $context)

@@ -13,174 +13,101 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"username"}, message="Ce pseudo est déjà utilisé")
- * @UniqueEntity(fields={"email"}, message="Cette adresse mail est déjà utilisée")
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'Ce pseudo est déjà utilisé')]
+#[UniqueEntity(fields: ['email'], message: 'Cette adresse mail est déjà utilisée')]
 class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 {
-    const ROLE_USER  = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
-    const ROLE_MODO  = 'ROLE_MODO';
+    final public const ROLE_USER  = 'ROLE_USER';
+    final public const ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const ROLE_MODO  = 'ROLE_MODO';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups({
-     *      "read:user", 
-     *      "read:list", 
-     *      "read:name", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({
-     *      "read:user", 
-     *      "insert:user", 
-     *      "read:list", 
-     *      "read:name", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
-     * @Assert\Length(
-     *    max = 180,
-     *    maxMessage="Le nom utilisateur peut faire au maximum 180 caractères."
-     * )
      * @CustomAssert\TextConstraint(
      *    message="Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
      * )
      */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['read:user', 'insert:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
+    #[Assert\Length(max: 180, maxMessage: 'Le nom utilisateur peut faire au maximum 180 caractères.')]
     private $username;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"read:user:own", "read:user:admin", "insert:user"})
-     * @Assert\Length(
-     *    max = 180,
-     *    maxMessage="L'email peut faire au maximum 180 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['read:user:own', 'read:user:admin', 'insert:user'])]
+    #[Assert\Length(max: 180, maxMessage: "L'email peut faire au maximum 180 caractères.")]
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
     /**
      * @var bool
-     * @Groups({
-     *      "read:user", 
-     *      "read:list", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
      */
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $is_admin;
 
     /**
      * @var bool
-     * @Groups({
-     *      "read:user", 
-     *      "read:list", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
      */
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $is_modo;
     
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({
-     *      "read:user", 
-     *      "read:list", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $is_tiper;
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
-     * @Groups({"insert:user"})
-     * @Assert\Length(
-     *    max = 255,
-     *    maxMessage="Le mot de passe peut faire au maximum 255 caractères."
-     * )
      */
+    #[ORM\Column(type: 'string')]
+    #[Groups(['insert:user'])]
+    #[Assert\Length(max: 255, maxMessage: 'Le mot de passe peut faire au maximum 255 caractères.')]
     private $password;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"read:user:admin"})
-     */
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['read:user:admin'])]
     private $banned;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"read:user:admin"})
-     */
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['read:user:admin'])]
     private $deleted;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups("user:read:to_admin")
-     */
+    #[ORM\Column(type: 'boolean')]
+    #[Groups('user:read:to_admin')]
     private $activated;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"read:user", "read:user:admin"})
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:user', 'read:user:admin'])]
     private $date_creation;
 
-    /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     * @Groups({"read:user", "insert:user", "read:list"})
-     * @Assert\Length(
-     *    max = 50,
-     *    maxMessage="Le pseudo discord peut faire au maximum 50 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[Groups(['read:user', 'insert:user', 'read:list'])]
+    #[Assert\Length(max: 50, maxMessage: 'Le pseudo discord peut faire au maximum 50 caractères.')]
     private $discord_name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:user", "read:list", "read:team", "read:list:team"})
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $picture;
 
-    /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     * @Groups({"read:user", "insert:user", "read:list"})
-     * @Assert\Length(
-     *    max = 50,
-     *    maxMessage="Le pseudo showdown peut faire au maximum 50 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[Groups(['read:user', 'insert:user', 'read:list'])]
+    #[Assert\Length(max: 50, maxMessage: 'Le pseudo showdown peut faire au maximum 50 caractères.')]
     private $showdown_name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"read:user:admin"})
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['read:user:admin'])]
     private $history;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="enjoyers")
-     */
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'enjoyers')]
     private $favorites;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $ips = [];
 
     public function __construct()

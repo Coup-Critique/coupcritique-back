@@ -18,17 +18,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NatureController extends AbstractController
 {
-	/** @var NatureRepository */
-	private $repo;
-
-	public function __construct(NatureRepository $repo)
+	public function __construct(private readonly NatureRepository $repo)
 	{
-		$this->repo = $repo;
 	}
 
-	/**
-	 * @Route("/natures", name="natures", methods={"GET"})
-	 */
+	#[Route(path: '/natures', name: 'natures', methods: ['GET'])]
 	public function getNatures()
 	{
 		return $this->json(
@@ -39,9 +33,7 @@ class NatureController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/natures/{id}", name="nature_by_id", methods={"GET"})
-	 */
+	#[Route(path: '/natures/{id}', name: 'nature_by_id', methods: ['GET'])]
 	public function getNatureById($id, Request $request)
 	{
 		$nature = $this->repo->find($id);
@@ -58,9 +50,7 @@ class NatureController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/natures", name="insert_nature", methods={"POST"})
-	 */
+	#[Route(path: '/natures', name: 'insert_nature', methods: ['POST'])]
 	public function insertNature(
 		Request $request,
 		SerializerInterface $serializer,
@@ -71,7 +61,7 @@ class NatureController extends AbstractController
 		try {
 			/** @var Nature $nature */
 			$nature = $serializer->deserialize($json, Nature::class, 'json');
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 		$errors = $validator->validate($nature);
@@ -92,9 +82,7 @@ class NatureController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/natures/{id}", name="update_nature", methods={"PUT"})
-	 */
+	#[Route(path: '/natures/{id}', name: 'update_nature', methods: ['PUT'])]
 	public function updateNature(
 		$id,
 		Request $request,
@@ -119,7 +107,7 @@ class NatureController extends AbstractController
 					EntityNormalizer::UPDATE_ENTITIES => [Nature::class]
 				]
 			);
-		} catch (NotEncodableValueException $e) {
+		} catch (NotEncodableValueException) {
 			// return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 		}
 
@@ -141,9 +129,7 @@ class NatureController extends AbstractController
 		);
 	}
 
-	/**
-	 * @Route("/natures/{id}", name="delete_nature", methods={"DELETE"})
-	 */
+	#[Route(path: '/natures/{id}', name: 'delete_nature', methods: ['DELETE'])]
 	public function deleteNature($id, Request $request)
 	{
 		$nature = $this->repo->find($id);

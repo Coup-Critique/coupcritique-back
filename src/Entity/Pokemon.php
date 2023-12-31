@@ -10,235 +10,137 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PokemonRepository::class)
- * @ORM\Table(
- *    name="pokemon", 
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(
- *            name="pokemon_name_gen_unique",
- *            columns={"name", "gen"}
- *        )
- *     }
- * )
- */
+#[ORM\Entity(repositoryClass: PokemonRepository::class)]
+#[ORM\Table(name: 'pokemon')]
+#[ORM\UniqueConstraint(name: 'pokemon_name_gen_unique', columns: ['name', 'gen'])]
 class Pokemon
 {
     use GenProperty;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups({
-     *      "read:list", 
-     *      "read:pokemon", 
-     *      "read:list:usage", 
-     *      "read:usage", 
-     *      "read:usage:short",
-     *      "read:name", 
-     *      "read:team", 
-     *      "read:list:team", 
-     *      "insert:team"
-     * })
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'read:list:usage', 'read:usage', 'read:usage:short', 'read:name', 'read:team', 'read:list:team', 'insert:team'])]
     private $id;
 
     /**
      * nullable due to import
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:list:usage", "read:usage"})
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:list:usage', 'read:usage'])]
     private $pokedex;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({
-     *      "read:list", 
-     *      "read:pokemon", 
-     *      "insert:pokemon", 
-     *      "read:list:usage", 
-     *      "read:usage",
-     *      "read:usage:short", 
-     *      "read:name", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:list:usage', 'read:usage', 'read:usage:short', 'read:name', 'read:team', 'read:list:team'])]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({
-     *      "read:list", 
-     *      "read:pokemon", 
-     *      "insert:pokemon", 
-     *      "read:list:usage", 
-     *      "read:usage", 
-     *      "read:usage:short", 
-     *      "read:name", 
-     *      "read:team", 
-     *      "read:list:team"
-     * })
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:list:usage', 'read:usage', 'read:usage:short', 'read:name', 'read:team', 'read:list:team'])]
     private $nom;
 
-    /**
-     * @ORM\Column(type="text", length=3000, nullable=true)
-     * @Groups({"read:pokemon", "insert:pokemon"})
-     * @Assert\Length(
-     *    max = 3000,
-     *    maxMessage="La description peut faire au maximum 3000 caractères."
-     * )
-     */
+    #[ORM\Column(type: 'text', length: 3000, nullable: true)]
+    #[Groups(['read:pokemon', 'insert:pokemon'])]
+    #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
     private $description;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:team'])]
     private $hp;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:team'])]
     private $atk;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:team'])]
     private $def;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:team'])]
     private $spa;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:team'])]
     private $spd;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:list", "read:pokemon", "insert:pokemon", "read:team"})
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read:list', 'read:pokemon', 'insert:pokemon', 'read:team'])]
     private $spe;
 
     /**
      * @var int|null
-     * @Groups({"read:list"})
      */
+    #[Groups(['read:list'])]
     private $bst;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"read:pokemon", "insert:pokemon"})
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
+    #[Groups(['read:pokemon', 'insert:pokemon'])]
     private $weight;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Type::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:list", "read:list:usage", "read:pokemon", "read:team"})
-     */
+    #[ORM\ManyToOne(targetEntity: Type::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:list', 'read:list:usage', 'read:pokemon', 'read:team'])]
     private $type_1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Type::class)
-     * @Groups({"read:list", "read:list:usage", "read:pokemon", "read:team"})
-     */
+    #[ORM\ManyToOne(targetEntity: Type::class)]
+    #[Groups(['read:list', 'read:list:usage', 'read:pokemon', 'read:team'])]
     private $type_2;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Ability::class)
-     * @ORM\JoinColumn(nullable=true)
-     * @Groups({"read:list", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Ability::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['read:list', 'read:pokemon'])]
     private $ability_1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Ability::class)
-     * @Groups({"read:list", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Ability::class)]
+    #[Groups(['read:list', 'read:pokemon'])]
     private $ability_2;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Ability::class)
-     * @Groups({"read:list", "read:pokemon"})
-     */
+    #[ORM\ManyToOne(targetEntity: Ability::class)]
+    #[Groups(['read:list', 'read:pokemon'])]
     private $ability_hidden;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Pokemon::class, mappedBy="base_form")
-     * @Groups("read:pokemon")
-     */
+    #[ORM\OneToMany(targetEntity: Pokemon::class, mappedBy: 'base_form')]
+    #[Groups('read:pokemon')]
     private $forms;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Pokemon::class, inversedBy="forms")
-     * @Groups("read:pokemon")
-     */
+    #[ORM\ManyToOne(targetEntity: Pokemon::class, inversedBy: 'forms')]
+    #[Groups('read:pokemon')]
     private $base_form;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Tier::class)
-     * @Groups({"read:list", "read:pokemon", "read:list:usage"})
-     */
+    #[ORM\ManyToOne(targetEntity: Tier::class)]
+    #[Groups(['read:list', 'read:pokemon', 'read:list:usage'])]
     private $tier;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Tier::class)
-     */
+    #[ORM\ManyToOne(targetEntity: Tier::class)]
     private $doublesTier;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Pokemon::class, inversedBy="evolutions")
-     * @Groups("read:pokemon")
-     */
+    #[ORM\ManyToOne(targetEntity: Pokemon::class, inversedBy: 'evolutions')]
+    #[Groups('read:pokemon')]
     private $preEvo;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Pokemon::class, mappedBy="preEvo")
-     * @Groups("read:pokemon")
-     */
+    #[ORM\OneToMany(targetEntity: Pokemon::class, mappedBy: 'preEvo')]
+    #[Groups('read:pokemon')]
     private $evolutions;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"read:list", "read:pokemon", "read:list:usage"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:list', 'read:pokemon', 'read:list:usage'])]
     private ?bool $technically = false;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"read:pokemon", "insert:pokemon"})
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(['read:pokemon', 'insert:pokemon'])]
     private $usageName;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Groups({"read:pokemon"})
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read:pokemon'])]
     private $contentJson = [];
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $update_date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $user;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true, options={"default":0})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true, options: ['default' => 0])]
     private $deleted = false;
 
     public function __construct()

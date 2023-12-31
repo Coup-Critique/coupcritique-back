@@ -11,24 +11,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=ActualityRepository::class)
- */
+#[ORM\Entity(repositoryClass: ActualityRepository::class)]
 class Actuality extends AbstractArticle
 {
-    /**
-     * @ORM\ManyToMany(targetEntity=ActualityTag::class)
-     * @Groups({"read:article", "read:list", "read:list:article", "update:article", "insert:article"})
-     */
+    #[ORM\ManyToMany(targetEntity: ActualityTag::class)]
+    #[Groups(['read:article', 'read:list', 'read:list:article', 'update:article', 'insert:article'])]
     private $tags;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity=Comment::class, 
-     *      mappedBy="actuality", 
-     *      cascade={"persist", "remove"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'actuality', cascade: ['persist', 'remove'])]
     protected $comments;
 
     public function __construct()
