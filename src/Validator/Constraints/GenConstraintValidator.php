@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class GenConstraintValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof GenConstraint) {
             throw new UnexpectedTypeException($constraint, GenConstraint::class);

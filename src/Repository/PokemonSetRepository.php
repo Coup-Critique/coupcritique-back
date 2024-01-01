@@ -40,7 +40,7 @@ class PokemonSetRepository extends ServiceEntityRepository
 		return $pokemonSet;
 	}
 
-	public function delete(PokemonSet $pokemonSet)
+	public function delete(PokemonSet $pokemonSet): void
 	{
 		$this->_em->remove($pokemonSet);
 		$this->_em->flush();

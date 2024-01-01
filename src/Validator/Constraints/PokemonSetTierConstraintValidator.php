@@ -17,9 +17,8 @@ class PokemonSetTierConstraintValidator extends ConstraintValidator
 
     /**
      * @param PokemonSet $pokemonSet
-     * @param Constraint $constraint
      */
-    public function validate($pokemonSet, Constraint $constraint)
+    public function validate($pokemonSet, Constraint $constraint): void
     {
         if (!$constraint instanceof PokemonSetTierConstraint) {
             throw new UnexpectedTypeException($constraint, PokemonSetTierConstraint::class);

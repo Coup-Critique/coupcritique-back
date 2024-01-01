@@ -94,7 +94,7 @@ class PokemonManager
         ];
     }
 
-    public function requestPokemonForms(Pokemon $pokemon, ?int $thisId = null, ?int $thisParentId = null)
+    public function requestPokemonForms(Pokemon $pokemon, ?int $thisId = null, ?int $thisParentId = null): void
     {
         foreach ($pokemon->getForms() as $form) {
             if ($form->getId() == $thisId || $form->getId() == $thisParentId) {

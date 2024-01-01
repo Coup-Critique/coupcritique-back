@@ -29,13 +29,13 @@ class NatureRepository extends ServiceEntityRepository
         return $nature;
     }
 
-    public function delete(Nature $nature)
+    public function delete(Nature $nature): void
     {
         $this->_em->remove($nature);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('n')
             ->delete()

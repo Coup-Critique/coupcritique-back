@@ -20,7 +20,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
     protected int $maxLength = 500;
     protected string $order = self::DESC;
 
-    public function setMaxLength($maxLength)
+    public function setMaxLength($maxLength): void
     {
         $maxLength = intval($maxLength);
         if ($maxLength > 0 && $maxLength < 500) {

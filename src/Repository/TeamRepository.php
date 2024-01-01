@@ -56,13 +56,13 @@ class TeamRepository extends ServiceEntityRepository
 		return $team;
 	}
 
-	public function delete(Team $team)
+	public function delete(Team $team): void
 	{
 		$this->_em->remove($team);
 		$this->_em->flush();
 	}
 
-	public function deleteAll()
+	public function deleteAll(): void
 	{
 		$this->createQueryBuilder('t')
 			->delete()
@@ -400,7 +400,7 @@ class TeamRepository extends ServiceEntityRepository
 		return $result;
 	}
 
-	private function setSearchToQuery(QueryBuilder $query, string $search, int $i = 0)
+	private function setSearchToQuery(QueryBuilder $query, string $search, int $i = 0): void
 	{
 		$query->andWhere(
 			"t.name LIKE :search$i"

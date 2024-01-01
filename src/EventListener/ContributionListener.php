@@ -18,7 +18,7 @@ class ContributionListener
     ) {
     }
 
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
         if ($event->getRequest()->getMethod() === 'GET') return;
         $controller = $event->getController();
@@ -31,7 +31,7 @@ class ContributionListener
         }
     }
 
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (
             $event->getRequest()->getContentTypeFormat() != 'application/json'

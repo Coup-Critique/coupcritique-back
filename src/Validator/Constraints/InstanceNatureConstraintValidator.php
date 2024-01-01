@@ -12,19 +12,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class InstanceNatureConstraintValidator extends ConstraintValidator
 {
-    /** @var NatureRepository */
-    protected $natureRepository;
-
-    public function __construct(NatureRepository $natureRepository)
+    public function __construct(protected NatureRepository $natureRepository)
     {
-        $this->natureRepository = $natureRepository;
     }
 
     /**
      * @param PokemonInstance $pkm_inst
-     * @param Constraint $constraint
      */
-    public function validate($pkm_inst, Constraint $constraint)
+    public function validate($pkm_inst, Constraint $constraint): void
     {
         if (!$constraint instanceof InstanceNatureConstraint) {
             throw new UnexpectedTypeException($constraint, InstanceNatureConstraint::class);

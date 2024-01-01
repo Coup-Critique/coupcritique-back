@@ -46,29 +46,20 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private $roles = [];
 
-    /**
-     * @var bool
-     */
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private $is_admin;
+    private bool $is_admin = false;
 
-    /**
-     * @var bool
-     */
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private $is_modo;
+    private bool $is_modo = false;
     
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $is_tiper;
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column(type: 'string')]
     #[Groups(['insert:user'])]
     #[Assert\Length(max: 255, maxMessage: 'Le mot de passe peut faire au maximum 255 caractères.')]
-    private $password;
+    private string $password;
 
     #[ORM\Column(type: 'boolean')]
     #[Groups(['read:user:admin'])]
@@ -201,7 +192,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

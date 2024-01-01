@@ -34,13 +34,13 @@ class TypeRepository extends ServiceEntityRepository
         return $type;
     }
 
-    public function delete(Type $type)
+    public function delete(Type $type): void
     {
         $this->_em->remove($type);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('t')
             ->delete()

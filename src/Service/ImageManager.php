@@ -14,7 +14,7 @@ class ImageManager
         $this->current_path = getcwd();
     }
 
-    public function resizeImages($source, $destination)
+    public function resizeImages($source, $destination): void
     {
         $source_path = "{$this->current_path}$source";
         $destination_path = "{$this->current_path}$destination";
@@ -78,7 +78,7 @@ class ImageManager
         }
     }
 
-    public function resizeImage(string $image_path, int $desired_size = self::NORMAL_SIZE)
+    public function resizeImage(string $image_path, int $desired_size = self::NORMAL_SIZE): \GdImage|false
     {
         $image = getimagesize($image_path)["mime"] == 'image/png' 
             ? imagecreatefrompng($image_path) 

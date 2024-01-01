@@ -48,7 +48,7 @@ class CommentRepository extends ServiceEntityRepository
         return $comment;
     }
 
-    public function definitivDelete(Comment $comment)
+    public function definitivDelete(Comment $comment): null
     {
         $this->_em->remove($comment);
         $this->_em->flush();

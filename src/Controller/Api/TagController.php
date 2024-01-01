@@ -26,7 +26,7 @@ class TagController extends AbstractController
 	) {
 	}
 
-	private function setRepository($tags_type)
+	private function setRepository($tags_type): void
 	{
 		$tags_class = [
 			'tags' => Tag::class,

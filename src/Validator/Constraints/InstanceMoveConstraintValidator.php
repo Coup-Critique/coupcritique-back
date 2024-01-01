@@ -6,26 +6,20 @@ use App\Entity\Move;
 use App\Entity\Pokemon;
 use App\Entity\PokemonInstance;
 use App\Repository\MoveRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Intl\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class InstanceMoveConstraintValidator extends ConstraintValidator
 {
-    /** @var MoveRepository */
-    protected $moveRepository;
-
-    public function __construct(MoveRepository $moveRepository)
+    public function __construct(protected MoveRepository $moveRepository)
     {
-        $this->moveRepository = $moveRepository;
     }
 
     /**
      * @param PokemonInstance $pkm_inst
-     * @param Constraint $constraint
      */
-    public function validate($pkm_inst, Constraint $constraint)
+    public function validate($pkm_inst, Constraint $constraint): void
     {
         if (!$constraint instanceof InstanceMoveConstraint) {
             throw new UnexpectedTypeException($constraint, InstanceMoveConstraint::class);
@@ -48,10 +42,9 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
 
     /**
      * Check if the array of moves doesn't contain duplicates
-     * @param PokemonInstance $pkm_inst
-     * @param array $moves
+     * @param Move[] $moves
      */
-    private function checkMovesDuplicated($pkm_inst, $moves, Constraint $constraint)
+    private function checkMovesDuplicated(PokemonInstance $pkm_inst, array $moves, Constraint $constraint): void
     {
         $counter = [];
         foreach ($moves as $i => $move) {
@@ -77,7 +70,7 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
      * Check if each move in the array is compatible with the Pokemon's movepool
      * @param Move[] $moves
      */
-    private function checkMovesLearned(PokemonInstance $pkm_inst, array $moves, Constraint $constraint)
+    private function checkMovesLearned(PokemonInstance $pkm_inst, array $moves, Constraint $constraint): void
     {
         $pokemon  = $pkm_inst->getPokemon();
         $movepool = $this->moveRepository->findByPokemon($pokemon);
@@ -117,10 +110,9 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
     }
 
     /**
-     * @param Pokemon $pokemon
-     * @param array $movepool // passed by reference
+     * @param Move[] $movepool // passed by reference
      */
-    public function addPreEvoMoves($pokemon, &$movepool)
+    public function addPreEvoMoves(Pokemon $pokemon, array &$movepool): void
     {
         $preEvo = $pokemon->getPreEvo()
             ?: ($pokemon->getBaseForm()
@@ -138,9 +130,8 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
 
     /**
      * @param Move[] $moves
-     * @return boolean
      */
-    public function containsMove(array $moves, Move $move)
+    public function containsMove(array $moves, Move $move): bool
     {
         foreach ($moves as $m) {
             if ($m->getId() === $move->getId()) return true;

@@ -14,7 +14,7 @@ class TeamInstanceAndTierConstraint extends Constraint
     public $wrongTierMessage = "Le Pokémon {{ pokemon }} est banni ou indisponible dans le tier {{ tier }}.";
     public $teraTypeMessage = "La Téracristalisation n'est pas autorisée dans le tier {{ tier }} (sur le Pokémon {{ pokemon }}).";
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

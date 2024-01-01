@@ -10,19 +10,14 @@ use UnexpectedValueException;
 
 class HtmlTagConstraintValidator extends ConstraintValidator
 {
-    /** @var string $projectDir */
-    protected $projectDir;
-
-    public function __construct(string $projectDir)
+    public function __construct(protected string $projectDir)
     {
-        $this->projectDir = $projectDir;
     }
 
     /**
      * @param string $value
-     * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof HtmlTagConstraint) {
             throw new UnexpectedTypeException($constraint, HtmlTagConstraint::class);

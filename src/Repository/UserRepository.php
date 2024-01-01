@@ -41,9 +41,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		$this->_em->flush();
 	}
 
-	/**
-	 * @return User
-	 */
 	public function insert(User $user): User
 	{
 		$user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPassword()));
@@ -56,7 +53,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return $user;
 	}
 
-	public function delete(User $user)
+	public function delete(User $user): void
 	{
 		$user->setDeleted(true);
 		$this->_em->persist($user);
@@ -73,9 +70,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return $user;
 	}
 
-	/**
-	 * @return User
-	 */
 	public function updatePassword(User $user, string $password): User
 	{
 		$user->setPassword($this->passwordEncoder->hashPassword($user, $password));
@@ -84,10 +78,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return $user;
 	}
 
-	/**
-	 * @param array $data
-	 */
-	public function checkPassword(User $user, string $password)
+	public function checkPassword(User $user, string $password): bool
 	{
 		return $this->passwordEncoder->isPasswordValid($user, $password);
 	}
@@ -117,11 +108,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return $query->getQuery()->getResult();
 	}
 
-	/**
-	 * @param string $value
-	 * @return array
-	 */
-	public function search(string $username, int $limit = null)
+	public function search(string $username, int $limit = null): array
 	{
 		$statement = $this->createQueryBuilder('u')
 			->where('u.username LIKE :username')

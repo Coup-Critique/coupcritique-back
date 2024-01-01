@@ -32,13 +32,13 @@ class TierUsageRepository extends ServiceEntityRepository
 		return $tierUsage;
 	}
 
-	public function delete(TierUsage $tierUsage)
+	public function delete(TierUsage $tierUsage): void
 	{
 		$this->_em->remove($tierUsage);
 		$this->_em->flush();
 	}
 
-	public function deleteAll()
+	public function deleteAll(): void
 	{
 		$this->createQueryBuilder('pt')
 			->delete()

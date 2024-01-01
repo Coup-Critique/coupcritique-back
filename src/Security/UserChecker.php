@@ -23,7 +23,7 @@ class UserChecker implements UserCheckerInterface
     }
 
 
-    public function checkPreAuth(UserInterface $user)
+    public function checkPreAuth(UserInterface $user): void
     {
         if (!$user instanceof User) return;
 
@@ -46,14 +46,14 @@ class UserChecker implements UserCheckerInterface
         // }
     }
 
-    private function saveIp(User $user)
+    private function saveIp(User $user): void
     {
         $ip = $this->request->getClientIp();
         $user->addIp($ip);
         $this->em->flush();
     }
 
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $user): void
     {
     }
 }

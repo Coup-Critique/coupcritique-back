@@ -19,9 +19,8 @@ class TeamInstanceAndTierConstraintValidator extends ConstraintValidator
 
     /**
      * @param Team $team
-     * @param Constraint $constraint
      */
-    public function validate($team, Constraint $constraint)
+    public function validate($team, Constraint $constraint): void
     {
         if (!$constraint instanceof TeamInstanceAndTierConstraint) {
             throw new UnexpectedTypeException($constraint, TeamInstanceAndTierConstraint::class);

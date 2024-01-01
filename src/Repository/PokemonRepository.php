@@ -50,13 +50,13 @@ class PokemonRepository extends ServiceEntityRepository
         return $pokemon;
     }
 
-    public function delete(Pokemon $pokemon)
+    public function delete(Pokemon $pokemon): void
     {
         $this->_em->remove($pokemon);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('p')
             ->delete()
@@ -225,7 +225,7 @@ class PokemonRepository extends ServiceEntityRepository
     /**
      * $gen come from given tier id
      */
-    public function findByTierUsage(Tier $tier, ?bool $technically = false)
+    public function findByTierUsage(Tier $tier, ?bool $technically = false): array
     {
         // not use base query
         $query = $this->createQueryBuilder('p')

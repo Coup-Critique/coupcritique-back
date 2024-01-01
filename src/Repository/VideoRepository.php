@@ -21,7 +21,7 @@ class VideoRepository extends ServiceEntityRepository
         parent::__construct($registry, Video::class);
     }
 
-    public function setMaxLength($maxLength)
+    public function setMaxLength($maxLength): void
     {
         $maxLength = intval($maxLength);
         if ($maxLength > 0 && $maxLength < 500) {
@@ -96,7 +96,7 @@ class VideoRepository extends ServiceEntityRepository
         return $video;
     }
 
-    public function delete(Video $video)
+    public function delete(Video $video): void
     {
         $this->_em->remove($video);
         $this->_em->flush();

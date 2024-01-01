@@ -18,9 +18,8 @@ class InstanceItemConstraintValidator extends ConstraintValidator
 
     /**
      * @param PokemonInstance $pkm_inst
-     * @param Constraint $constraint
      */
-    public function validate($pkm_inst, Constraint $constraint)
+    public function validate($pkm_inst, Constraint $constraint): void
     {
         if (!$constraint instanceof InstanceItemConstraint) {
             throw new UnexpectedTypeException($constraint, InstanceItemConstraint::class);

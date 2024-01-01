@@ -12,7 +12,7 @@ class GenConstraint extends Constraint
 {
     public $genMessage = "La génération {{ gen }} n'est pas disponible.";
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }

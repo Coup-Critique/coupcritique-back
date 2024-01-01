@@ -11,7 +11,7 @@ class StringCollectionDenormalizer
     {
     }
 
-    public function denormalize($entity, string $className, array $jsonArray, $gen)
+    public function denormalize($entity, string $className, array $jsonArray, $gen): void
     {
         $reflectionClass = new \ReflectionClass($className);
         foreach ($jsonArray as $key => $value) {

@@ -31,11 +31,9 @@ class AuthorizeListener {
      * @param RequestEvent $event the request sent by the http client (browser / react, postman...)
      * @return void
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
-        /**
-         * @var HeaderBag $headers
-         */
+        /** @var HeaderBag $headers */
         $headers = $event->getRequest()->headers;
         if($headers->has("jwtauthorization"))
             $headers->set("authorization",$headers->get("jwtauthorization"));

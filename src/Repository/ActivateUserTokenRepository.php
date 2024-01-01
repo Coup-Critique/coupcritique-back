@@ -38,7 +38,7 @@ class ActivateUserTokenRepository extends ServiceEntityRepository
         return $activateUserToken;
     }
 
-    public function delete(ActivateUserToken $activateUserToken)
+    public function delete(ActivateUserToken $activateUserToken): void
     {
         $this->_em->remove($activateUserToken);
         $this->_em->flush();

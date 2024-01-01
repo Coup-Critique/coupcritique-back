@@ -6,7 +6,7 @@ use App\Entity\PokemonInstance;
 
 class PokemonInstanceData
 {
-    public static function setDataOldGen(PokemonInstance $pokemonInstance, $gen)
+    public static function setDataOldGen(PokemonInstance $pokemonInstance, $gen): void
     {
         if ($gen < 3) {
             $pokemonInstance->setHpIv(30);

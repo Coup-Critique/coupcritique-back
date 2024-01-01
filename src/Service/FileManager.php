@@ -23,7 +23,7 @@ class FileManager
 		return $fileName;
 	}
 
-	public function remove($filePath)
+	public function remove($filePath): void
 	{
 		$fullPath = "{$this->publicPath}/$filePath";
 		if (file_exists($fullPath)) {
@@ -52,7 +52,7 @@ class FileManager
 		}
 	}
 
-	private function createDirIfNotExists($dirName)
+	private function createDirIfNotExists($dirName): void
 	{
 		if (!is_dir($dirName)) {
 			mkdir($dirName, 0777, true);

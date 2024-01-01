@@ -33,7 +33,7 @@ class ResourceRepository extends ServiceEntityRepository
     /**
      * @param Resource $resource
      */
-    public function delete(Resource $resource)
+    public function delete(Resource $resource): void
     {
         $guide = $resource->getGuide();
         if ($guide) $guide->setResource(null);

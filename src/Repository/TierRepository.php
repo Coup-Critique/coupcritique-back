@@ -35,13 +35,13 @@ class TierRepository extends ServiceEntityRepository
         return $tier;
     }
 
-    public function delete(Tier $tier)
+    public function delete(Tier $tier): void
     {
         $this->_em->remove($tier);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('t')
             ->delete()

@@ -39,13 +39,13 @@ class AbilityRepository extends ServiceEntityRepository
         return $ability;
     }
     
-    public function delete(Ability $ability)
+    public function delete(Ability $ability): void
     {
         $this->_em->remove($ability);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('a')
             ->delete()

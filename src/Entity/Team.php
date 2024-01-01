@@ -137,9 +137,6 @@ class Team implements CommentParentInterface
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     private $enjoyers;
 
-    /**
-     * @var bool|null $isOwnUserFavorite
-     */
     #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $isOwnUserFavorite = false;
 
@@ -470,9 +467,11 @@ class Team implements CommentParentInterface
         return $this->isOwnUserFavorite;
     }
 
-    public function setIsOwnUserFavorite($user)
+    public function setIsOwnUserFavorite($user): self
     {
         $this->isOwnUserFavorite = $this->getEnjoyers()->contains($user);
+
+        return $this;
     }
 
     /**

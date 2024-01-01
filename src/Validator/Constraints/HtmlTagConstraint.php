@@ -12,7 +12,7 @@ class HtmlTagConstraint extends Constraint
 {
     public $message = "Ce contenu n'est pas acceptable pour des contraintes de sécurité, car il contient les termes suivants : {{ banTags }}.";
     
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }

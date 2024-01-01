@@ -11,7 +11,7 @@ class InstanceItemConstraint extends Constraint
 {
     public $unknownItemMessage = "L'objet {{ name }} du Pokémon {{ pokemon }} n'existe pas en génération {{ gen }}.";
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

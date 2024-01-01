@@ -47,13 +47,13 @@ class MoveRepository extends ServiceEntityRepository
         return $move;
     }
 
-    public function delete(Move $move)
+    public function delete(Move $move): void
     {
         $this->_em->remove($move);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('m')
             ->delete()

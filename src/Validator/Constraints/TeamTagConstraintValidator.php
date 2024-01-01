@@ -6,7 +6,6 @@ use App\Entity\Team;
 use App\Entity\User;
 use Symfony\Component\Intl\Exception\UnexpectedTypeException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -21,9 +20,8 @@ class TeamTagConstraintValidator extends ConstraintValidator
 
     /**
      * @param Team $team
-     * @param Constraint $constraint
      */
-    public function validate($team, Constraint $constraint)
+    public function validate($team, Constraint $constraint): void
     {
         if (!$constraint instanceof TeamTagConstraint) {
             throw new UnexpectedTypeException($constraint, TeamTagConstraint::class);

@@ -38,7 +38,7 @@ class PasswordTokenRenewRepository extends ServiceEntityRepository
 		return $refresh_token;
 	}
 	
-	public function delete(PasswordTokenRenew $passwordTokenRenew)
+	public function delete(PasswordTokenRenew $passwordTokenRenew): void
 	{
 		$this->_em->remove($passwordTokenRenew);
 		$this->_em->flush();

@@ -39,13 +39,13 @@ class ItemRepository extends ServiceEntityRepository
         return $item;
     }
 
-    public function delete(Item $item)
+    public function delete(Item $item): void
     {
         $this->_em->remove($item);
         $this->_em->flush();
     }
 
-    public function deleteAll()
+    public function deleteAll(): void
     {
         $this->createQueryBuilder('i')
             ->delete()
