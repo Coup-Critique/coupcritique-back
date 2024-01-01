@@ -4,9 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class InstanceItemConstraint extends Constraint
 {
     public $unknownItemMessage = "L'objet {{ name }} du Pokémon {{ pokemon }} n'existe pas en génération {{ gen }}.";

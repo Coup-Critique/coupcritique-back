@@ -3,7 +3,6 @@
 namespace App\Normalizer;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
@@ -25,7 +24,7 @@ class EntityNormalizer extends ObjectNormalizer
 		?PropertyAccessorInterface $propertyAccessor = null,
 		?PropertyTypeExtractorInterface $propertyTypeExtractor = null,
 		?ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
-		protected ?callable $objectClassResolver = null,
+		callable $objectClassResolver = null,
 		array $defaultContext = []
 	) {
 		$defaultContext = array_merge(

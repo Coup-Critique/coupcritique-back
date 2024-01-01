@@ -7,8 +7,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ValidatorException extends \Exception
 {
-    protected string $message;
-
     public function __construct(
         private readonly ConstraintViolationListInterface $constraintListObject,
         int $code = 0,

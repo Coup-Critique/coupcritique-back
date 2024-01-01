@@ -6,54 +6,106 @@ use App\Repository\TierUsageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TierUsageRepository::class)]
 class TierUsage
 {
 	#[ORM\Id]
- #[ORM\GeneratedValue]
- #[ORM\Column(type: 'integer')]
- #[Groups(['read:usage', 'read:usage:short', 'read:list', 'read:list:usage', 'read:pokemon'])]
- private $id;
+	#[ORM\GeneratedValue]
+	#[ORM\Column(type: 'integer')]
+	#[Groups([
+		'read:usage',
+		'read:usage:short',
+		'read:list',
+		'read:list:usage',
+		'read:pokemon'
+	])]
+	private $id;
 
 	#[ORM\ManyToOne(targetEntity: Tier::class)]
- #[ORM\JoinColumn(nullable: false)]
- #[Groups(['read:usage', 'read:pokemon', 'read:usage:short'])]
- private $tier;
+	#[ORM\JoinColumn(nullable: false)]
+	#[Groups([
+		'read:usage',
+		'read:pokemon',
+		'read:usage:short'
+	])]
+	private $tier;
 
 	#[ORM\ManyToOne(targetEntity: Pokemon::class)]
- #[ORM\JoinColumn(nullable: false)]
- #[Groups(['read:usage', 'read:list', 'read:list:usage', 'read:usage:short'])]
- private $pokemon;
+	#[ORM\JoinColumn(nullable: false)]
+	#[Groups([
+		'read:usage',
+		'read:list',
+		'read:list:usage',
+		'read:usage:short'
+	])]
+	private $pokemon;
 
 	#[ORM\Column(type: 'integer', nullable: true)]
- #[Groups(['read:usage', 'read:list', 'read:list:usage', 'read:pokemon', 'read:usage:short'])]
- private $rank;
+	#[Groups([
+		'read:usage',
+		'read:list',
+		'read:list:usage',
+		'read:pokemon',
+		'read:usage:short'
+	])]
+	private $rank;
 
 	#[ORM\Column(type: 'float', nullable: true)]
- #[Groups(['read:usage', 'read:list', 'read:list:usage', 'read:pokemon', 'read:usage:short'])]
- private $percent;
+	#[Groups([
+		'read:usage',
+		'read:list',
+		'read:list:usage',
+		'read:pokemon',
+		'read:usage:short'
+	])]
+	private $percent;
 
-	#[ORM\OneToMany(targetEntity: UsageAbility::class, mappedBy: 'tierUsage', orphanRemoval: true, cascade: ['persist', 'remove'])]
- #[Groups(['read:usage', 'read:pokemon'])]
- private $usageAbilities;
+	#[ORM\OneToMany(
+		targetEntity: UsageAbility::class,
+		mappedBy: 'tierUsage',
+		orphanRemoval: true,
+		cascade: ['persist', 'remove']
+	)]
+	#[Groups(['read:usage', 'read:pokemon'])]
+	private $usageAbilities;
 
-	#[ORM\OneToMany(targetEntity: UsageItem::class, mappedBy: 'tierUsage', orphanRemoval: true, cascade: ['persist', 'remove'])]
- #[Groups(['read:usage'])]
- private $usageItems;
+	#[ORM\OneToMany(
+		targetEntity: UsageItem::class,
+		mappedBy: 'tierUsage',
+		orphanRemoval: true,
+		cascade: ['persist', 'remove']
+	)]
+	#[Groups(['read:usage'])]
+	private $usageItems;
 
-	#[ORM\OneToMany(targetEntity: UsageMove::class, mappedBy: 'tierUsage', orphanRemoval: true, cascade: ['persist', 'remove'])]
- #[Groups(['read:usage'])]
- private $usageMoves;
+	#[ORM\OneToMany(
+		targetEntity: UsageMove::class,
+		mappedBy: 'tierUsage',
+		orphanRemoval: true,
+		cascade: ['persist', 'remove']
+	)]
+	#[Groups(['read:usage'])]
+	private $usageMoves;
 
-	#[ORM\OneToMany(targetEntity: UsageSpread::class, mappedBy: 'tierUsage', orphanRemoval: true, cascade: ['persist', 'remove'])]
- #[Groups(['read:usage'])]
- private $usageSpreads;
+	#[ORM\OneToMany(
+		targetEntity: UsageSpread::class,
+		mappedBy: 'tierUsage',
+		orphanRemoval: true,
+		cascade: ['persist', 'remove']
+	)]
+	#[Groups(['read:usage'])]
+	private $usageSpreads;
 
-	#[ORM\OneToMany(targetEntity: TeamMate::class, mappedBy: 'tierUsage', orphanRemoval: true, cascade: ['persist', 'remove'])]
- #[Groups(['read:usage'])]
- private $teamMates;
+	#[ORM\OneToMany(
+		targetEntity: TeamMate::class,
+		mappedBy: 'tierUsage',
+		orphanRemoval: true,
+		cascade: ['persist', 'remove']
+	)]
+	#[Groups(['read:usage'])]
+	private $teamMates;
 
 	// * @Groups({"read:usage"})
 	/**
@@ -64,7 +116,7 @@ class TierUsage
 	 *   cascade={"persist", "remove"}
 	 * )
 	 */
-	private $pokemonChecks;
+	// private $pokemonChecks;
 
 	public function __construct()
 	{
@@ -72,7 +124,7 @@ class TierUsage
 		$this->usageItems = new ArrayCollection();
 		$this->usageMoves = new ArrayCollection();
 		$this->teamMates = new ArrayCollection();
-		$this->pokemonChecks = new ArrayCollection();
+		// $this->pokemonChecks = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -278,33 +330,33 @@ class TierUsage
 		return $this;
 	}
 
-	/**
-	 * @return Collection|PokemonCheck[]
-	 */
-	public function getPokemonChecks(): Collection
-	{
-		return $this->pokemonChecks;
-	}
+	// /**
+	//  * @return Collection|PokemonCheck[]
+	//  */
+	// public function getPokemonChecks(): Collection
+	// {
+	// 	return $this->pokemonChecks;
+	// }
 
-	public function addPokemonCheck(PokemonCheck $pokemonCheck): self
-	{
-		if (!$this->pokemonChecks->contains($pokemonCheck)) {
-			$this->pokemonChecks[] = $pokemonCheck;
-			$pokemonCheck->setTierUsage($this);
-		}
+	// public function addPokemonCheck(PokemonCheck $pokemonCheck): self
+	// {
+	// 	if (!$this->pokemonChecks->contains($pokemonCheck)) {
+	// 		$this->pokemonChecks[] = $pokemonCheck;
+	// 		$pokemonCheck->setTierUsage($this);
+	// 	}
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 
-	public function removePokemonCheck(PokemonCheck $pokemonCheck): self
-	{
-		if ($this->pokemonChecks->removeElement($pokemonCheck)) {
-			// set the owning side to null (unless already changed)
-			if ($pokemonCheck->getTierUsage() === $this) {
-				$pokemonCheck->setTierUsage(null);
-			}
-		}
+	// public function removePokemonCheck(PokemonCheck $pokemonCheck): self
+	// {
+	// 	if ($this->pokemonChecks->removeElement($pokemonCheck)) {
+	// 		// set the owning side to null (unless already changed)
+	// 		if ($pokemonCheck->getTierUsage() === $this) {
+	// 			$pokemonCheck->setTierUsage(null);
+	// 		}
+	// 	}
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 }

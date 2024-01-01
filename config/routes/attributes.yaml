@@ -1,11 +1,11 @@
 default:
   resource: ../../src/Controller/DefaultController.php
-  type: annotation
+  type: attribute
 
 site:
   resource: ../../src/Controller/SiteController.php
-  type: annotation
+  type: attribute
 
 kernel:
   resource: ../../src/Kernel.php
-  type: annotation
+  type: attribute

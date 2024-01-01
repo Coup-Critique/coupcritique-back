@@ -4,9 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class InstanceAbilityConstraint extends Constraint
 {
     public $wrongAbilityMessage   = "Le Pokémon {{ pokemon }} ne peut pas avoir le talent {{ ability }}.";

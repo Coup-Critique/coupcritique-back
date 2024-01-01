@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,19 +11,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Twig\Environment;
 
+#[AsCommand(
+    name: 'twig:preview',
+    description: 'Compile twig to html into console.'
+)]
 class TwigPreviewer extends Command
 {
-    protected static $defaultName = 'twig:preview';
-
     public function __construct(private readonly Environment $twig)
     {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Compile twig to html into console')
             ->addArgument('template_name', InputArgument::REQUIRED, "the path of the twig template")
             ->addArgument('parameters', InputArgument::OPTIONAL, "the required arguments in JSON");
     }

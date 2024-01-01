@@ -10,5 +10,4 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TournamentTagRepository::class)]
 class TournamentTag extends AbstractTag
 {
-
 }

@@ -4,26 +4,23 @@ namespace App\Command;
 
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'ban:teams',
+    description: 'Ban Teams with a banned Pokemon.'
+)]
 class BanTeams extends Command
 {
-    protected static $defaultName = 'ban:teams';
-
-
     public function __construct(
         private readonly TeamRepository $repo,
         private readonly EntityManagerInterface $em
     ) {
         parent::__construct();
-    }
-
-    protected function configure()
-    {
-        $this->setDescription('Ban Teams with a banned Pokemon ');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

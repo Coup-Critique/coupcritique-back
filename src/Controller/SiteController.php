@@ -17,20 +17,13 @@ use App\Service\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SiteController extends AbstractController
 {
     private string $hostname = '';
 
-    // /**
-    //  * @Route("/ads.txt", name="ads", defaults={"_format"="txt"})
-    //  */
-    // public function ads($venatusId)
-    // {
-    //     return $this->redirect("https://adstxt.venatusmedia.com/{$venatusId}_ads.txt");
-    // }
     #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
     public function sitemap(
         Request $request,

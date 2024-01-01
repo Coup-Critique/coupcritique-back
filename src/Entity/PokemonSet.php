@@ -7,13 +7,11 @@ use App\Repository\PokemonSetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
-/**
- * @CustomAssert\PokemonSetTierConstraint
- */
+#[CustomAssert\PokemonSetTierConstraint]
 #[ORM\Entity(repositoryClass: PokemonSetRepository::class)]
 class PokemonSet
 {
@@ -39,9 +37,7 @@ class PokemonSet
     #[Assert\Valid]
     private $tier;
 
-    /**
-     * @CustomAssert\GenConstraint()
-     */
+    #[CustomAssert\GenConstraint()]
     #[ORM\Column(type: 'smallint')]
     #[Groups(['read:pokemon-set', 'update:set'])]
     #[Assert\NotNull(message: 'La génération est requise.')]

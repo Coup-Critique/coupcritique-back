@@ -5,10 +5,7 @@ namespace App\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 
-/**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- */
+#[\Attribute]
 class TextConstraint extends Constraint
 {
     public $message = "Ce texte n'est pas acceptable car il contient le ou les mots : {{ banWords }}.";

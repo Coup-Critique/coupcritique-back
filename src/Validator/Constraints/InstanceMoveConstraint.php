@@ -4,9 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class InstanceMoveConstraint extends Constraint
 {
 	public $unknownMoveMessage    = "La capacité {{ move }} du Pokémon {{ pokemon }} n'existe pas en génération {{ gen }}.";

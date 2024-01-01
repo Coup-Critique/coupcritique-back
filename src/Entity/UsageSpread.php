@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UsageSpreadRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UsageSpreadRepository::class)]
 class UsageSpread

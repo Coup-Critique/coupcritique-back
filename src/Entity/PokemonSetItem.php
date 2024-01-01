@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PokemonSetItemRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonSetItemRepository::class)]
 class PokemonSetItem

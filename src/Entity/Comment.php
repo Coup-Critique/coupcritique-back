@@ -7,7 +7,7 @@ use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping\MappedSuperclass;
@@ -21,11 +21,9 @@ class Comment
     #[Groups(['read:list'])]
     protected $id;
 
-    /**
-     * @CustomAssert\TextConstraint(
-     *    message="Ce commentaire n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-     * )
-     */
+    #[CustomAssert\TextConstraint(
+        message: "Ce commentaire n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
+    )]
     #[ORM\Column(type: 'text', length: 3000)]
     #[Groups(['read:list', 'insert:comment'])]
     #[Assert\NotNull(message: 'Un message est requis.')]
@@ -77,10 +75,10 @@ class Comment
 
     #[ORM\ManyToOne(targetEntity: Actuality::class, inversedBy: 'comments')]
     private $actuality;
-    
+
     #[ORM\ManyToOne(targetEntity: Guide::class, inversedBy: 'comments')]
     private $guide;
-    
+
     #[ORM\ManyToOne(targetEntity: Tournament::class, inversedBy: 'comments')]
     private $tournament;
 
@@ -317,7 +315,7 @@ class Comment
 
         return $this;
     }
-    
+
     public function getTeam(): ?Team
     {
         return $this->team;
@@ -350,7 +348,7 @@ class Comment
         $this->guide = $guide;
         return $this;
     }
-    
+
     public function getTournament(): ?Tournament
     {
         return $this->tournament;

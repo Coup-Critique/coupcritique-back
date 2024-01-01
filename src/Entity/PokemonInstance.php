@@ -4,18 +4,15 @@ namespace App\Entity;
 
 use App\Repository\PokemonInstanceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
-// TODO remettre ce constraint en place quand import Learns fonctionnera de nouveau
-/**
- * @CustomAssert\InstancePokemonConstraint
- * @CustomAssert\InstanceAbilityConstraint
- * @CustomAssert\InstanceNatureConstraint
- * @CustomAssert\InstanceItemConstraint)
- * @CustomAssert\InstanceMoveConstraint
- */
+#[CustomAssert\InstancePokemonConstraint]
+#[CustomAssert\InstanceAbilityConstraint]
+#[CustomAssert\InstanceNatureConstraint]
+#[CustomAssert\InstanceItemConstraint]
+#[CustomAssert\InstanceMoveConstraint]
 #[ORM\Entity(repositoryClass: PokemonInstanceRepository::class)]
 class PokemonInstance
 {
@@ -149,12 +146,9 @@ class PokemonInstance
     #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $spe_ev;
 
-    /**
-     * Description cannot be required for PokemonSet
-     * @CustomAssert\TextConstraint(
-     *    message="Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
-     * )
-     */
+    #[CustomAssert\TextConstraint(
+        message: "Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
+    )]
     #[ORM\Column(type: 'text', nullable: true, length: 5000)]
     #[Groups(['read:team', 'insert:team', 'update:team'])]
     #[Assert\Length(max: 5000, maxMessage: 'La description peut faire au maximum 5000 caractères.')]

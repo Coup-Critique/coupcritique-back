@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\GenProperty;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
@@ -14,41 +14,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Item
 {
 	use GenProperty;
+
 	#[ORM\Id]
- #[ORM\GeneratedValue]
- #[ORM\Column(type: 'integer')]
- #[Groups('join')]
- #[Groups(['read:item', 'read:list', 'read:team', 'insert:team', 'read:usage'])]
- private $id;
+	#[ORM\GeneratedValue]
+	#[ORM\Column(type: 'integer')]
+	#[Groups(['read:item', 'read:list', 'read:team', 'insert:team', 'read:usage'])]
+	private $id;
 
 	#[ORM\Column(type: 'string', length: 75)]
- #[Groups('join')]
- #[Groups(['read:item', 'read:list', 'read:team', 'read:usage'])]
- private $name;
+	#[Groups(['read:item', 'read:list', 'read:team', 'read:usage'])]
+	private $name;
 
 	#[ORM\Column(type: 'string', length: 75, nullable: true)]
- #[Groups('join')]
- #[Groups(['read:item', 'read:list', 'read:team', 'read:usage'])]
- private $nom;
+	#[Groups(['read:item', 'read:list', 'read:team', 'read:usage'])]
+	private $nom;
 
 	#[ORM\Column(type: 'string', length: 50)]
- #[Groups(['read:item'])]
- private $usageName;
+	#[Groups(['read:item'])]
+	private $usageName;
 
 	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
- #[Groups(['read:item', 'read:own:list', 'read:team', 'read:usage'])]
- #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
- private $description;
-	
+	#[Groups(['read:item', 'read:own:list', 'read:team', 'read:usage'])]
+	#[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
+	private $description;
+
 	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
- private $save_descr;
+	private $save_descr;
 
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $update_date;
-    
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    private $user;
+	#[ORM\Column(type: 'datetime', nullable: true)]
+	private $update_date;
+
+	#[ORM\ManyToOne(targetEntity: User::class)]
+	private $user;
 
 	public function getId(): ?int
 	{
@@ -78,7 +76,7 @@ class Item
 
 		return $this;
 	}
-	
+
 	public function getUsageName(): ?string
 	{
 		return $this->usageName;
@@ -115,27 +113,27 @@ class Item
 		return $this;
 	}
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
+	public function getUser(): ?User
+	{
+		return $this->user;
+	}
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
+	public function setUser(?User $user): self
+	{
+		$this->user = $user;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getUpdateDate(): ?\DateTimeInterface
-    {
-        return $this->update_date;
-    }
+	public function getUpdateDate(): ?\DateTimeInterface
+	{
+		return $this->update_date;
+	}
 
-    public function setUpdateDate(?\DateTimeInterface $update_date): self
-    {
-        $this->update_date = $update_date;
+	public function setUpdateDate(?\DateTimeInterface $update_date): self
+	{
+		$this->update_date = $update_date;
 
-        return $this;
-    }
+		return $this;
+	}
 }

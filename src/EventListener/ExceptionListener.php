@@ -30,11 +30,11 @@ class ExceptionListener
          * through the error page.
          */
         if ($this->kernel->getEnvironment() !== 'prod') {
-            return null;
+            return;
         }
 
         if (!$this->isApiRequest($request)) {
-            return null;
+            return;
         }
 
         $infos = [$request->getRequestUri(), $this->getStatusCode($exception), $exception->getMessage()];

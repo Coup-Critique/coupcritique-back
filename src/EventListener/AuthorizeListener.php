@@ -16,7 +16,8 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  * 
  */
 
-class AuthorizeListener {
+class AuthorizeListener
+{
 
     /**
      * In order to use both basic auth and jwt auth
@@ -35,7 +36,8 @@ class AuthorizeListener {
     {
         /** @var HeaderBag $headers */
         $headers = $event->getRequest()->headers;
-        if($headers->has("jwtauthorization"))
-            $headers->set("authorization",$headers->get("jwtauthorization"));
+        if ($headers->has("jwtauthorization")) {
+            $headers->set("authorization", $headers->get("jwtauthorization"));
+        }
     }
 }

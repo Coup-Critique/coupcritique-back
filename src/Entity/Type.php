@@ -7,7 +7,7 @@ use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
@@ -18,29 +18,29 @@ class Type
 	use GenProperty;
 
 	#[ORM\Id]
- #[ORM\GeneratedValue]
- #[ORM\Column(type: 'integer')]
- #[Groups(['read:list', 'read:type', 'read:name', 'read:list:usage', 'read:usage', 'read:pokemon', 'read:team', 'read:weakness', 'insert:team'])]
- private $id;
+	#[ORM\GeneratedValue]
+	#[ORM\Column(type: 'integer')]
+	#[Groups(['read:list', 'read:type', 'read:name', 'read:list:usage', 'read:usage', 'read:pokemon', 'read:team', 'read:weakness', 'insert:team'])]
+	private $id;
 
 	#[ORM\Column(type: 'string', length: 10)]
- #[Groups(['read:list', 'read:type', 'read:name', 'read:list:usage', 'read:usage', 'read:pokemon', 'read:team', 'read:weakness'])]
- private $name;
+	#[Groups(['read:list', 'read:type', 'read:name', 'read:list:usage', 'read:usage', 'read:pokemon', 'read:team', 'read:weakness'])]
+	private $name;
 
 	#[ORM\Column(type: 'string', length: 10, nullable: true)]
- #[Groups(['read:list', 'read:type', 'read:name', 'read:list:usage', 'read:usage', 'read:pokemon', 'read:team', 'read:weakness'])]
- private $nom;
+	#[Groups(['read:list', 'read:type', 'read:name', 'read:list:usage', 'read:usage', 'read:pokemon', 'read:team', 'read:weakness'])]
+	private $nom;
 
 	#[ORM\Column(type: 'text', length: 3000, nullable: true)]
- #[Groups(['read:type'])]
- #[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
- private $description;
+	#[Groups(['read:type'])]
+	#[Assert\Length(max: 3000, maxMessage: 'La description peut faire au maximum 3000 caractères.')]
+	private $description;
 
 	#[ORM\OneToMany(targetEntity: Weakness::class, mappedBy: 'type_attacker', cascade: ['persist', 'remove'])]
- private $efficiencies;
+	private $efficiencies;
 
 	#[ORM\OneToMany(targetEntity: Weakness::class, mappedBy: 'type_defender', cascade: ['persist', 'remove'])]
- private $weaknesses;
+	private $weaknesses;
 
 	public function __construct()
 	{
@@ -76,7 +76,7 @@ class Type
 
 		return $this;
 	}
-	
+
 	public function getDescription(): ?string
 	{
 		return $this->description;

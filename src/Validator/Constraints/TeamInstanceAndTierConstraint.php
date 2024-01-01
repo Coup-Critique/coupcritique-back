@@ -4,9 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class TeamInstanceAndTierConstraint extends Constraint
 {
     public $unknownTierMessage = "Le tier donné pour l'équipe est inconnu.";

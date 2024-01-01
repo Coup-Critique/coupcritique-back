@@ -6,7 +6,7 @@ use App\Entity\Move;
 use App\Entity\PokemonSet;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[MappedSuperclass]
 abstract class AbstractPokemonSetMove

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 
@@ -28,11 +28,9 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     private $id;
 
-    /**
-     * @CustomAssert\TextConstraint(
-     *    message="Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-     * )
-     */
+    #[CustomAssert\TextConstraint(
+        message: "Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
+    )]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(['read:user', 'insert:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     #[Assert\Length(max: 180, maxMessage: 'Le nom utilisateur peut faire au maximum 180 caractères.')]
@@ -51,7 +49,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private bool $is_modo = false;
-    
+
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $is_tiper;

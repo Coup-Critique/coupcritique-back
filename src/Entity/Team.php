@@ -7,14 +7,12 @@ use App\Entity\Interfaces\CommentParentInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
-/**
- * @CustomAssert\TeamInstanceAndTierConstraint
- * @CustomAssert\TeamTagConstraint
- */
+#[CustomAssert\TeamInstanceAndTierConstraint]
+#[CustomAssert\TeamTagConstraint]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team implements CommentParentInterface
 {
@@ -29,22 +27,18 @@ class Team implements CommentParentInterface
     #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $user;
 
-    /**
-     * @CustomAssert\TextConstraint(
-     *    message="Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-     * )
-     */
+    #[CustomAssert\TextConstraint(
+        message: "Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
+    )]
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
     #[Assert\NotNull(message: "Le nom de l'équipe est requis")]
     #[Assert\Length(max: 50, maxMessage: "Le nom de l'équipe peut faire au maximum 50 caractères.")]
     private $name;
 
-    /**
-     * @CustomAssert\TextConstraint(
-     *    message="Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
-     * )
-     */
+    #[CustomAssert\TextConstraint(
+        message: "Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
+    )]
     #[ORM\Column(type: 'text', length: 5000, nullable: true)]
     #[Groups(['read:team', 'insert:team', 'update:team'])]
     #[Assert\NotNull(message: 'La description est requise')]
@@ -143,9 +137,7 @@ class Team implements CommentParentInterface
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'team', cascade: ['persist', 'remove'])]
     private $comments;
 
-    /**
-     * @CustomAssert\GenConstraint()
-     */
+    #[CustomAssert\GenConstraint()]
     #[ORM\Column(type: 'smallint')]
     #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team'])]
     #[Assert\NotNull(message: 'La génération est requise.')]
@@ -168,7 +160,7 @@ class Team implements CommentParentInterface
     {
         return $this->user;
     }
-    
+
     public function setUser(?User $user): self
     {
         $this->user = $user;

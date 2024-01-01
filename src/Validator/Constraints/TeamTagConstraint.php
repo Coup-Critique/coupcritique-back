@@ -4,9 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class TeamTagConstraint extends Constraint
 {
     public $missingRightsMessage = "Le tag {{ pokemon }} n'est pas disponible pour vous.";
