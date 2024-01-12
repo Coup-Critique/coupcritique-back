@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\MessageableInterface;
 use App\Repository\PokemonSetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +10,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
+#[ORM\HasLifecycleCallbacks]
 #[CustomAssert\PokemonSetTierConstraint]
 #[ORM\Entity(repositoryClass: PokemonSetRepository::class)]
 class PokemonSet

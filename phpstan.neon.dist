@@ -7,7 +7,9 @@ parameters:
         - src/
         - tests/
     ignoreErrors:
+        - '#Property [a-zA-Z0-9\\_]+::$id is never written, only read#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::denormalize\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::normalize\(\)#'
-        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface::[a-zA-Z0-9\\_]+()#'
-        - '#Call to an undefined method Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository::[a-zA-Z0-9\\_]+()#'
+        - '#Call to an undefined method Doctrine\\ORM\\EntityRepository\<object\>::find(One)*By[a-zA-Z0-9_-]+()#'
+        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface::[a-zA-Z0-9_-]+()#'
+        - '#Call to an undefined method Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository::[a-zA-Z0-9_-]+()#'

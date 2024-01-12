@@ -24,6 +24,12 @@ class SiteController extends AbstractController
 {
     private string $hostname = '';
 
+    #[Route(path: '/api', name: 'api_home')]
+    public function apiHome(): Response
+    {
+        return $this->render('base.html.twig');
+    }
+
     #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
     public function sitemap(
         Request $request,
@@ -83,7 +89,7 @@ class SiteController extends AbstractController
         ];
 
         $topTeam = $teamRepository->getLastTopWeek();
-        if (!is_null($topTeam)) {
+        if ($topTeam != null) {
             $urls[] = [
                 'loc' => $this->generateUrl('home') . 'entity/teams/top',
                 'lastmod' => $topTeam->getDateCreation()->format('Y-m-d'),

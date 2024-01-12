@@ -4,59 +4,42 @@ namespace App\Normalizer;
 
 use App\Service\GenRequestManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
-use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+
 
 /**
  * Entity normalizer
  */
-class FindByNameNormalizer extends ObjectNormalizer
+class FindByNameNormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
+    use DenormalizerAwareTrait;
+
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected GenRequestManager $genRequestManager,
-        ClassMetadataFactoryInterface $classMetadataFactory = null,
-        NameConverterInterface $nameConverter = null,
-        PropertyAccessorInterface $propertyAccessor = null,
-        PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-        ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
-        callable $objectClassResolver = null,
-        array $defaultContext = []
+        protected readonly EntityManagerInterface $em,
+        protected readonly GenRequestManager $genRequestManager,
     ) {
-        parent::__construct(
-            $classMetadataFactory,
-            $nameConverter,
-            $propertyAccessor,
-            $propertyTypeExtractor,
-            $classDiscriminatorResolver,
-            $objectClassResolver,
-            $defaultContext
-        );
+    }
+
+    /** {@inheritdoc} */
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['object' => true];
     }
 
     /**
      * Use this normalizer as Denormalizer if $data is an array that contain a key 'id'
      * And represents a Entity : $type contains 'App\Entity\'
      */
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsDenormalization($data, $type, string $format = null): bool
+    /** {@inheritdoc} */
+    public function supportsDenormalization(mixed $data, string $class, string $format = null, array $context = []): bool
     {
-        return str_starts_with($type, 'App\\Entity\\') && is_string($data);
+        return str_starts_with($class, 'App\\Entity\\') && is_string($data);
     }
 
-    /**
-     * {@inheritdoc}
-     * 
-     * @return mixed
-     * `: mixed` exists in PHP 8
-     */
-    public function denormalize($data, $class, string $format = null, array $context = [])
+    /** {@inheritdoc} */
+    public function denormalize(mixed $data, string $class, string $format = null, array $context = []): mixed
     {
         if (!empty($data)) {
             $reflectionClass = new \ReflectionClass($class);
@@ -73,7 +56,6 @@ class FindByNameNormalizer extends ObjectNormalizer
                 if (!empty($entity)) return $entity;
             }
         }
-        // Use normal traitment
-        return parent::denormalize($data, $class, $format, $context);
+        return $this->denormalizer->denormalize($data, $class, $format, $context);
     }
 }

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\EventSubscriber\Abstracts;
+namespace App\EventListener\EntityListener\Abstracts;
 
 use App\DTO\Message\AbstractMessage;
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Bundle\SecurityBundle\Security;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\ChatterInterface;
 use Symfony\Component\Notifier\Message\ChatMessage;
 
-abstract class AbstractMessengerSubscriber implements EventSubscriberInterface
+abstract class AbstractMessengerListener
 {
     final public const STR_LEN_COMPARISON = 100;
     protected ?Request $request;
@@ -34,12 +34,9 @@ abstract class AbstractMessengerSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /** @return mixed */
-    abstract protected function getEntity(LifecycleEventArgs $args);
+    // abstract public function postPersist(): void;
 
-    abstract public function postPersist(LifecycleEventArgs $args): void;
-
-    abstract public function preUpdate(PreUpdateEventArgs $args): void;
+    // abstract public function preUpdate(): void;
 
     protected function sendChatMessage(AbstractMessage $message): void
     {

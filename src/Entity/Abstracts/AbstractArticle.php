@@ -5,7 +5,6 @@ namespace App\Entity\Abstracts;
 use App\Entity\User;
 use App\Validator\Constraints as CustomAssert;
 use App\Entity\Interfaces\CommentParentInterface;
-use App\Repository\Abstracts\AbstractArticleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
@@ -13,6 +12,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MappedSuperclass]
+#[ORM\HasLifecycleCallbacks]
 abstract class AbstractArticle implements CommentParentInterface
 {
     #[ORM\Id]
@@ -26,9 +26,7 @@ abstract class AbstractArticle implements CommentParentInterface
     #[Assert\Length(max: 255, maxMessage: 'Le titre peut faire au maximum 255 caractères.')]
     protected $title;
 
-    #[CustomAssert\HtmlTagConstraint(
-        message: "Le contenu de cette description n'est pas acceptable pour des contraintes de sécurité, car il contient les termes suivants : {{ banTags }}."
-    )]
+    #[CustomAssert\HtmlTagConstraint()]
     #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['read:article'])]
     #[Assert\Length(max: 50000, maxMessage: 'La description peut faire au maximum 20000 caractères.')]
