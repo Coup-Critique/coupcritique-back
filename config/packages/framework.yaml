@@ -1,15 +1,17 @@
 framework:
-
     property_info:
         enabled: true
 
-    secret: '%env(APP_SECRET)%'
+    secret: "%env(APP_SECRET)%"
     #csrf_protection: true
     http_method_override: true
     handle_all_throwables: true
 
     annotations:
         enabled: false
+
+    serializer:
+        circular_reference_handler: 'App\Serializer\CircularReferenceHandler'
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
@@ -22,7 +24,7 @@ framework:
     #fragments: true
     php_errors:
         log: true
-        
+
 when@test:
     framework:
         test: true

@@ -3,10 +3,11 @@
 namespace App\Normalizer;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class EntityNormalizer implements DenormalizerInterface
+class EntityNormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
 	use DenormalizerAwareTrait;
 
