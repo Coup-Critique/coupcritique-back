@@ -68,7 +68,7 @@ class PokemonController extends AbstractController implements ContributeControll
         $return = $serializer->normalize(
             $return,
             'json',
-            ['groups' => 'read:pokemon']
+            ['groups' => ['read:pokemon', 'read:usage']]
         );
 
         $return['gen'] = $pokemon->getGen();
