@@ -50,13 +50,7 @@ class TierRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    /**
-     * @override Trait's methode
-     * @param string $value 
-     * @param string|int $gen 
-     * @return Tier|null
-     */
-    public function findOneByNameAndGen($value, $gen)
+    public function findOneByNameAndGen($value, $gen): ?Tier
     {
         return $this->createQueryBuilder('t')
             ->where('t.name = :name OR t.shortName = :name')
@@ -68,7 +62,7 @@ class TierRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findOneByTopAndGen($gen, ?array $criteria = null)
+    public function findOneByTopAndGen($gen, ?array $criteria = null): ?Tier
     {
         $query = $this->createQueryBuilder('t')
             ->andWhere('t.gen = :gen')

@@ -74,7 +74,7 @@ class PokemonSetRepository extends ServiceEntityRepository
 			->addOrderBy('psm4.rank', 'ASC');
 	}
 
-	public function findOneById($id)
+	public function findOneById($id): ?PokemonSet
 	{
 		return $this->baseQuery()
 			->where('ps.id = :id')
@@ -88,7 +88,7 @@ class PokemonSetRepository extends ServiceEntityRepository
 	 *
 	 * Custom for double join select
 	 */
-	public function findByPokemon(Pokemon $pokemon)
+	public function findByPokemon(Pokemon $pokemon): array
 	{
 		return $this->baseQuery()
 			->addSelect(['-t.sortOrder AS HIDDEN inverse_order'])

@@ -108,14 +108,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return $query->getQuery()->getResult();
 	}
 
-	public function search(string $username, int $limit = null): array
+	public function search(string $username, int $limit = null, bool $isModo = false): array
 	{
 		$statement = $this->createQueryBuilder('u')
-			->where('u.username LIKE :username')
-			->orWhere('u.discord_name LIKE :username')
-			->orWhere('u.showdown_name LIKE :username')
+			->where('(u.username LIKE :username OR u.discord_name LIKE :username OR u.showdown_name LIKE :username)')
 			->setParameter('username', "%$username%")
 			->orderBy('u.username', 'ASC');
+
+		if (!$isModo) {
+			$statement
+				->andWhere("u.deleted = 0 OR u.deleted IS NULL")
+				->andWhere("u.banned = 0 OR u.banned IS NULL");
+		}
 
 		if (!is_null($limit)) $statement->setMaxResults($limit);
 

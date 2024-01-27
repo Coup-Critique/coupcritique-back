@@ -27,9 +27,7 @@ class CommentRepository extends ServiceEntityRepository
     {
         $comment->setDateCreation(new \DateTime());
         $this->_em->persist($comment);
-        if ($flush) {
-            $this->_em->flush();
-        }
+        if ($flush) $this->_em->flush();
         return $comment;
     }
 
@@ -40,11 +38,10 @@ class CommentRepository extends ServiceEntityRepository
         return $comment;
     }
 
-    public function delete(Comment $comment): Comment
+    public function delete(Comment $comment, bool $flush = true): Comment
     {
         $comment->setDeleted(new \DateTime());
-        $this->_em->persist($comment);
-        $this->_em->flush();
+        if ($flush) $this->_em->flush();
         return $comment;
     }
 

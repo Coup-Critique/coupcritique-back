@@ -18,4 +18,11 @@ class VoteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Vote::class);
     }
+
+    public function delete(Vote $vote, bool $flush = true): Vote
+    {
+        $this->_em->remove($vote);
+        if ($flush) $this->_em->flush();
+        return $vote;
+    }
 }

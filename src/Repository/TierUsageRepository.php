@@ -47,7 +47,7 @@ class TierUsageRepository extends ServiceEntityRepository
 		$this->_em->flush();
 	}
 
-	public function findOne($tierUsage)
+	public function findOne($tierUsage): ?TierUsage
 	{
 		return $this->createQueryBuilder('u')
 			->addSelect(['t', 'ua', 'a', 'ui', 'i', 'us', 'n', 'um', 'm', 'ty', 'tm', 'p1' /* , 'pc', 'p2' */])
@@ -71,10 +71,6 @@ class TierUsageRepository extends ServiceEntityRepository
 			->getOneOrNullResult();
 	}
 
-	/**
-	 * @param Pokemon|int $pokemon | $pokemonId
-	 * @return array
-	 */
 	public function findByPokemon($pokemon)
 	{
 		return $this->createQueryBuilder('u')
@@ -92,7 +88,7 @@ class TierUsageRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
-	public function findOneByFirstRank(Tier $tier)
+	public function findOneByFirstRank(Tier $tier): ?TierUsage
 	{
 		return $this->createQueryBuilder('u')
 			->addSelect(['u', 'p'])

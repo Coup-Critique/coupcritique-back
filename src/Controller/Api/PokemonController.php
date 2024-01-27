@@ -114,7 +114,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    public function findOneByNameDecreaseGenLoop(Pokemon $pokemon)
+    public function findOneByNameDecreaseGenLoop(Pokemon $pokemon): Pokemon
     {
         $gen = GenRequestManager::getLastGen();
         while (

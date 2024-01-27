@@ -19,7 +19,7 @@ class PokemonInstanceRepository extends ServiceEntityRepository
 		parent::__construct($registry, PokemonInstance::class);
 	}
 
-	public function findOne($id): PokemonInstance
+	public function findOne($id): ?PokemonInstance
 	{
 		return $this->createQueryBuilder('i')
 			->addSelect([

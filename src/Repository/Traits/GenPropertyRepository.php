@@ -23,12 +23,6 @@ trait GenPropertyRepository
             ->getResult();
     }
 
-    /**
-     * Returns the element for a specified gen
-     * @param string $value Element's name 
-     * @param string|int $gen
-     * @return mixed|null 
-     */
     public function findOneByNameAndGen(string $value, $gen)
     {
         $query = $this->createQueryBuilder('e')

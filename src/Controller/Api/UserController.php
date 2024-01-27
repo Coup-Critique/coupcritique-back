@@ -9,6 +9,7 @@ use App\Repository\PasswordTokenRenewRepository;
 use App\Repository\CommentRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
+use App\Repository\VoteRepository;
 use App\Service\ErrorManager;
 use App\Service\FileManager;
 use App\Service\HistoryManager;
@@ -261,8 +262,12 @@ class UserController extends AbstractController
 
 	#[IsGranted('ROLE_MODO')]
 	#[Route(path: '/users/ban/{id}', name: 'ban_user', methods: ['PUT'])]
-	public function banUser($id, HistoryManager $historyManager)
-	{
+	public function banUser(
+		$id,
+		HistoryManager $historyManager,
+		CommentRepository $commentRepo,
+		VoteRepository $voteRepo
+	) {
 		$user = $this->repo->find($id);
 
 		if (empty($user)) {
@@ -275,6 +280,18 @@ class UserController extends AbstractController
 			$user->getBanned() ? 'bannis' : 'débannis',
 			$this->getUser()
 		);
+
+		if ($user->getBanned()) {
+			$comments = $commentRepo->findByUser($user);
+			foreach ($comments as $comment) {
+				$commentRepo->delete($comment, false);
+			}
+			$votes = $voteRepo->findByUser($user);
+			foreach ($votes as $vote) {
+				$voteRepo->delete($vote, false);
+			}
+		}
+
 		$user = $this->repo->update($user);
 
 		return new JsonResponse(
@@ -402,9 +419,9 @@ class UserController extends AbstractController
 
 	#[Route(path: '/users/search/{username}', name: 'search_username', methods: ['GET'])]
 	#[Route(path: '/users/search/{username}/{limit}', name: 'search_username_previews', methods: ['GET'])]
-	public function searchUser($username, Request $request, $limit = null)
+	public function searchUser($username, ?int $limit = null)
 	{
-		$users = $this->repo->search($username, $limit);
+		$users = $this->repo->search($username, $limit, $this->getUser() && $this->getUser()->getIsModo());
 
 		return $this->json(
 			['users' => $users],
