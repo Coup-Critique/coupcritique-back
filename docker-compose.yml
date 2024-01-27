@@ -12,12 +12,12 @@ services:
                            GID: ${GID:-1000}
                            UNAME: ${UNAME:-devcoupcrd}
            volumes:
-                - .:/home/devcoupcrd/coupcritique
-           working_dir: /home/devcoupcrd/coupcritique
+                - .:/home/devcoupcrd/coupcritique-back
+           working_dir: /home/devcoupcrd/coupcritique-back
            extra_hosts:
              - host.docker.internal:host-gateway
            environment:
-             PHP_IDE_CONFIG: "serverName=coupcritique-docker"
+             PHP_IDE_CONFIG: "serverName=coupcritique-back-docker"
              XDEBUG_MODE: "debug"
              XDEBUG_CONFIG: >-
                 idekey=PHPSTORM
@@ -34,30 +34,15 @@ services:
           ports:
             - ${SERVER_HOST_PORT:-7800}:80
 
-        node:
-           user: ${UNAME:-devcoupcrd}
-           build:
-                   context: .
-                   dockerfile: ./docker/node.Dockerfile
-                   args:
-                     UID: ${UID:-1000}
-                     GID: ${GID:-1000}
-                     UNAME: ${UNAME:-devcoupcrd}
-           volumes:
-             - .:/home/devcoupcrd/coupcritique
-           environment:
-             ENV: ${ENV:-dev} # for yarn compilation
-           working_dir: /home/devcoupcrd/coupcritique
-
         db:
            image: mariadb:latest
            volumes:
-                - coupcritique_data:/var/lib/mysql
+                - coupcritique_back_data:/var/lib/mysql
            ports:
                 - ${MARIADB_PORT:-8336}:3306
            environment:
                    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
-                   MYSQL_DATABASE: ${MYSQL_DATABASE:-coupcritique}
+                   MYSQL_DATABASE: ${MYSQL_DATABASE:-coupcritique_back}
 
         adminer:
            image: adminer
@@ -88,5 +73,5 @@ services:
            image: redis:7.0.7
 
 volumes:
-        coupcritique_data:
+        coupcritique_back_data:
         matomo:
