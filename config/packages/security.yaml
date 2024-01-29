@@ -10,7 +10,7 @@ security:
       entity:
         class: App\Entity\User
         property: username
-    # used to reload user from session & other features (e.g. switch_user)
+
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -25,6 +25,9 @@ security:
         check_path: /api/login
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
+      login_throttling:
+        max_attempts: 5
+        interval: "15 minutes"
 
     api_token_refresh:
       pattern: ^/api/token/refresh
@@ -55,23 +58,28 @@ security:
     test:
       stateless: true
       pattern: ^/api/(test|refresh-token)
+      jwt: ~
 
     own_user:
       stateless: true
       pattern: ^/api/own-user
+      jwt: ~
 
     notifications:
       stateless: true
       pattern: ^/api/notifications
+      jwt: ~
 
     teams:
       stateless: true
       pattern: ^/api/teams/favorite
+      jwt: ~
 
     user_check:
       stateless: true
       pattern: ^/api/(teams|users|comments)
       methods: [GET]
+      jwt: ~
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -86,6 +94,10 @@ security:
   access_control:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+    - { path: ^/api/test, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/own-user, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/notifications, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/teams/favorite, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/pokemons, methods: [POST, PUT, DELETE], roles: ROLE_MODO }
     - {
         path: ^/api/pokemon_set,
