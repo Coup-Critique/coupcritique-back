@@ -26,7 +26,7 @@ git clone git@github.com:GeoDaz/coupcritique
 
 <h3 id="local-requirements">Requirements</h3>
 
-- PHP 7.4
+- PHP 8.2
 - PHPCSFixer executable (must be installed if you want to use it)
 - MariaDB 10.2
 - Composer

@@ -1,0 +1,328 @@
+App\Entity\Pokemon:
+  pokemon (template):
+    name: <name()>
+    usageName: <usageName(name())> 
+    tier: '@untiered_<current()>'
+    technically: 0
+    pokedex: <pokedex()>
+    gen: <current()>
+    deleted: false
+
+  bulbasaur (template, extends pokemon):
+    name: 'bulbasaur'
+    nom: 'Bulbizarre'
+    type_1: '@grass_<current()>'
+    type_2: '@poison_<current()>'
+    tier: '@lc_<current()>'
+    hp: 45
+    atk: 49
+    def: 49
+    spa: 65
+    spd: 65
+    spe: 45
+    weight: 69
+    pokedex: 1
+
+  bulbasaur_{1..2} (extends bulbasaur):
+    ability_1: '@noability_<current()>'
+
+  bulbasaur_{3..4} (extends bulbasaur):
+    ability_1: '@overgrow_<current()>'
+
+  bulbasaur_{5..9} (extends bulbasaur):
+    ability_1: '@overgrow_<current()>'
+    ability_hidden: '@chlorophyll_<current()>'
+  
+  ivysaur (template, extends pokemon):
+    name: 'Ivysaur'
+    nom: 'Herbizarre'
+    type_1: '@grass_<current()>'
+    type_2: '@poison_<current()>'
+    hp: 60
+    atk: 62
+    def: 63
+    spa: 80
+    spd: 80
+    spe: 60
+    weight: 130
+    pokedex: 2
+    preEvo: '@bulbasaur_<current()>'
+  
+  ivysaur_{1..2} (extends ivysaur):
+    ability_1: '@noability_<current()>'
+
+  ivysaur_{3..4} (extends ivysaur):
+    ability_1: '@overgrow_<current()>'
+
+  ivysaur_{5..9} (extends ivysaur):
+    ability_1: '@overgrow_<current()>'
+    ability_hidden: '@chlorophyll_<current()>'
+ 
+  venusaur (template, extends pokemon):
+    name: 'Venusaur'
+    nom: 'Florizarre'
+    type_1: '@grass_<current()>'
+    type_2: '@poison_<current()>'
+    hp: 80
+    atk: 82
+    def: 83
+    spa: 100
+    spd: 100
+    spe: 80
+    weight: 1000
+    pokedex: 3
+    preEvo: '@ivysaur_<current()>'
+
+  venusaur_{1..2} (extends venusaur):
+    ability_1: '@noability_<current()>'
+
+  venusaur_{3..4} (extends venusaur):
+    ability_1: '@overgrow_<current()>'
+
+  venusaur_{5..9} (extends venusaur):
+    ability_hidden: '@chlorophyll_<current()>'
+
+  megavenusaur_{6..9} (extends pokemon):
+    name: 'Venusaur-Mega'
+    nom: 'Méga Florizarre'
+    type_1: '@grass_<current()>'
+    type_2: '@poison_<current()>'
+    ability_1: '@overgrow_<current()>'
+    ability_hidden: '@chlorophyll_<current()>'
+    hp: 80
+    atk: 100
+    def: 123
+    spa: 122
+    spd: 120
+    spe: 80
+    weight: 1555
+    pokedex: 3
+    base_form: '@venusaur_<current()>'
+
+  venusaurgmax_{8..9} (extends pokemon):
+    name: 'Venusaur-Gmax'
+    nom: 'Florizarre Gigamax'
+    type_1: '@grass_<current()>'
+    type_2: '@poison_<current()>'
+    ability_1: '@overgrow_<current()>'
+    ability_hidden: '@chlorophyll_<current()>'
+    hp: 80
+    atk: 82
+    def: 83
+    spa: 100
+    spd: 100
+    spe: 80
+    weight: 0
+    pokedex: 3
+    base_form: '@venusaur_<current()>'
+
+  charmander (template, extends pokemon):
+    name: 'charmander'
+    nom: 'Salamèche'
+    type_1: '@fire_<current()>'
+    tier: '@lc_<current()>'
+    hp: 39
+    atk: 52
+    def: 43
+    spa: 60
+    spd: 50
+    spe: 65
+    weight: 85
+    pokedex: 4
+
+  charmander_{1..2} (extends charmander):
+    ability_1: '@noability_<current()>'
+
+  charmander_{3..4} (extends charmander):
+    ability_1: '@blaze_<current()>'
+  
+  charmander_{5..9} (extends charmander):
+    ability_hidden: '@solarpower_<current()>'
+
+  charmeleon (template, extends pokemon):
+    name: 'charmeleon'
+    nom: 'Reptincel'
+    type_1: '@fire_<current()>'
+    hp: 58
+    atk: 64
+    def: 58
+    spa: 80
+    spd: 65
+    spe: 80
+    weight: 190
+    pokedex: 5
+    preEvo: '@charmander_<current()>'
+
+  charmeleon_{1..2} (extends charmeleon):
+    ability_1: '@noability_<current()>'
+  
+  charmeleon_{3..4} (extends charmeleon):
+    ability_1: '@blaze_<current()>'
+  
+  charmeleon_{5..9} (extends charmeleon):
+    ability_hidden: '@solarpower_<current()>'
+
+  charizard (template, extends pokemon):
+    name: 'Charizard'
+    nom: 'Dracaufeu'
+    type_1: '@fire_<current()>'
+    type_2: '@flying_<current()>'
+    tier: '@nu_<current()>'
+    hp: 78
+    atk: 84
+    def: 78
+    spa: 109
+    spd: 85
+    spe: 100
+    weight: 905
+    pokedex: 6
+    preEvo: '@charmeleon_<current()>'
+
+  charizard_{1..2} (extends charizard):
+    ability_1: '@noability_<current()>'
+  
+  charizard_{3..4} (extends charizard):
+    ability_1: '@blaze_<current()>'
+  
+  charizard_{5..9} (extends charizard):
+    ability_hidden: '@solarpower_<current()>'
+
+  charizardmegax_{6..9} (extends charizard):
+    name: 'Charizard-Mega-X'
+    nom: 'Méga Dracaufeu X'
+    type_2: '@dragon_<current()>'
+    ability_1: '@toughclaws_<current()>'
+    base_form: '@charizard_<current()>'
+    hp: 78
+    atk: 130
+    def: 111
+    spa: 130
+    spd: 85
+    spe: 100
+    weight: 1105
+    pokedex: 6
+
+  charizardmegay_{6..9} (extends charizard):
+    name: 'Charizard-Mega-Y'
+    nom: 'Méga Dracaufeu Y'
+    ability_1: '@drought_<current()>'
+    base_form: '@charizard_<current()>'
+    hp: 78
+    atk: 104
+    def: 78
+    spa: 159
+    spd: 115
+    spe: 100
+    weight: 1005
+    pokedex: 6
+
+  charizardgmax_{8..9} (extends charizard):
+    name: 'Charizard-Gmax'
+    nom: 'Dracaufeu Gigamax'
+    ability_1: '@drought_<current()>'
+    base_form: '@charizard_<current()>'
+    hp: 78
+    atk: 104
+    def: 78
+    spa: 159
+    spd: 115
+    spe: 100
+    weight: 1005
+    pokedex: 6
+
+  squirtle (template, extends pokemon):
+    name: 'Squirtle'
+    nom: 'Carapuce'
+    type_1: '@water_<current()>'
+    tier: '@lc_<current()>'
+    hp: 44
+    atk: 48
+    def: 65
+    spa: 50
+    spd: 64
+    spe: 43
+    weight: 90
+    pokedex: 7
+
+  squirtle_{1..2} (extends squirtle):
+    ability_1: '@noability_<current()>'
+
+  squirtle_{3..4} (extends squirtle):
+    ability_1: '@torrent_<current()>'
+
+  squirtle_{5..9} (extends squirtle):
+    ability_hidden: '@raindish_<current()>'
+
+  wartortle (template, extends pokemon):
+    name: 'Wartortle'
+    nom: 'Carabaffe'
+    type_1: '@water_<current()>'
+    hp: 59
+    atk: 63
+    def: 80
+    spa: 65
+    spd: 80
+    spe: 58
+    weight: 225
+    preEvo: '@squirtle_<current()>'
+    pokedex: 8
+
+  wartortle_{1..2} (extends wartortle):
+    ability_1: '@noability_<current()>'
+
+  wartortle_{3..4} (extends wartortle):
+    ability_1: '@torrent_<current()>'
+
+  wartortle_{5..9} (extends wartortle):
+    ability_hidden: '@raindish_<current()>'
+
+  blastoise (template, extends pokemon):
+    name: 'Blastoise'
+    nom: 'Tortank'
+    type_1: '@water_<current()>'
+    hp: 79
+    atk: 83
+    def: 100
+    spa: 85
+    spd: 105
+    spe: 78
+    weight: 855
+    pokedex: 9
+    preEvo: '@wartortle_<current()>'
+
+  blastoise_{1..2} (extends blastoise):
+    ability_1: '@noability_<current()>'
+
+  blastoise_{3..4} (extends blastoise):
+    ability_1: '@torrent_<current()>'
+
+  blastoise_{5..9} (extends blastoise):
+    ability_hidden: '@raindish_<current()>'
+
+  blastoisemega_{6..9} (extends blastoise):
+    name: 'Blastoise-Mega'
+    nom: 'Méga Tortank'
+    ability_1: '@megalauncher_<current()>'
+    base_form: '@blastoise_<current()>'
+    hp: 79
+    atk: 103
+    def: 120
+    spa: 135
+    spd: 115
+    spe: 78
+    weight: 1011
+    pokedex: 9
+  
+  blastoisegmax_{8..9} (extends blastoise):
+    name: 'Blastoise-Gmax'
+    nom: 'Tortank Gigamax'
+    ability_1: '@torrent_<current()>'
+    base_form: '@blastoise_<current()>'
+    hp: 79
+    atk: 103
+    def: 120
+    spa: 135
+    spd: 115
+    spe: 78
+    weight: 0
+    pokedex: 9 

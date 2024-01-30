@@ -1,0 +1,108 @@
+App\Entity\Type:
+  bug_{1..9}:
+   name: Bug
+   nom: Insecte
+   gen: <current()>
+   description: NULL
+  
+  dark_{2..9}:
+   name: Dark
+   nom: Ténèbres
+   gen: <current()>
+   description: Les Pokémon de ce type sont immunisés capacités de statut lancée par un Pokémon ayant le talent Farceur.
+
+  dragon_{1..9}:
+   name: Dragon
+   nom: Dragon
+   gen: <current()>
+   description: NULL
+
+  electric_{1..9}:
+   name: Electric
+   nom: Électrik
+   gen: <current()>
+   description: Les Pokémon de ce type ne peuvent pas être paralysés.
+  
+  fairy_{6..9}:
+   name: Fairy
+   nom: Fée
+   gen: <current()>
+   description: NULL
+
+  fighting_{1..9}:
+   name: Fighting
+   nom: Combat
+   gen: <current()>
+   description: NULL
+
+  flying_{1..9}:
+   name: Flying
+   nom: Vol
+   gen: <current()>
+   description: NULL
+  
+  ghost_{1..9}:
+   name: Ghost
+   nom: Spectre
+   gen: <current()>
+   description: NULL
+
+  grass_{1..9}:
+   name: Grass
+   nom: Plante
+   gen: <current()>
+   description: Les Pokémon de ce type sont immunisés aux poudres, aux spores ainsi qu'à Vampigraine et au talent Pose Spore.
+  
+  ground_{1..9}:
+   name: Ground
+   nom: Sol
+   gen: <current()>
+   description: NULL
+
+  ice_{1..9}:
+   name: Ice
+   nom: Glace
+   gen: <current()>
+   description: Les Pokémon de ce type ne peuvent pas être gelés et ne sont pas affectés par la capacité Glaciation.
+  
+  normal_{1..9}:
+   name: Normal
+   nom: Normal
+   gen: <current()>
+   description: NULL
+
+  poison_{1..9}:
+   name: Poison
+   nom: Poison
+   gen: <current()>
+   description: Les Pokémon de ce type ne peuvent pas être empoisonnés sauf avec le talent Corrosion. Ils retirent les Pics Toxic en arrivant sur le terrain. Ces Pokémon ne peuvent pas échouer lorsqu'ils utilisent la capacité Toxic.
+  
+  psychic_{1..9}:
+    name: Psychic
+    nom: Psy
+    gen: <current()>
+    description: NULL
+
+  fire_{1..9}:
+   name: Fire
+   nom: Feu
+   gen: <current()>
+   description: Les Pokémon de ce type ne peuvent pas être brûlés.
+
+  steel_{2..9}:
+   name: Steel
+   nom: Acier
+   gen: <current()>
+   description: Les Pokémon de ce type ne peuvent pas être empoisonnés sauf avec le talent Corrosion
+  
+  water_{1..9}:
+   name: Water
+   nom: Eau
+   gen: <current()>
+   description: NULL
+  
+  rock_{1..9}:
+   name: Rock
+   nom: Roche
+   gen: <current()>
+   description: NULL

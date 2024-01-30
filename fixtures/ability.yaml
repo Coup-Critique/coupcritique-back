@@ -1,0 +1,93 @@
+App\Entity\Ability:
+  ability (template):
+    usageName: '<usageName(name())>'
+
+  noability_{1..9} (extends ability):
+    name: No Ability
+    nom: Pas de talent
+    description: 'Ne fait rien'
+    gen: <current()>
+
+  blaze_{3..9} (extends ability):
+    name: Blaze
+    nom: Brasier
+    description: 'Lorsque ce Pokémon a 1/3 ou moins de ses PVs maximums, arrondis à l’unité inférieure, la puissance de ses attaques de type Feu est multipliée par 1,5 (augmentée de 50%).'
+    gen: <current()>
+
+  chlorophyll_{8..9} (extends ability):
+    name: Chlorophyll
+    nom: Chlorophylle
+    description: 'La Vitesse de ce Pokémon est doublée lorsque le climat actif est Zénith. Ne s’active pas si le Pokémon tient le Parapluie Solide.'
+    gen: <current()>
+
+  chlorophyll_{3..7} (extends ability):
+    name: Chlorophyll
+    nom: Chlorophylle
+    description: 'Si Zenith est actif, la Vitesse de ce Pokémon est doublée.'
+    gen: <current()>
+
+  drought_{3..9} (extends ability):
+    name: Drought
+    nom: Sécheresse
+    description: 'Lorsqu''il arrive sur le terrain, ce Pokémon invoque le Zénith.'
+    gen: <current()>
+
+  megalauncher_{7..7} (extends ability):
+    name: 'Mega Launcher'
+    nom: 'Méga Blaster'
+    description: 'La puissance des capacités aura de ce Pokémon est multipliée par 1,5 (augmentée de 50%). Les capacités concernées sont: Aurasphère, Champlification, Draco-Choc, Onde Originelle, Vibraqua, Vibra Soin, et Vibroscur. Vibra Soin restaure les 3/4 des PVs maximums d''une cible, arrondis à l''unité inférieure.'
+    gen: <current()>
+
+  megalauncher_{8..9} (extends ability):
+    name: 'Mega Launcher'
+    nom: 'Méga Blaster'
+    description: 'La puissance des capacités aura de ce Pokémon est multipliée par 1,5 (augmentée de 50%). Les capacités concernées sont: Aurasphère, Champlification, Draco-Choc, Onde Originelle, Vibraqua, Vibra Soin, et Vibroscur. Vibra Soin restaure les 3/4 des PVs maximums d''une cible, arrondis à l''unité inférieure.'
+    gen: <current()>
+
+  megalauncher_{6..6} (extends ability):
+    name: 'Mega Launcher'
+    nom: 'Méga Blaster'
+    description: 'La puissance des capacités aura de ce Pokémon est multipliée par 1,5 (augmentée de 50%). Les capacités concernées sont: Aurasphère, Draco-Choc, Onde Originelle, Vibraqua, Vibra Soin, et Vibroscur. Vibra Soin restaure les 3/4 des PVs maximums d''une cible, arrondis à l''unité inférieure.'
+    gen: <current()>
+
+  overgrow_{3..9} (extends ability):
+    name: Overgrow
+    nom: Engrais
+    description: 'Lorsque ce Pokémon a 1/3 ou moins de ses PVs maximums, arrondis à l’unité inférieure, la puissance offensive du Pokémon est multipliée par 1,5 (augmentée de 50%) lorsqu’il utilise une attaque de type Plante.'
+    gen: <current()>
+
+  torrent_{3..9} (extends ability):
+      name: Torrent
+      nom: Torrent
+      description: 'Lorsque ce Pokémon a 1/3 ou moins de ses PVs maximums, arrondis à l’unité inférieure, la puissance offensive du Pokémon est multipliée par 1,5 (augmentée de 50%) lorsqu’il utilise une attaque de type Eau.'
+      gen: <current()>
+
+  raindish_{3..7} (extends ability):
+    name: 'Rain Dish'
+    nom: Cuvette
+    description: 'Si Danse Pluie est actif, ce Pokémon restaure 1/16 de ses PVs maximums, arrondis à l''unité inférieure, à la fin de chaque tour.'
+    gen: <current()>
+
+  raindish_{8..9} (extends ability):
+    name: 'Rain Dish'
+    nom: Cuvette
+    description: 'Si Danse Pluie est actif, ce Pokémon restaure 1/16 de ses PVs maximums, arrondis à l''unité inférieure, à la fin de chaque tour. Si ce Pokémon tient Parapluie Solide, ses PVs ne sont pas restaurés.'
+    gen: <current()>
+
+  solarpower_{4..7} (extends ability):
+    name: 'Solar Power'
+    nom: 'Force Soleil'
+    description: 'Si Zénith est actif, l''Attaque Spéciale de ce Pokémon est multipliée par 1,5 (augmentée de 50%) et il perd 1/8 de ses PVs maximums, arrondis à l''unité inférieure, à la fin de chaque tour.'
+    gen: <current()>
+
+  solarpower_{8..9} (extends ability):
+    name: 'Solar Power'
+    nom: 'Force Soleil'
+    description: 'Si Zénith est actif, l''Attaque Spéciale de ce Pokémon est multipliée par 1,5 (augmentée de 50%) et il perd 1/8 de ses PVs maximums, arrondis à l''unité inférieure, à la fin de chaque tour. Si ce Pokémon tient Parapluie Solide, son Attaque Spéciale reste la même et il ne perd pas de PV.'
+    gen: <current()>
+
+  toughclaws_{6..9} (extends ability):
+    name: 'Tough Claws'
+    nom: 'Griffe Dure'
+    description: 'La puissance des attaques de contact de ce Pokémon est multipliée par 1,3 (augmentée de 30%).'
+    gen: <current()>

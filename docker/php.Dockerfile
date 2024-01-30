@@ -5,22 +5,20 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y build-essential
 
-RUN apt-get install -y git libcurl4-openssl-dev libxml2-dev libzip-dev zip unzip
+RUN apt-get install -y git libcurl4-openssl-dev libxml2-dev libzip-dev zip unzip g++
 
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions xdebug gd mysqli pdo pdo_mysql tokenizer curl dom xml ctype zip fileinfo
+
+RUN apt-get install libicu-dev
+
+RUN docker-php-ext-configure intl \
+        && docker-php-ext-install intl
 
 RUN pecl install redis
 
 RUN curl -sS https://getcomposer.org/installer | php -- --version=2.4.0 --install-dir=/usr/local/bin --filename=composer
 
-
-# Installing NodeJS for PhpExecJs
-
-ADD https://nodejs.org/dist/v16.18.1/node-v16.18.1-linux-x64.tar.xz node-v16.18.1-linux-x64.tar.xz
-RUN tar -xf node-v16.18.1-linux-x64.tar.xz
-
-RUN cp -r node-v16.18.1-linux-x64/* /usr/local/
 
 ARG UNAME
 ARG UID
