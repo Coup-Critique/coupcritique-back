@@ -1,0 +1,41 @@
+name: Deployment to review environment
+on: 
+    push:
+       branches:
+            - master
+    workflow_dispatch:
+
+env:
+    SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+jobs:
+  deploy-review:
+    name: Deploying to review environment
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      with:
+            ref: ${{ github.ref }}
+
+    - name: 'Create private key file'
+      run: echo "${{ secrets.PRIVATE_KEY_REVIEW }}" > ./private_key && chmod 600 ./private_key
+
+    - name: Setup SSH connection
+      run: >
+        echo '#!/bin/sh' >> ./passphrase_script.sh &&
+        echo "echo ${{ secrets.PASSPHRASE_REVIEW }}" >> ./passphrase_script.sh &&
+        chmod +x ./passphrase_script.sh
+
+    - run: ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+    - run: DISPLAY=1 SSH_ASKPASS='./passphrase_script.sh' ssh-add ./private_key < /dev/null
+
+    - name: Executing git pull to remote
+      run: >
+        ssh -p ${{ secrets.PORT_REVIEW }} ${{ secrets.USERNAME_REVIEW }}@${{ secrets.HOST_REVIEW }} -o StrictHostKeyChecking=no
+        "cd ${{ secrets.REMOTE_PATH_REVIEW }}/ && 
+        git pull https://Coup-Critique:${{ secrets.GITHUB_TOKEN }}@github.com/Coup-Critique/coupcritique-back.git main"
+
+    - name: Execute deployment tasks
+      run: >
+        ssh -p ${{ secrets.PORT_REVIEW }} ${{ secrets.USERNAME_REVIEW }}@${{ secrets.HOST_REVIEW }} -o StrictHostKeyChecking=no
+        "cd ${{ secrets.REMOTE_PATH_REVIEW }}/ && ./deploy.review.sh"    
