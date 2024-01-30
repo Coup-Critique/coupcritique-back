@@ -33,7 +33,7 @@ jobs:
       run: >
         ssh -p ${{ secrets.PORT_REVIEW }} ${{ secrets.USERNAME_REVIEW }}@${{ secrets.HOST_REVIEW }} -o StrictHostKeyChecking=no
         "cd ${{ secrets.REMOTE_PATH_REVIEW }}/ && 
-        git pull https://Coup-Critique:${{ secrets.GITHUB_TOKEN }}@github.com/Coup-Critique/coupcritique-back.git main"
+        git pull https://Coup-Critique:${{ secrets.GITHUB_TOKEN }}@github.com/Coup-Critique/coupcritique-back.git master"
 
     - name: Execute deployment tasks
       run: >
