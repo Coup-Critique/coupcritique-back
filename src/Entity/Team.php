@@ -27,18 +27,14 @@ class Team implements CommentParentInterface
     #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $user;
 
-    #[CustomAssert\TextConstraint(
-        message: "Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:team', 'read:list', 'read:list:team', 'insert:team', 'update:team'])]
     #[Assert\NotNull(message: "Le nom de l'équipe est requis")]
     #[Assert\Length(max: 50, maxMessage: "Le nom de l'équipe peut faire au maximum 50 caractères.")]
     private $name;
 
-    #[CustomAssert\TextConstraint(
-        message: "Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'text', length: 5000, nullable: true)]
     #[Groups(['read:team', 'insert:team', 'update:team'])]
     #[Assert\NotNull(message: 'La description est requise')]
@@ -130,6 +126,10 @@ class Team implements CommentParentInterface
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     private $enjoyers;
+
+    // used only for serialization
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
+    private $countEnjoyers;
 
     #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $isOwnUserFavorite = false;
@@ -236,7 +236,7 @@ class Team implements CommentParentInterface
     public function setPkmInst1(?PokemonInstance $pkm_inst_1): self
     {
         $this->pkm_inst_1 = $pkm_inst_1;
-        if (!is_null($pkm_inst_1)) {
+        if ($pkm_inst_1 != null) {
             $pkm_inst_1->setTeam($this);
         }
 
@@ -251,7 +251,7 @@ class Team implements CommentParentInterface
     public function setPkmInst2(?PokemonInstance $pkm_inst_2): self
     {
         $this->pkm_inst_2 = $pkm_inst_2;
-        if (!is_null($pkm_inst_2)) {
+        if ($pkm_inst_2 != null) {
             $pkm_inst_2->setTeam($this);
         }
 
@@ -266,7 +266,7 @@ class Team implements CommentParentInterface
     public function setPkmInst3(?PokemonInstance $pkm_inst_3): self
     {
         $this->pkm_inst_3 = $pkm_inst_3;
-        if (!is_null($pkm_inst_3)) {
+        if ($pkm_inst_3 != null) {
             $pkm_inst_3->setTeam($this);
         }
 
@@ -281,7 +281,7 @@ class Team implements CommentParentInterface
     public function setPkmInst4(?PokemonInstance $pkm_inst_4): self
     {
         $this->pkm_inst_4 = $pkm_inst_4;
-        if (!is_null($pkm_inst_4)) {
+        if ($pkm_inst_4 != null) {
             $pkm_inst_4->setTeam($this);
         }
 
@@ -296,7 +296,7 @@ class Team implements CommentParentInterface
     public function setPkmInst5(?PokemonInstance $pkm_inst_5): self
     {
         $this->pkm_inst_5 = $pkm_inst_5;
-        if (!is_null($pkm_inst_5)) {
+        if ($pkm_inst_5 != null) {
             $pkm_inst_5->setTeam($this);
         }
 
@@ -311,7 +311,7 @@ class Team implements CommentParentInterface
     public function setPkmInst6(?PokemonInstance $pkm_inst_6): self
     {
         $this->pkm_inst_6 = $pkm_inst_6;
-        if (!is_null($pkm_inst_6)) {
+        if ($pkm_inst_6 != null) {
             $pkm_inst_6->setTeam($this);
         }
 
@@ -454,6 +454,11 @@ class Team implements CommentParentInterface
         return $this->enjoyers;
     }
 
+    public function getCountEnjoyers(): int
+    {
+        return $this->enjoyers->count();
+    }
+
     public function IsOwnUserFavorite()
     {
         return $this->isOwnUserFavorite;
@@ -511,8 +516,9 @@ class Team implements CommentParentInterface
     {
         $collection = new ArrayCollection();
 
-        for ($index = 1; $index < 7 && !is_null($this->{"pkm_inst_$index"}); $index++)
+        for ($index = 1; $index < 7 && $this->{"pkm_inst_$index"} != null; $index++) {
             $collection->add($this->{"pkm_inst_$index"});
+        }
 
         return $collection;
     }
