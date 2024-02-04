@@ -29,13 +29,7 @@ class InstanceMoveConstraintValidator extends ConstraintValidator
         }
         if (!$pkm_inst->getPokemon() instanceof Pokemon || !$pkm_inst->getPokemon()->getId()) return;
 
-        $moves = [
-            $pkm_inst->getMove1(),
-            $pkm_inst->getMove2(),
-            $pkm_inst->getMove3(),
-            $pkm_inst->getMove4()
-        ];
-
+        $moves = $pkm_inst->getMoves();
         $this->checkMovesLearned($pkm_inst, $moves, $constraint);
         $this->checkMovesDuplicated($pkm_inst, $moves, $constraint);
     }

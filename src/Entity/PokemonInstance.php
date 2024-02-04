@@ -523,6 +523,11 @@ class PokemonInstance
         return $this;
     }
 
+    public function getMoves(): array
+    {
+        return [$this->move_1, $this->move_2, $this->move_3, $this->move_4];
+    }
+
     public function setTeam(?Team $team): self
     {
         $this->team = $team;
