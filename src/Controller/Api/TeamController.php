@@ -158,8 +158,14 @@ class TeamController extends AbstractController
     #[Route(path: '/teams/top', name: 'top_week_team', methods: ['GET'])]
     public function getTopTeam()
     {
+        $team = $this->repo->getLastTopWeek();
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user) {
+            $team->setIsOwnUserFavorite($user);
+        }
         return $this->json(
-            ['team' => $this->repo->getLastTopWeek()],
+            ['team' => $team],
             Response::HTTP_OK,
             [],
             ['groups' => ['read:team']]

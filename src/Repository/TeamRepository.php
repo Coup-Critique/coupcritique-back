@@ -216,20 +216,20 @@ class TeamRepository extends ServiceEntityRepository
 
 	public function getLastTopWeek(): ?Team
 	{
-		$result = $this->baseQuery()
+		$query = $this->baseQuery()
+			->andWhere('t.banned IS NULL OR t.banned = 0')
 			->orderBy('t.top_week', 'DESC')
-			->addOrderBy('tag.sortOrder', 'ASC')
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult();
+			->addOrderBy('tag.sortOrder', 'ASC');
 
-		if (!is_null($result)) {
-			foreach ($result->getPokemonInstances() as $instance) {
-				$this->pokemonInstanceRepo->findOne($instance->getId());
-			}
+		$this->setMaxResults(1);
+		$result = $this->paginate('t', $query, 1);
+
+		if (empty($result)) return null;
+		$team = $result[0];
+		foreach ($team->getPokemonInstances() as $instance) {
+			$this->pokemonInstanceRepo->findOne($instance->getId());
 		}
-
-		return $result;
+		return $team;
 	}
 
 	/**
@@ -379,25 +379,24 @@ class TeamRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
-	public function findLastUserTeam(User $user):?Team
+	public function findLastUserTeam(User $user): ?Team
 	{
-		$result = $this->baseListQuery()
+		$query = $this->baseListQuery()
 			->where('t.user = :user')
 			->andWhere('t.banned IS NULL OR t.banned = 0')
 			->setParameter('user', $user)
 			->orderBy('t.date_creation', 'DESC')
-			->addOrderBy('tag.sortOrder', 'ASC')
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult();
+			->addOrderBy('tag.sortOrder', 'ASC');
 
-		if (!is_null($result)) {
-			foreach ($result->getPokemonInstances() as $instance) {
-				$this->pokemonInstanceRepo->findOne($instance->getId());
-			}
+		$this->setMaxResults(1);
+		$result = $this->paginate('t', $query, 1);
+
+		if (empty($result)) return null;
+		$team = $result[0];
+		foreach ($team->getPokemonInstances() as $instance) {
+			$this->pokemonInstanceRepo->findOne($instance->getId());
 		}
-
-		return $result;
+		return $team;
 	}
 
 	private function setSearchToQuery(QueryBuilder $query, string $search, int $i = 0): void
