@@ -6,6 +6,7 @@ use App\Entity\Abstracts\AbstractArticle;
 use App\Entity\Actuality;
 use App\Entity\Guide;
 use App\Entity\Tournament;
+use App\Entity\CircuitTour;
 use App\Entity\User;
 
 class ArticleDiscordMessage extends AbstractDiscordMessage
@@ -25,7 +26,7 @@ class ArticleDiscordMessage extends AbstractDiscordMessage
             $designation = "de l'actualité";
         } elseif ($this->entity instanceof Guide) {
             $designation = "du guide";
-        } else /* if ($this->entity instanceof Tournament) */ {
+        } else /* if ($this->entity instanceof Tournament || $this->entity instanceof CircuitTour) */ {
             $designation = "du tournois";
         }
         return $this->getAction() . " " . $designation . " : " . $this->entity->getTitle();
@@ -43,8 +44,10 @@ class ArticleDiscordMessage extends AbstractDiscordMessage
             return "actualities";
         } elseif ($this->entity instanceof Guide) {
             return "guides";
-        } else /* if ($this->entity instanceof Tournament) */ {
+        } elseif ($this->entity instanceof Tournament) {
             return "tournaments";
+        } else /* if ($this->entity instanceof CircuitToru) */ {
+            return "circuit-tours";
         }
     }
 

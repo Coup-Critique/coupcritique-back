@@ -5,6 +5,7 @@ namespace App\Entity\Abstracts;
 use App\Entity\User;
 use App\Validator\Constraints as CustomAssert;
 use App\Entity\Interfaces\CommentParentInterface;
+use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
@@ -52,10 +53,10 @@ abstract class AbstractArticle implements CommentParentInterface
 
     #[ORM\Column(type: 'datetime')]
     #[Groups(['read:article', 'read:list'])]
-    protected $date_creation;
+    protected ?DateTimeInterface $date_creation = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $update_date;
+    private ?DateTimeInterface $update_date = null;
 
     public function getId(): ?int
     {
@@ -134,31 +135,27 @@ abstract class AbstractArticle implements CommentParentInterface
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): ?DateTimeInterface
     {
         return $this->date_creation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
 
         return $this;
     }
 
-    public function getUpdateDate(): ?\DateTimeInterface
+    public function getUpdateDate(): ?DateTimeInterface
     {
         return $this->update_date;
     }
 
-    public function setUpdateDate(?\DateTimeInterface $update_date): self
+    public function setUpdateDate(?DateTimeInterface $update_date): self
     {
         $this->update_date = $update_date;
 
         return $this;
     }
-
-    abstract public function getTags(): Collection;
-    abstract public function addTag(AbstractTag $tag): self;
-    abstract public function removeTag(AbstractTag $tag): self;
 }
