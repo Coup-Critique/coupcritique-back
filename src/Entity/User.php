@@ -45,10 +45,10 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     private $roles = [];
 
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private bool $is_admin = false;
+    private ?bool $is_admin = null;
 
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private bool $is_modo = false;
+    private ?bool $is_modo = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
