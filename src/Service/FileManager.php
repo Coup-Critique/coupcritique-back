@@ -9,16 +9,16 @@ class FileManager
 {
 	protected string $publicPath;
 
-	public function __construct(string $projectDir, protected ImageManager $imageManager)
+	public function __construct(string $publicPath, protected ImageManager $imageManager)
 	{
-		$this->publicPath = "$projectDir/public";
+		$this->publicPath = $publicPath;
 	}
 
 	public function upload(UploadedFile $file, string $dirName): string
 	{
 		$fullDirName = "{$this->publicPath}/$dirName/";
 		$this->createDirIfNotExists($fullDirName);
-		$fileName = uniqid() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+		$fileName = uniqid();
 		$file->move($fullDirName, $fileName);
 		return $fileName;
 	}
