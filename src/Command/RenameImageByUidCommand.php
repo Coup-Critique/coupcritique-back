@@ -158,7 +158,7 @@ class RenameImageByUidCommand extends Command
          */
         foreach ($io->progressIterate($queryBuilder->getQuery()->toIterable()) as $article) {
             $oldFilenames = $article->getImages();
-            $oldPaths = [];
+            $oldNewPathMap = [];
             $newFilenames = [];
             foreach ($oldFilenames as $oldFilename) {
                 $oldPath = $directory."/".$oldFilename;
@@ -171,24 +171,22 @@ class RenameImageByUidCommand extends Command
                 $newPath = $directory."/".$newFilename;
 
                 $newFilenames[] = $newFilename;
-                $oldPaths[] = $oldPath;
-                $newPaths[] = $newPath;
+                $oldNewPathMap[$oldPath] = $newPath;
 
                 $oldPath = $directory."/375px/".$oldFilename;
 
                 if (file_exists($oldPath)) {
                     $newPath = $directory."/375px/".$newFilename;
-                    $oldPaths[] = $oldPath;
-                    $newPaths[] = $newPath;
+                    $oldNewPathMap[$oldPath] = $newPath;
                 }
             }
             
 
             $article->setImages($newFilenames);
 
-            for ($i = 0; $i<count($oldPaths); $i++) {
-                rename($oldPaths[$i], $newPaths[$i]);
-                $io->comment(sprintf("%s => %s", $oldPaths[$i], $newPaths[$i]));
+            foreach ($oldNewPathMap as $oldPath => $newPath) {
+                rename($oldPath, $newPath);
+                $io->comment(sprintf("%s => %s", $oldPath, $newPath));
             }
 
             $index++;
