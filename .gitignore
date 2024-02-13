@@ -2,6 +2,8 @@
 /.vscode
 /.htaccess
 /.htpasswd
+/public/images
+/public/uploads
 
 # /public/meta.json
 
