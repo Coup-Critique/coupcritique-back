@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OwnUserController extends AbstractController
 {
+	final public const USER_IMAGE_DIR = 'images/uploads/users/';
 	final public const USER_IMAGE_SIZE      = 455;
 	final public const USER_MINI_IMAGE_SIZE = 200;
 
@@ -47,8 +48,8 @@ class OwnUserController extends AbstractController
 		/** @var User $user */
 		$user = $this->getUser();
 		if ($picture = $user->getPicture()) {
-			$fileManager->remove("images/users/$picture");
-			$fileManager->remove("images/users/" . self::USER_MINI_IMAGE_SIZE . "px/$picture");
+			$fileManager->remove(self::USER_IMAGE_DIR . $picture);
+			$fileManager->remove(self::USER_IMAGE_DIR . self::USER_MINI_IMAGE_SIZE . "px/$picture");
 		}
 
 		$this->repo->delete($user);
@@ -94,7 +95,7 @@ class OwnUserController extends AbstractController
 		}
 
 		if (
-			$user->getUsername() !== $this->getUser()->getUsername()
+			$user->getUsername() !== $this->getUser()->getUserIdentifier()
 			&& !empty($this->repo->findOneByUsername($user->getUsername()))
 		) {
 			return new JsonResponse(
@@ -183,14 +184,15 @@ class OwnUserController extends AbstractController
 			);
 		}
 
+		/** @var User $user */
 		$user = $this->getUser();
 
 		$picture  = $request->files->get('picture');
-		$fileName = $fileManager->upload($picture, 'images/users');
-		$filePath = "images/users/$fileName";
+		$fileName = $fileManager->upload($picture, self::USER_IMAGE_DIR);
+		$filePath = self::USER_IMAGE_DIR . $fileName;
 		$fileMiniPath = $fileManager->copy(
 			$filePath,
-			'images/users/' . self::USER_MINI_IMAGE_SIZE . 'px'
+			self::USER_IMAGE_DIR . self::USER_MINI_IMAGE_SIZE . 'px'
 		);
 
 		// resize image
@@ -206,8 +208,8 @@ class OwnUserController extends AbstractController
 		}
 
 		if ($pastPicture = $user->getPicture()) {
-			$fileManager->remove("images/users/$pastPicture");
-			$fileManager->remove("images/users/" . self::USER_MINI_IMAGE_SIZE . "px/$pastPicture");
+			$fileManager->remove(self::USER_IMAGE_DIR . $pastPicture);
+			$fileManager->remove(self::USER_IMAGE_DIR . self::USER_MINI_IMAGE_SIZE . "px/$pastPicture");
 		}
 		$user->setPicture($fileName);
 		$em->flush();

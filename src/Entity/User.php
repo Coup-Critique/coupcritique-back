@@ -28,9 +28,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     private $id;
 
-    #[CustomAssert\TextConstraint(
-        message: "Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(['read:user', 'insert:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     #[Assert\Length(max: 180, maxMessage: 'Le nom utilisateur peut faire au maximum 180 caractères.')]
