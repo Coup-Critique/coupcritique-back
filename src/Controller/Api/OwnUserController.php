@@ -7,10 +7,10 @@ use App\Normalizer\EntityNormalizer;
 use App\Repository\UserRepository;
 use App\Service\ErrorManager;
 use App\Service\FileManager;
+use App\Service\RefreshTokenManager;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Generator\RefreshTokenGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -35,19 +34,12 @@ class OwnUserController extends AbstractController
 	#[Route(path: '/own-user', name: 'own_user', methods: ['GET'])]
 	public function getOwnUser()
 	{
-        return $this->json(
-            ['user' => $this->getUser()],
-            Response::HTTP_OK,
-            [],
-            [
-                ObjectNormalizer::SKIP_NULL_VALUES => true,
-                AbstractNormalizer::CALLBACKS => [
-                    'is_modo' => fn ($v) => $v === false ? null : $v,
-                    'is_admin' => fn ($v) => $v === false ? null : $v,
-                ],
-                'groups' => ['user:read'],
-            ]
-        );
+		return $this->json(
+			['user' => $this->getUser()],
+			Response::HTTP_OK,
+			[],
+			UserController::getContext() + ['groups' => ['read:user', 'read:user:own']]
+		);
 	}
 
 	#[Route(path: '/own-user', name: 'delete_own_user', methods: ['DELETE'])]
@@ -71,8 +63,7 @@ class OwnUserController extends AbstractController
 	public function updateUser(
 		Request $request,
 		EntityManagerInterface $em,
-		JWTTokenManagerInterface $JWTManager,
-		RefreshTokenGeneratorInterface $JWTRefreshGenerator,
+		RefreshTokenManager $refreshTokenManager,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
 		ErrorManager $errorManager
@@ -123,28 +114,28 @@ class OwnUserController extends AbstractController
 		}
 
 		$user  = $this->repo->update($user);
-		$token = $JWTManager->create($user);
-		$refreshToken = $JWTRefreshGenerator->createForUserWithTtl($user, 2592000);
-
-		$em->persist($refreshToken);
 		$em->flush();
+
+		[$token, $refreshToken] = $refreshTokenManager->create($user);
 
 		return $this->json(
 			[
 				'message' => "Compte mis à jour",
 				'user' => $user,
 				'token' => $token,
-				'refreshToken' => $refreshToken->getRefreshToken()
+				'refreshToken' => $refreshToken
 			],
 			Response::HTTP_OK,
 			[],
-			['groups' => ['read:user', 'read:user:own']]
+			UserController::getContext() + ['groups' => ['read:user', 'read:user:own']]
 		);
 	}
 
 	#[Route(path: '/own-user/password', name: 'update_password', methods: ['PUT'])]
-	public function updatePassword(Request $request, JWTTokenManagerInterface $JWTManager)
-	{
+	public function updatePassword(
+		Request $request,
+		JWTTokenManagerInterface $JWTManager
+	) {
 		try {
 			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (JsonException $e) {
@@ -169,9 +160,13 @@ class OwnUserController extends AbstractController
 		}
 
 		$user = $this->repo->updatePassword($user, $data['new_password']);
-		// TODO : return a new token
+		// don't need to regenerate RefreshToken
+		$token = $JWTManager->create($user);
 		return new JsonResponse(
-			['message' => "Mot de passe mis à jour", 'token' => $JWTManager->create($user)],
+			[
+				'message' => "Mot de passe mis à jour",
+				'token' => $token
+			],
 			Response::HTTP_OK
 		);
 	}

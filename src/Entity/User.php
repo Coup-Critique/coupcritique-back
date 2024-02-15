@@ -52,6 +52,8 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $is_tiper;
 
+    // TODO is_winner is_content_creator is_weeker is_certified
+
     #[ORM\Column(type: 'string')]
     #[Groups(['insert:user'])]
     #[Assert\Length(max: 255, maxMessage: 'Le mot de passe peut faire au maximum 255 caractères.')]
