@@ -50,9 +50,23 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private $is_tiper;
+    private ?bool $is_tiper = null;
 
-    // TODO is_winner is_content_creator is_weeker is_certified
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_winner = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_weeker = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_certified = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_content_creator = null;
 
     #[ORM\Column(type: 'string')]
     #[Groups(['insert:user'])]
@@ -324,6 +338,54 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function setIsTiper(bool $is_tiper): self
     {
         $this->is_tiper = $is_tiper;
+
+        return $this;
+    }
+
+    public function getIsWinner(): ?bool
+    {
+        return $this->is_winner;
+    }
+
+    public function setIsWinner(bool $is_winner): self
+    {
+        $this->is_winner = $is_winner;
+
+        return $this;
+    }
+
+    public function getIsWeeker(): ?bool
+    {
+        return $this->is_weeker;
+    }
+
+    public function setIsWeeker(bool $is_weeker): self
+    {
+        $this->is_weeker = $is_weeker;
+
+        return $this;
+    }
+
+    public function getIsCertified(): ?bool
+    {
+        return $this->is_certified;
+    }
+
+    public function setIsCertified(bool $is_certified): self
+    {
+        $this->is_certified = $is_certified;
+
+        return $this;
+    }
+
+    public function getIsContentCreator(): ?bool
+    {
+        return $this->is_content_creator;
+    }
+
+    public function setIsContentCreator(bool $is_content_creator): self
+    {
+        $this->is_content_creator = $is_content_creator;
 
         return $this;
     }
