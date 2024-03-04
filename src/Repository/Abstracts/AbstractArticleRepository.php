@@ -53,7 +53,8 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->where('a.title LIKE :keyword');
 
         $statement->setParameter('keyword', "%$keywords%")
-            ->orderBy('a.date_creation', $this->order);
+            ->orderBy('a.date_creation', $this->order)
+            ->addOrderBy('a.id', $this->order);
 
         if ($limit != null) $statement->setMaxResults($limit);
 
@@ -83,6 +84,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->leftJoin("a.tags", 'tag')
             ->leftJoin('a.user', 'u')
             ->addOrderBy('a.date_creation', $this->order)
+            ->addOrderBy('a.id', $this->order)
             ->setMaxResults($this->maxLength)
             ->getQuery()
             ->getResult();
@@ -94,6 +96,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
         $ids = $this->createQueryBuilder('a')
             ->select('a.id')
             ->addOrderBy('a.date_creation', self::DESC)
+            ->addOrderBy('a.id', self::DESC)
             ->setMaxResults($max)
             ->getQuery()
             ->getArrayResult();
@@ -110,6 +113,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->leftJoin('a.tags', 'tag')
             ->andWhere("a.id IN (" . implode(',', $ids) . ")")
             ->addOrderBy('a.date_creation',  self::DESC)
+            ->addOrderBy('a.id', self::DESC)
             ->getQuery()->getResult();
     }
 
@@ -141,7 +145,8 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             }
         }
 
-        $query->addOrderBy('a.date_creation', $this->order);
+        $query->addOrderBy('a.date_creation', $this->order)
+            ->addOrderBy('a.id', $this->order);
 
         return $query->getQuery()->getResult();
     }
