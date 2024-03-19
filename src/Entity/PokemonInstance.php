@@ -146,9 +146,7 @@ class PokemonInstance
     #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $spe_ev;
 
-    #[CustomAssert\TextConstraint(
-        message: "Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'text', nullable: true, length: 5000)]
     #[Groups(['read:team', 'insert:team', 'update:team'])]
     #[Assert\Length(max: 5000, maxMessage: 'La description peut faire au maximum 5000 caractères.')]

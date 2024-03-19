@@ -35,6 +35,7 @@ class VideoRepository extends ServiceEntityRepository
             ->addSelect(['tag'])
             ->leftJoin("v.tags", 'tag')
             ->addOrderBy('v.date_creation', 'DESC')
+            ->addOrderBy('v.id', 'DESC')
             ->setMaxResults($this->maxLength)
             ->getQuery()
             ->getResult();
@@ -59,7 +60,8 @@ class VideoRepository extends ServiceEntityRepository
                 ->setParameter("author", $author);
         }
 
-        $query->addOrderBy('v.date_creation', 'DESC');
+        $query->addOrderBy('v.date_creation', 'DESC')
+        ->addOrderBy('v.id', 'DESC');
         return $query->setMaxResults($this->maxLength)->getQuery()->getResult();
     }
 
@@ -68,6 +70,7 @@ class VideoRepository extends ServiceEntityRepository
         $ids = $this->createQueryBuilder('v')
             ->select('v.id')
             ->addOrderBy('v.date_creation', 'DESC')
+            ->addOrderBy('v.id', 'DESC')
             ->setMaxResults($max)
             ->getQuery()
             ->getArrayResult();
@@ -82,6 +85,7 @@ class VideoRepository extends ServiceEntityRepository
             ->leftJoin('v.tags', 'tag')
             ->andWhere("v.id IN (" . implode(',', $ids) . ")")
             ->addOrderBy('v.date_creation', 'DESC')
+            ->addOrderBy('v.id', 'DESC')
             ->getQuery()->getResult();
     }
 

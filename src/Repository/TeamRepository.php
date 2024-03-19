@@ -202,7 +202,8 @@ class TeamRepository extends ServiceEntityRepository
 			$query->orderBy('recentOrder', 'ASC')
 				->addOrderBy('certifOrder', 'DESC')
 				->addOrderBy('t.date_creation', 'DESC')
-				->addOrderBy('tag.sortOrder', 'ASC');
+				->addOrderBy('tag.sortOrder', 'ASC')
+				->addOrderBy('t.id', 'DESC');
 
 			foreach ($params as $key => $value) {
 				$query->setParameter($key, $value);
@@ -333,7 +334,8 @@ class TeamRepository extends ServiceEntityRepository
 		if (empty($this->order)) {
 			$query->addOrderBy('t.certified', 'DESC')
 				->addOrderBy('t.date_creation', 'DESC')
-				->addOrderBy('tag.sortOrder', 'ASC');
+				->addOrderBy('tag.sortOrder', 'ASC')
+				->addOrderBy('t.id', 'DESC');
 		} else {
 			$this->setOrderInQuery($query);
 		}
@@ -386,7 +388,8 @@ class TeamRepository extends ServiceEntityRepository
 			->andWhere('t.banned IS NULL OR t.banned = 0')
 			->setParameter('user', $user)
 			->orderBy('t.date_creation', 'DESC')
-			->addOrderBy('tag.sortOrder', 'ASC');
+			->addOrderBy('tag.sortOrder', 'ASC')
+			->addOrderBy('t.id', 'DESC');
 
 		$this->setMaxResults(1);
 		$result = $this->paginate('t', $query, 1);
@@ -430,33 +433,40 @@ class TeamRepository extends ServiceEntityRepository
 
 		switch ($this->order) {
 			case 'name':
-				$query->orderBy('t.name', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('t.name', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'certified':
 				$this->addPaginatorSelect('CASE WHEN t.certified = 1 THEN 1 ELSE 0 END AS HIDDEN certifOrder', $query);
-				$query->orderBy('certifOrder', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('certifOrder', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'user':
-				$query->orderBy('u.username', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('u.username', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'tier':
 				$this->addPaginatorSelect('-ti.sortOrder AS HIDDEN inverse_order', $query);
-				$query->orderBy('inverse_order', $od === 'ASC' ? 'DESC' : 'ASC');
-				$query->addOrderBy('ti.name', 'ASC');
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('inverse_order', $od === 'ASC' ? 'DESC' : 'ASC')
+					->addOrderBy('ti.name', 'ASC')
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'tag':
-				$query->orderBy('tag.name', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('tag.name', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'date_creation':
-				$query->orderBy('t.date_creation', $od);
+				$query->orderBy('t.date_creation', $od)
+					->addOrderBy('t.id', $od);
 				break;
 			default:
-				$query->orderBy('t.date_creation', 'DESC');
+				$query->orderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 		}
 		$query->addOrderBy('tag.sortOrder', 'ASC');

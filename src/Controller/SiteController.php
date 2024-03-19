@@ -129,7 +129,7 @@ class SiteController extends AbstractController
 
         foreach ($pokemons as $pokemon) {
             $urls[] = [
-                'loc' => $this->generateUrl('pokemon_by_name', ['name' => $pokemon->getName()]),
+                'loc' => $this->generateUrl('pokemons/', ['id' => $pokemon->getId()]),
                 // first day of the month
                 'lastmod' => $monthDate,
                 'priority' => '1.00',
@@ -143,7 +143,6 @@ class SiteController extends AbstractController
         foreach ($teams as $team) {
             $urls[] = [
                 'loc' => $this->generateUrl('team', ['id' => $team->getId()]),
-                // first day of the month
                 'lastmod' => $team->getUpdateDate() ? $team->getUpdateDate()->format('Y-m-d') : $team->getDateCreation()->format('Y-m-d'),
                 'priority' => '0.90'
             ];
@@ -231,8 +230,7 @@ class SiteController extends AbstractController
         foreach ($types as $type) {
             $urls[] = [
                 'loc' => $this->generateUrl('type', ['id' => $type->getId()]),
-                // first day of the month
-                'lastmod' => '2022-05-27',
+                'lastmod' => '2023-12-01',
                 'priority' => '0.90'
             ];
         }
@@ -258,7 +256,7 @@ class SiteController extends AbstractController
 
         $urls[] = [
             'loc' => $this->generateUrl('home') . 'videos',
-            'lastmod' => '2022-07-28',
+            'lastmod' => $monthDate,
             'priority' => '0.20'
         ];
         $urls[] = [

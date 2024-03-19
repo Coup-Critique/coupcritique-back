@@ -7,10 +7,10 @@ use App\Normalizer\EntityNormalizer;
 use App\Repository\UserRepository;
 use App\Service\ErrorManager;
 use App\Service\FileManager;
+use App\Service\RefreshTokenManager;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Generator\RefreshTokenGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OwnUserController extends AbstractController
 {
+	final public const USER_IMAGE_DIR = 'images/uploads/users/';
 	final public const USER_IMAGE_SIZE      = 455;
 	final public const USER_MINI_IMAGE_SIZE = 200;
 
@@ -37,7 +38,7 @@ class OwnUserController extends AbstractController
 			['user' => $this->getUser()],
 			Response::HTTP_OK,
 			[],
-			['groups' => ['read:user', 'read:user:own']]
+			UserController::getContext() + ['groups' => ['read:user', 'read:user:own']]
 		);
 	}
 
@@ -47,8 +48,8 @@ class OwnUserController extends AbstractController
 		/** @var User $user */
 		$user = $this->getUser();
 		if ($picture = $user->getPicture()) {
-			$fileManager->remove("images/users/$picture");
-			$fileManager->remove("images/users/" . self::USER_MINI_IMAGE_SIZE . "px/$picture");
+			$fileManager->remove(self::USER_IMAGE_DIR . $picture);
+			$fileManager->remove(self::USER_IMAGE_DIR . self::USER_MINI_IMAGE_SIZE . "px/$picture");
 		}
 
 		$this->repo->delete($user);
@@ -62,8 +63,7 @@ class OwnUserController extends AbstractController
 	public function updateUser(
 		Request $request,
 		EntityManagerInterface $em,
-		JWTTokenManagerInterface $JWTManager,
-		RefreshTokenGeneratorInterface $JWTRefreshGenerator,
+		RefreshTokenManager $refreshTokenManager,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
 		ErrorManager $errorManager
@@ -94,7 +94,7 @@ class OwnUserController extends AbstractController
 		}
 
 		if (
-			$user->getUsername() !== $this->getUser()->getUsername()
+			$user->getUsername() !== $this->getUser()->getUserIdentifier()
 			&& !empty($this->repo->findOneByUsername($user->getUsername()))
 		) {
 			return new JsonResponse(
@@ -114,28 +114,28 @@ class OwnUserController extends AbstractController
 		}
 
 		$user  = $this->repo->update($user);
-		$token = $JWTManager->create($user);
-		$refreshToken = $JWTRefreshGenerator->createForUserWithTtl($user, 2592000);
-
-		$em->persist($refreshToken);
 		$em->flush();
+
+		[$token, $refreshToken] = $refreshTokenManager->create($user);
 
 		return $this->json(
 			[
 				'message' => "Compte mis à jour",
 				'user' => $user,
 				'token' => $token,
-				'refreshToken' => $refreshToken->getRefreshToken()
+				'refreshToken' => $refreshToken
 			],
 			Response::HTTP_OK,
 			[],
-			['groups' => ['read:user', 'read:user:own']]
+			UserController::getContext() + ['groups' => ['read:user', 'read:user:own']]
 		);
 	}
 
 	#[Route(path: '/own-user/password', name: 'update_password', methods: ['PUT'])]
-	public function updatePassword(Request $request, JWTTokenManagerInterface $JWTManager)
-	{
+	public function updatePassword(
+		Request $request,
+		JWTTokenManagerInterface $JWTManager
+	) {
 		try {
 			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (JsonException $e) {
@@ -160,9 +160,13 @@ class OwnUserController extends AbstractController
 		}
 
 		$user = $this->repo->updatePassword($user, $data['new_password']);
-		// TODO : return a new token
+		// don't need to regenerate RefreshToken
+		$token = $JWTManager->create($user);
 		return new JsonResponse(
-			['message' => "Mot de passe mis à jour", 'token' => $JWTManager->create($user)],
+			[
+				'message' => "Mot de passe mis à jour",
+				'token' => $token
+			],
 			Response::HTTP_OK
 		);
 	}
@@ -183,14 +187,15 @@ class OwnUserController extends AbstractController
 			);
 		}
 
+		/** @var User $user */
 		$user = $this->getUser();
 
 		$picture  = $request->files->get('picture');
-		$fileName = $fileManager->upload($picture, 'images/users');
-		$filePath = "images/users/$fileName";
+		$fileName = $fileManager->upload($picture, self::USER_IMAGE_DIR);
+		$filePath = self::USER_IMAGE_DIR . $fileName;
 		$fileMiniPath = $fileManager->copy(
 			$filePath,
-			'images/users/' . self::USER_MINI_IMAGE_SIZE . 'px'
+			self::USER_IMAGE_DIR . self::USER_MINI_IMAGE_SIZE . 'px'
 		);
 
 		// resize image
@@ -206,8 +211,8 @@ class OwnUserController extends AbstractController
 		}
 
 		if ($pastPicture = $user->getPicture()) {
-			$fileManager->remove("images/users/$pastPicture");
-			$fileManager->remove("images/users/" . self::USER_MINI_IMAGE_SIZE . "px/$pastPicture");
+			$fileManager->remove(self::USER_IMAGE_DIR . $pastPicture);
+			$fileManager->remove(self::USER_IMAGE_DIR . self::USER_MINI_IMAGE_SIZE . "px/$pastPicture");
 		}
 		$user->setPicture($fileName);
 		$em->flush();

@@ -19,9 +19,7 @@ class Comment
     #[Groups(['read:list'])]
     protected $id;
 
-    #[CustomAssert\TextConstraint(
-        message: "Ce commentaire n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'text', length: 3000)]
     #[Groups(['read:list', 'insert:comment'])]
     #[Assert\NotNull(message: 'Un message est requis.')]

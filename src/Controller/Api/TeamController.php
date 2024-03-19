@@ -161,7 +161,7 @@ class TeamController extends AbstractController
         $team = $this->repo->getLastTopWeek();
         /** @var User $user */
         $user = $this->getUser();
-        if ($user) {
+        if ($user && $team) {
             $team->setIsOwnUserFavorite($user);
         }
         return $this->json(
