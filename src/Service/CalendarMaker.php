@@ -14,7 +14,7 @@ class CalendarMaker
         foreach ($elements as $i => $element) {
             $row = 0;
             if ($i > 0) {
-                for (; $row < $i;) {
+                for (; $row <= $i;) {
                     if (isset($rowDate[$row]) && $element->getStartDate() < $rowDate[$row]) {
                         $row++;
                     } else {

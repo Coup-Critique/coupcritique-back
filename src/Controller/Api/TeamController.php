@@ -97,6 +97,42 @@ class TeamController extends AbstractController
         );
     }
 
+    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
+    public function getTeamById($id)
+    {
+        $team = $this->repo->findOne($id);
+
+        if (empty($team)) {
+            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
+        }
+
+        $groups = ['read:team'];
+        /** @var User $user */
+        $user = $this->getUser();
+        $isModo = false;
+        if ($user) {
+            $team->setIsOwnUserFavorite($user);
+            if ($user->getIsModo()) {
+                $groups[] = 'read:team:admin';
+                $isModo = true;
+            }
+        }
+        if (
+            $team->getBanned()
+            && !$isModo
+            && (!$user || $user->getId() != $team->getUser()->getId())
+        ) {
+            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json(
+            ['team' => $team],
+            Response::HTTP_OK,
+            [],
+            ['groups' => $groups]
+        );
+    }
+
     #[Route(path: '/teams/state', name: 'teams_by_state', methods: ['GET'])]
     public function getTeamsByState(Request $request)
     {
@@ -414,43 +450,6 @@ class TeamController extends AbstractController
         return new JsonResponse(
             ['message' => $message],
             Response::HTTP_OK
-        );
-    }
-
-
-    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
-    public function getTeamById($id)
-    {
-        $team = $this->repo->findOne($id);
-
-        if (empty($team)) {
-            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
-        }
-
-        $groups = ['read:team'];
-        /** @var User $user */
-        $user = $this->getUser();
-        $isModo = false;
-        if ($user) {
-            $team->setIsOwnUserFavorite($user);
-            if ($user->getIsModo()) {
-                $groups[] = 'read:team:admin';
-                $isModo = true;
-            }
-        }
-        if (
-            $team->getBanned()
-            && !$isModo
-            && (!$user || $user->getId() != $team->getUser()->getId())
-        ) {
-            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
-        }
-
-        return $this->json(
-            ['team' => $team],
-            Response::HTTP_OK,
-            [],
-            ['groups' => $groups]
         );
     }
 

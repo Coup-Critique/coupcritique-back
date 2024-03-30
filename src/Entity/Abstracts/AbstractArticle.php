@@ -44,7 +44,7 @@ abstract class AbstractArticle implements CommentParentInterface
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['read:article', 'read:list'])]
-    protected $images = [];
+    protected ?array $images = [];
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -56,7 +56,7 @@ abstract class AbstractArticle implements CommentParentInterface
     protected ?DateTimeInterface $date_creation = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeInterface $update_date = null;
+    protected ?DateTimeInterface $update_date = null;
 
     public function getId(): ?int
     {

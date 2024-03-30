@@ -107,7 +107,7 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($circuitTour, $request->files, 'circuitTours');
+		$imageArticleManager->setImagesToEntity($circuitTour, $request->files, 'circuit-tours');
 
 		$em->flush();
 
@@ -198,11 +198,11 @@ class CircuitTourController extends AbstractController implements ContributeCont
 					EntityNormalizer::UPDATE_ENTITIES => [CircuitTour::class]
 				]
 			);
-		} catch (NotEncodableValueException) {
-			// return $this->json(
-			// 	['message' => $e->getMessage()],
-			// 	Response::HTTP_BAD_REQUEST
-			// );
+		} catch (\Exception $e) {
+			return $this->json(
+				['message' => $e->getMessage()],
+				Response::HTTP_BAD_REQUEST
+			);
 		}
 
 		$errors = $validator->validate($circuitTour);
@@ -246,7 +246,7 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		$imageArticleManager->removeImagesFromEntity($circuitTour, 'circuitTours');
+		$imageArticleManager->removeImagesFromEntity($circuitTour, 'circuit-tours');
 
 		$this->repo->delete($circuitTour);
 

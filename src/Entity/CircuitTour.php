@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Abstracts\AbstractArticle;
+use App\Entity\Abstracts\AbstractTag;
 use App\Entity\Interfaces\CalendableInterface;
 use App\Repository\CircuitTourRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -15,18 +17,28 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
 {
     #[ORM\Column(type: 'datetime')]
     #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
-    private ?DateTimeInterface $startDate = null;
+    protected ?DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: 'datetime')]
     #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
-    private ?DateTimeInterface $endDate = null;
+    protected ?DateTimeInterface $endDate = null;
 
     #[ORM\Column(type: 'string', length: 20)]
     #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
-    private ?string $color = null;
+    protected ?string $color = null;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'circuitTour', cascade: ['persist', 'remove'])]
     protected $comments;
+
+    #[ORM\ManyToMany(targetEntity: TournamentTag::class)]
+    #[Groups(['read:article', 'read:list', 'read:list:article', 'update:article', 'insert:article'])]
+    protected $tags;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+    }
 
     public function getStartDate(): ?DateTimeInterface
     {
@@ -60,6 +72,42 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     public function setColor(?string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TournamentTag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * 
+     * @param TournamentTag $tag 
+     * @return Tournament 
+     */
+    public function addTag(AbstractTag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @param TournamentTag $tag 
+     * @return Tournament 
+     */
+    public function removeTag(AbstractTag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
 
         return $this;
     }

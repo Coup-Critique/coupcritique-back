@@ -55,11 +55,11 @@ class ImageArticleManager
     /**
      * leave empty $imagesToCheck for remove all
      */
-    public function removeImagesFromEntity($entity, string $storageFolderName, array $imagesToCheck = []): void
+    public function removeImagesFromEntity($entity, string $storageFolderName, ?array $imagesToCheck = []): void
     {
-        $imagesToRemove = count($imagesToCheck)
+        $imagesToRemove = $imagesToCheck && count($imagesToCheck)
             ? array_diff($imagesToCheck, $entity->getImages())
-            : $entity->getImages();
+            : [];
 
         foreach ($imagesToRemove as $image) {
             $this->fileManager->remove("images/uploads/$storageFolderName/$image");
