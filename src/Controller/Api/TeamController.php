@@ -97,6 +97,26 @@ class TeamController extends AbstractController
         );
     }
 
+    /**
+     * Doit se trouver avant /teams/{id}
+     */
+    #[Route(path: '/teams/top', name: 'top_week_team', methods: ['GET'])]
+    public function getTopTeam()
+    {
+        $team = $this->repo->getLastTopWeek();
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user && $team) {
+            $team->setIsOwnUserFavorite($user);
+        }
+        return $this->json(
+            ['team' => $team],
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['read:team']]
+        );
+    }
+
     #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
     public function getTeamById($id)
     {
@@ -185,26 +205,6 @@ class TeamController extends AbstractController
             Response::HTTP_OK,
             [],
             ['groups' => $groups]
-        );
-    }
-
-    /**
-     * Doit se trouver avant /teams/{id}
-     */
-    #[Route(path: '/teams/top', name: 'top_week_team', methods: ['GET'])]
-    public function getTopTeam()
-    {
-        $team = $this->repo->getLastTopWeek();
-        /** @var User $user */
-        $user = $this->getUser();
-        if ($user && $team) {
-            $team->setIsOwnUserFavorite($user);
-        }
-        return $this->json(
-            ['team' => $team],
-            Response::HTTP_OK,
-            [],
-            ['groups' => ['read:team']]
         );
     }
 

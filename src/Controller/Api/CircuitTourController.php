@@ -55,9 +55,17 @@ class CircuitTourController extends AbstractController implements ContributeCont
 	public function circuitCalendar(CalendarMaker $calendarMaker)
 	{
 		$circuitTours = $this->repo->findForCalendar();
+		$currentTour  = null;
+		$dateNow = new \DateTime();
+		foreach ($circuitTours as $circuitTour) {
+			if ($circuitTour->getStartDate() <= $dateNow && $circuitTour->getEndDate() >= $dateNow) {
+				$currentTour = $circuitTour;
+				break;
+			}
+		}
 
 		return $this->json(
-			['calendar' => $calendarMaker->makeCalendar($circuitTours)],
+			['calendar' => $calendarMaker->makeCalendar($circuitTours), 'currentTour' => $currentTour],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:list']
