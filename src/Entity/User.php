@@ -89,7 +89,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:user:admin'])]
     private $date_creation;
 
-    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:user', 'insert:user', 'read:list'])]
     #[Assert\Length(max: 50, maxMessage: 'Le pseudo discord peut faire au maximum 50 caractères.')]
     private $discord_name;
@@ -98,7 +98,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $picture;
 
-    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:user', 'insert:user', 'read:list'])]
     #[Assert\Length(max: 50, maxMessage: 'Le pseudo showdown peut faire au maximum 50 caractères.')]
     private $showdown_name;
@@ -113,9 +113,13 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private $ips = [];
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Player::class)]
+    private Collection $players;
+
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
+        $this->players = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -446,5 +450,35 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function getIps(): ?array
     {
         return $this->ips;
+    }
+
+    /**
+     * @return Collection<int, Player>
+     */
+    public function getPlayers(): Collection
+    {
+        return $this->players;
+    }
+
+    public function addPlayer(Player $player): static
+    {
+        if (!$this->players->contains($player)) {
+            $this->players->add($player);
+            $player->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlayer(Player $player): static
+    {
+        if ($this->players->removeElement($player)) {
+            // set the owning side to null (unless already changed)
+            if ($player->getUser() === $this) {
+                $player->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

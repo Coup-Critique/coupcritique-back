@@ -61,7 +61,6 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
         return $statement->getQuery()->getResult();
     }
 
-
     public function findOne($id): ?AbstractArticle
     {
         return  $this->createQueryBuilder('a')
@@ -89,7 +88,6 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
     public function findWithMax($max): array
     {

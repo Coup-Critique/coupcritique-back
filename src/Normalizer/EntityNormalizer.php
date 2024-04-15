@@ -3,18 +3,22 @@
 namespace App\Normalizer;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+// use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+// use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class EntityNormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+class EntityNormalizer implements DenormalizerInterface/* , DenormalizerAwareInterface */
 {
-	use DenormalizerAwareTrait;
+	// Cannot use it, makes infinite loop
+	// use DenormalizerAwareTrait;
 
 	final public const UPDATE_ENTITIES = 'update_entities';
 
-	public function __construct(protected readonly EntityManagerInterface $em)
-	{
+	public function __construct(
+		protected readonly EntityManagerInterface $em,
+		protected readonly ObjectNormalizer $objectNormalizer
+	) {
 	}
 
 	/** {@inheritdoc} */
@@ -41,7 +45,7 @@ class EntityNormalizer implements DenormalizerInterface, DenormalizerAwareInterf
 			&& in_array($class, $context[self::UPDATE_ENTITIES])
 		) {
 			// Let it to ObjectNormalizer on Update entity
-			return $this->denormalizer->denormalize($data, $class, $format, $context);
+			return $this->objectNormalizer->denormalize($data, $class, $format, $context);
 		}
 		// Lazy Loading
 		return $this->em->find($class, $data['id']);
