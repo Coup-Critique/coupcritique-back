@@ -20,7 +20,7 @@ class Comment
     protected $id;
 
     #[CustomAssert\TextConstraint()]
-    #[ORM\Column(type: 'text', length: 3000)]
+    #[ORM\Column(type: 'text', length: 3000, options: ['default' => ''])]
     #[Groups(['read:list', 'insert:comment'])]
     #[Assert\NotNull(message: 'Un message est requis.')]
     #[Assert\Length(max: 3000, maxMessage: 'Le commentaire peut faire au maximum 3000 caractères.')]

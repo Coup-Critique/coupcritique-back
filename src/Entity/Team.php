@@ -41,7 +41,7 @@ class Team implements CommentParentInterface
     #[Assert\Length(max: 5000, maxMessage: 'La description peut faire au maximum 5000 caractères.')]
     private $description;
 
-    #[ORM\Column(type: 'text', length: 500)]
+    #[ORM\Column(type: 'text', length: 500, options: ['default' => ''])]
     #[Groups(['read:team', 'insert:team'])]
     #[Assert\NotNull(message: "L'export de l'équipe par pokemonshowdown est requis")]
     private $export;
@@ -120,7 +120,7 @@ class Team implements CommentParentInterface
     #[Groups(['read:team', 'insert:team', 'update:team'])]
     private $replays;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 1000)]
     #[Groups(['read:team:admin'])]
     private $history;
 

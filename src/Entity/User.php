@@ -103,7 +103,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Assert\Length(max: 50, maxMessage: 'Le pseudo showdown peut faire au maximum 50 caractères.')]
     private $showdown_name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 1000)]
     #[Groups(['read:user:admin'])]
     private $history;
 

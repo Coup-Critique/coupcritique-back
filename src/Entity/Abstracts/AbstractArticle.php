@@ -28,12 +28,12 @@ abstract class AbstractArticle implements CommentParentInterface
     protected $title;
 
     #[CustomAssert\HtmlTagConstraint()]
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 50000)]
     #[Groups(['read:article'])]
     #[Assert\Length(max: 50000, maxMessage: 'La description peut faire au maximum 20000 caractères.')]
     protected $description;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 50000)]
     #[Groups(['read:article'])]
     protected $parsedDescription;
 

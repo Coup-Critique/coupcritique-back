@@ -43,10 +43,10 @@ class PokemonSet
     #[Assert\NotNull(message: 'La génération est requise.')]
     private $gen;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 50000)]
     #[Groups(['read:pokemon-set', 'update:set'])]
     #[Assert\NotNull(message: 'La description est requise.')]
-    #[Assert\Length(max: 10000, maxMessage: 'Le contenu peut faire au maximum 10000 caractères.')]
+    #[Assert\Length(max: 50000, maxMessage: 'Le contenu peut faire au maximum 50000 caractères.')]
     private $content;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
@@ -54,7 +54,7 @@ class PokemonSet
     #[Assert\NotNull(message: 'Le nom est requis.')]
     private $name;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', length: 1000, options: ['default' => ''])]
     #[Groups(['read:pokemon-set', 'update:set'])]
     private $export;
 
