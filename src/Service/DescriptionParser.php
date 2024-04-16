@@ -19,7 +19,7 @@ class DescriptionParser
 
     public function parse(?string $description, $gen): array
     {
-        if (is_null($description)) return [];
+        if ($description == null) return [];
         $description = htmlspecialchars($description);
         preg_match_all(
             '/\[[^\]^\s]*\:[^\]]*\]/',
@@ -34,11 +34,11 @@ class DescriptionParser
             [$className, $value, $displayName] = $this->splitVar($string);
             if (!in_array($className, self::PARSABLE)) continue;
             $fullClassName = "App\\Entity\\$className";
-            if (is_null($reflectionClass) || $reflectionClass->getName() !== $fullClassName) {
+            if ($reflectionClass == null || $reflectionClass->getName() !== $fullClassName) {
                 $reflectionClass = new \ReflectionClass($fullClassName);
                 $repository      = $this->em->getRepository($fullClassName);
             }
-            if (is_null($repository) || !$reflectionClass->hasProperty('name')) {
+            if ($repository == null || !$reflectionClass->hasProperty('name')) {
                 continue;
             }
             if (method_exists($repository, 'findOneByNameAndGen')) {
@@ -46,7 +46,7 @@ class DescriptionParser
             } else {
                 $entity = $repository->findOneByName($value);
             }
-            if (is_null($entity)) continue;
+            if ($entity == null) continue;
             $return[$string] = [
                 'id'     => $entity->getId(),
                 'entity' => $className,
@@ -58,9 +58,9 @@ class DescriptionParser
         return $return;
     }
 
-    public function parseToWysiwyg(?string $description, $gen): string
+    public function parseToWysiwyg(?string $description, $gen): ?string
     {
-        if (is_null($description)) return [];
+        if ($description == null) return null;
         $reflectionClass = null;
         $repository      = null;
         $description = str_replace('\n', '<br />', $description);
@@ -71,11 +71,11 @@ class DescriptionParser
                 [$className, $value, $displayName] = $this->splitVar($match);
                 if (!in_array($className, self::PARSABLE)) return $match;
                 $fullClassName = "App\\Entity\\$className";
-                if (is_null($reflectionClass) || $reflectionClass->getName() !== $fullClassName) {
+                if ($reflectionClass == null || $reflectionClass->getName() !== $fullClassName) {
                     $reflectionClass = new \ReflectionClass($fullClassName);
                     $repository      = $this->em->getRepository($fullClassName);
                 }
-                if (is_null($repository) || !$reflectionClass->hasProperty('name')) {
+                if ($repository == null || !$reflectionClass->hasProperty('name')) {
                     return $match;
                 }
                 if (method_exists($repository, 'findOneByNameAndGen')) {
@@ -83,7 +83,7 @@ class DescriptionParser
                 } else {
                     $entity = $repository->findOneByName($value);
                 }
-                if (is_null($entity)) return $match;
+                if ($entity == null) return $match;
 
                 $name = $entity->getNom() ?: $entity->getName();
                 switch ($className) {
