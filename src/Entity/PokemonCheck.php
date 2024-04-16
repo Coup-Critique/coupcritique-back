@@ -19,7 +19,8 @@ class PokemonCheck
 
     // #[ORM\ManyToOne(targetEntity: TierUsage::class, inversedBy: 'pokemonChecks')]
     // #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    // private $tierUsage;
+    #[ORM\Column(type: 'integer')] // TEMP for review
+    private $tierUsage;
 
     #[ORM\ManyToOne(targetEntity: Pokemon::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -35,17 +36,17 @@ class PokemonCheck
         return $this->id;
     }
 
-    // public function getTierUsage(): ?TierUsage
-    // {
-    //     return $this->tierUsage;
-    // }
+    public function getTierUsage(): ?TierUsage
+    {
+        return $this->tierUsage;
+    }
 
-    // public function setTierUsage(?TierUsage $tierUsage): self
-    // {
-    //     $this->tierUsage = $tierUsage;
+    public function setTierUsage(?TierUsage $tierUsage): self
+    {
+        $this->tierUsage = $tierUsage;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     public function getPokemon(): ?Pokemon
     {
