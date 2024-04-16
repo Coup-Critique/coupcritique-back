@@ -18,7 +18,8 @@ class FileManager
 	{
 		$fullDirName = "{$this->publicPath}/$dirName/";
 		$this->createDirIfNotExists($fullDirName);
-		$fileName = uniqid();
+		$file->getClientOriginalName();
+		$fileName = uniqid() . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
 		$file->move($fullDirName, $fileName);
 		return $fileName;
 	}
