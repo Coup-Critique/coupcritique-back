@@ -8,18 +8,18 @@ use Doctrine\ORM\QueryBuilder;
 
 trait PaginatorTrait
 {
-    private int $page = 1;
+    protected int $page = 1;
 
-    private int $maxResults = 50;
+    protected int $maxResults = 50;
 
-    private ?bool $withoutPaginate = false;
+    protected ?bool $withoutPaginate = false;
 
-    private int $counter = 0;
+    protected int $counter = 0;
 
-    private array $selects = [];
-    private array $parameters = [];
+    protected array $selects = [];
+    protected array $parameters = [];
 
-    // private ?DoctrinePaginator $paginator =null;
+    // protected ?DoctrinePaginator $paginator =null;
 
     public function paginate(string $alias, QueryBuilder $query, $page)
     {

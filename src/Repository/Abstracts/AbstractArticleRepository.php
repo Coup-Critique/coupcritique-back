@@ -4,6 +4,7 @@ namespace App\Repository\Abstracts;
 
 use App\Entity\Abstracts\AbstractArticle;
 use App\Entity\User;
+use App\Repository\Traits\MaxLengthTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -14,19 +15,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 abstract class AbstractArticleRepository extends ServiceEntityRepository
 {
+    use MaxLengthTrait;
+
     final public const ASC = 'ASC';
     final public const DESC = 'DESC';
 
-    protected int $maxLength = 500;
     protected string $order = self::DESC;
-
-    public function setMaxLength($maxLength): void
-    {
-        $maxLength = intval($maxLength);
-        if ($maxLength > 0 && $maxLength < 500) {
-            $this->maxLength = $maxLength;
-        }
-    }
 
     public function insert(AbstractArticle $article, User $user): AbstractArticle
     {

@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Comment;
 use App\Entity\Actuality;
 use App\Entity\CircuitTour;
+use App\Entity\CircuitArticle;
 use App\Entity\Team;
 use App\Entity\Guide;
 use App\Entity\Notification;
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CommentController extends AbstractController
 {
-    final public const PARENTS = ['actuality', 'guide', 'team', 'tournament', 'circuitTour'];
+    final public const PARENTS = ['actuality', 'guide', 'team', 'tournament', 'circuitTour', 'circuitArticle'];
 
     public function __construct(private readonly CommentRepository $repo, private readonly EntityManagerInterface $em)
     {
@@ -53,6 +54,9 @@ class CommentController extends AbstractController
                 break;
             case 'circuitTour':
                 return CircuitTour::class;
+                break;
+            case 'circuitArticle':
+                return CircuitArticle::class;
                 break;
             default:
                 return null;
@@ -78,6 +82,8 @@ class CommentController extends AbstractController
             case 'tournament':
             case 'circuitTour':
                 return 'Tournoi';
+            case 'circuitArticle':
+                return 'Article';
             default:
                 return null;
         }

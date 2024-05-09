@@ -460,7 +460,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this->players;
     }
 
-    public function addPlayer(Player $player): static
+    public function addPlayer(Player $player): self
     {
         if (!$this->players->contains($player)) {
             $this->players->add($player);
@@ -470,7 +470,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removePlayer(Player $player): static
+    public function removePlayer(Player $player): self
     {
         if ($this->players->removeElement($player)) {
             // set the owning side to null (unless already changed)

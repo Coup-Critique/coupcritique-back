@@ -13,6 +13,7 @@ class CircuitTourRepository extends AbstractArticleRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CircuitTour::class);
+        $this->order = self::ASC;
     }
 
     public function findForCalendar(): array

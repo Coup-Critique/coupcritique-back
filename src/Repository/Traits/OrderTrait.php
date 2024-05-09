@@ -3,10 +3,10 @@
 namespace App\Repository\Traits;
 
 trait OrderTrait
-{    
-    private ?string $order = null;
+{
+    protected ?string $order = null;
 
-    private string $orderDirection = 'ASC';
+    protected string $orderDirection = 'ASC';
 
     public function getOrder(): ?string
     {
@@ -20,7 +20,7 @@ trait OrderTrait
 
     public function getOrderDirection(): string
     {
-        if(empty($this->orderDirection)) {
+        if (empty($this->orderDirection)) {
             $this->setOrderDirection();
         }
         return $this->orderDirection;
@@ -41,5 +41,4 @@ trait OrderTrait
                 break;
         }
     }
-
 }

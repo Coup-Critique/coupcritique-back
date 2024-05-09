@@ -81,6 +81,9 @@ class Comment
     #[ORM\ManyToOne(targetEntity: CircuitTour::class, inversedBy: 'comments')]
     private $circuitTour;
 
+    #[ORM\ManyToOne(targetEntity: CircuitArticle::class, inversedBy: 'comments')]
+    private $circuitArticle;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
@@ -367,6 +370,17 @@ class Comment
     public function setCircuitTour(?CircuitTour $circuitTour): self
     {
         $this->circuitTour = $circuitTour;
+        return $this;
+    }
+
+    public function getCircuitArticle(): ?CircuitArticle
+    {
+        return $this->circuitArticle;
+    }
+
+    public function setCircuitArticle(?CircuitArticle $circuitArticle): self
+    {
+        $this->circuitArticle = $circuitArticle;
         return $this;
     }
 }

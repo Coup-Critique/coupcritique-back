@@ -2,10 +2,9 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\CircuitTour;
+use App\Entity\CircuitArticle;
 use App\Normalizer\EntityNormalizer;
-use App\Repository\CircuitTourRepository;
-use App\Service\CalendarMaker;
+use App\Repository\CircuitArticleRepository;
 use App\Service\DescriptionParser;
 use App\Service\ErrorManager;
 use App\Service\ImageArticleManager;
@@ -21,65 +20,43 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CircuitTourController extends AbstractController implements ContributeControllerInterface
+class CircuitArticleController extends AbstractController implements ContributeControllerInterface
 {
 	final public const TOURNAMENT_IMAGE_SIZE        = 300;
 	final public const TOURNAMENT_TEASER_IMAGE_SIZE = 250;
 
-	public function __construct(private readonly CircuitTourRepository $repo)
+	public function __construct(private readonly CircuitArticleRepository $repo)
 	{
 	}
 
-	#[Route(path: '/circuit-tours', name: 'circuit-tours', methods: ['GET'])]
-	public function getCircuitTours(Request $request)
+	#[Route(path: '/circuit-articles', name: 'circuit-articles', methods: ['GET'])]
+	public function getCircuitArticles(Request $request)
 	{
 		if (!empty($request->get('maxLength'))) {
-			$circuitTours = $this->repo->findWithMax($request->get('maxLength'));
+			$circuitArticles = $this->repo->findWithMax($request->get('maxLength'));
 		} else {
 			$criteria = null;
 			if (!empty($request->get('tags'))) {
 				$criteria = explode(',', $request->get('tags'));
 			}
-			$circuitTours = $this->repo->findWithQuery($criteria);
+			$circuitArticles = $this->repo->findWithQuery($criteria);
 		}
 
 		return $this->json(
-			['circuitTours' => $circuitTours],
+			['circuitArticles' => $circuitArticles],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:list']
 		);
 	}
 
-	#[Route(path: '/circuit-tours/calendar', name: 'circuit-tours_calendar', methods: ['GET'])]
-	public function circuitCalendar(CalendarMaker $calendarMaker)
+
+	#[Route(path: '/circuit-articles/{id}', name: 'circuit-article_by_id', methods: ['GET'])]
+	public function getCircuitArticleById($id)
 	{
-		$circuitTours = $this->repo->findForCalendar();
-		$currentTours  = [];
-		$dateNow = new \DateTime();
-		foreach ($circuitTours as $circuitTour) {
-			if ($circuitTour->getStartDate() <= $dateNow && $circuitTour->getEndDate() >= $dateNow) {
-				$currentTours[] = $circuitTour;
-			}
-			if ($circuitTour->getStartDate() > $dateNow) {
-				break;
-			}
-		}
+		$circuitArticle = $this->repo->findOne($id);
 
-		return $this->json(
-			['calendar' => $calendarMaker->makeCalendar($circuitTours), 'currentTour' => end($currentTours)],
-			Response::HTTP_OK,
-			[],
-			['groups' => 'read:list']
-		);
-	}
-
-	#[Route(path: '/circuit-tours/{id}', name: 'circuit-tour_by_id', methods: ['GET'])]
-	public function getCircuitTourById($id)
-	{
-		$circuitTour = $this->repo->findOne($id);
-
-		if (empty($circuitTour)) {
+		if (empty($circuitArticle)) {
 			return new JsonResponse(
 				['message' => "Mauvais identifiant"],
 				Response::HTTP_NOT_FOUND
@@ -87,23 +64,23 @@ class CircuitTourController extends AbstractController implements ContributeCont
 		}
 
 		return $this->json(
-			['circuitTour' => $circuitTour],
+			['circuitArticle' => $circuitArticle],
 			Response::HTTP_OK,
 			[],
 			['groups' => ['read:article', 'read:name']]
 		);
 	}
 
-	#[Route(path: '/circuit-tours/{id}/images', name: 'circuit-tour_images', methods: ['POST'])]
-	public function setCircuitTourImages(
+	#[Route(path: '/circuit-articles/{id}/images', name: 'circuit-article_images', methods: ['POST'])]
+	public function setCircuitArticleImages(
 		$id,
 		Request $request,
 		ImageArticleManager $imageArticleManager,
 		EntityManagerInterface $em
 	) {
-		$circuitTour = $this->repo->findOne($id);
+		$circuitArticle = $this->repo->findOne($id);
 
-		if (empty($circuitTour)) {
+		if (empty($circuitArticle)) {
 			return new JsonResponse(
 				['message' => "Mauvais identifiant"],
 				Response::HTTP_NOT_FOUND
@@ -117,20 +94,20 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($circuitTour, $request->files, 'circuit-tours');
+		$imageArticleManager->setImagesToEntity($circuitArticle, $request->files, 'circuit-articles');
 
 		$em->flush();
 
 		return $this->json(
-			['circuitTour' => $circuitTour],
+			['circuitArticle' => $circuitArticle],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']
 		);
 	}
 
-	#[Route(path: '/circuit-tours', name: 'insert_circuit-tour', methods: ['POST'])]
-	public function insertCircuitTour(
+	#[Route(path: '/circuit-articles', name: 'insert_circuit-article', methods: ['POST'])]
+	public function insertCircuitArticle(
 		Request $request,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
@@ -140,8 +117,8 @@ class CircuitTourController extends AbstractController implements ContributeCont
 	) {
 		$json = $request->getContent();
 		try {
-			/** @var CircuitTour $circuitTour */
-			$circuitTour = $serializer->deserialize($json, CircuitTour::class, 'json');
+			/** @var CircuitArticle $circuitArticle */
+			$circuitArticle = $serializer->deserialize($json, CircuitArticle::class, 'json');
 		} catch (NotEncodableValueException) {
 			// return $this->json(
 			// 	['message' => $e->getMessage()],
@@ -149,7 +126,7 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			// );
 		}
 
-		$errors = $validator->validate($circuitTour);
+		$errors = $validator->validate($circuitArticle);
 		if (count($errors) > 0) {
 			return $this->json(
 				['errors' => $errorManager->parseErrors($errors)],
@@ -157,24 +134,24 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		$circuitTour->setParsedDescription(
+		$circuitArticle->setParsedDescription(
 			$descriptionParser->parseToWysiwyg(
-				$circuitTour->getDescription(),
+				$circuitArticle->getDescription(),
 				$genRequestManager->getGenFromRequest()
 			)
 		);
-		$this->repo->insert($circuitTour, $this->getUser());
+		$this->repo->insert($circuitArticle, $this->getUser());
 
 		return $this->json(
-			['message' => 'Tournoi enregistré', 'circuitTour' => $circuitTour],
+			['message' => 'Article enregistré', 'circuitArticle' => $circuitArticle],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']
 		);
 	}
 
-	#[Route(path: '/circuit-tours/{id}', name: 'update_circuit-tour', methods: ['PUT'])]
-	public function updateCircuitTour(
+	#[Route(path: '/circuit-articles/{id}', name: 'update_circuit-article', methods: ['PUT'])]
+	public function updateCircuitArticle(
 		$id,
 		Request $request,
 		EntityManagerInterface $em,
@@ -185,27 +162,27 @@ class CircuitTourController extends AbstractController implements ContributeCont
 		DescriptionParser $descriptionParser,
 		GenRequestManager $genRequestManager
 	) {
-		$circuitTour = $this->repo->findOne($id);
-		if (empty($circuitTour)) {
+		$circuitArticle = $this->repo->findOne($id);
+		if (empty($circuitArticle)) {
 			return new JsonResponse(
 				['message' => "Mauvais identifiant"],
 				Response::HTTP_NOT_FOUND
 			);
 		}
 
-		$originalImages      = $circuitTour->getImages();
-		$originalDescription = $circuitTour->getDescription();
+		$originalImages      = $circuitArticle->getImages();
+		$originalDescription = $circuitArticle->getDescription();
 
 		$json = $request->getContent();
 		try {
-			/** @var CircuitTour $circuitTour */
-			$circuitTour = $serializer->deserialize(
+			/** @var CircuitArticle $circuitArticle */
+			$circuitArticle = $serializer->deserialize(
 				$json,
-				CircuitTour::class,
+				CircuitArticle::class,
 				'json',
 				[
-					AbstractNormalizer::OBJECT_TO_POPULATE => $circuitTour,
-					EntityNormalizer::UPDATE_ENTITIES => [CircuitTour::class]
+					AbstractNormalizer::OBJECT_TO_POPULATE => $circuitArticle,
+					EntityNormalizer::UPDATE_ENTITIES => [CircuitArticle::class]
 				]
 			);
 		} catch (\Exception $e) {
@@ -215,7 +192,7 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		$errors = $validator->validate($circuitTour);
+		$errors = $validator->validate($circuitArticle);
 		if (count($errors) > 0) {
 			return $this->json(
 				['errors' => $errorManager->parseErrors($errors)],
@@ -223,45 +200,45 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		if ($originalDescription !== $circuitTour->getDescription()) {
-			$circuitTour->setParsedDescription(
+		if ($originalDescription !== $circuitArticle->getDescription()) {
+			$circuitArticle->setParsedDescription(
 				$descriptionParser->parseToWysiwyg(
-					$circuitTour->getDescription(),
+					$circuitArticle->getDescription(),
 					$genRequestManager->getGenFromRequest()
 				)
 			);
 		}
 
-		$imageArticleManager->removeImagesFromEntity($circuitTour, 'circuit-tours', $originalImages);
+		$imageArticleManager->removeImagesFromEntity($circuitArticle, 'circuit-articles', $originalImages);
 
-		$circuitTour->setUpdateDate(new \DateTime());
+		$circuitArticle->setUpdateDate(new \DateTime());
 		$em->flush();
 
 		return $this->json(
-			['message' => 'Tournoi mis à jour', 'circuitTour' => $circuitTour],
+			['message' => 'Article mis à jour', 'circuitArticle' => $circuitArticle],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']
 		);
 	}
 
-	#[Route(path: '/circuit-tours/{id}', name: 'delete_circuit-tour', methods: ['DELETE'])]
-	public function deleteCircuitTour($id, ImageArticleManager $imageArticleManager)
+	#[Route(path: '/circuit-articles/{id}', name: 'delete_circuit-article', methods: ['DELETE'])]
+	public function deleteCircuitArticle($id, ImageArticleManager $imageArticleManager)
 	{
-		$circuitTour = $this->repo->find($id);
-		if (empty($circuitTour)) {
+		$circuitArticle = $this->repo->find($id);
+		if (empty($circuitArticle)) {
 			return $this->json(
 				['message' => "Mauvais identifiant"],
 				Response::HTTP_NOT_FOUND
 			);
 		}
 
-		$imageArticleManager->removeImagesFromEntity($circuitTour, 'circuit-tours');
+		$imageArticleManager->removeImagesFromEntity($circuitArticle, 'circuit-articles');
 
-		$this->repo->delete($circuitTour);
+		$this->repo->delete($circuitArticle);
 
 		return new JsonResponse(
-			['message' => "Tournoi $id supprimé", 'id' => $id],
+			['message' => "Article $id supprimé", 'id' => $id],
 			Response::HTTP_OK
 		);
 	}

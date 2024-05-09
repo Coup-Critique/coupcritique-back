@@ -34,10 +34,22 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     #[Groups(['read:article', 'read:list', 'read:list:article', 'update:article', 'insert:article'])]
     protected $tags;
 
+    #[ORM\OneToMany(mappedBy: 'tour', targetEntity: CircuitArticle::class)]
+    private Collection $articles;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read:article'])]
+    private ?array $results = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read:article'])]
+    private ?array $scores = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getStartDate(): ?DateTimeInterface
@@ -45,7 +57,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
         return $this->startDate;
     }
 
-    public function setStartDate(DateTimeInterface $startDate): static
+    public function setStartDate(DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
 
@@ -57,7 +69,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
         return $this->endDate;
     }
 
-    public function setEndDate(DateTimeInterface $endDate): static
+    public function setEndDate(DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
 
@@ -138,6 +150,60 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
                 $comment->setCircuitTour(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CircuitArticle>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(CircuitArticle $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setTour($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(CircuitArticle $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getTour() === $this) {
+                $article->setTour(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getResults(): ?array
+    {
+        return $this->results;
+    }
+
+    public function setResults(?array $results): self
+    {
+        $this->results = $results;
+
+        return $this;
+    }
+
+    public function getScores(): ?array
+    {
+        return $this->scores;
+    }
+
+    public function setScores(?array $scores): self
+    {
+        $this->scores = $scores;
 
         return $this;
     }
