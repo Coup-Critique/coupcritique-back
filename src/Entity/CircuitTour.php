@@ -27,6 +27,11 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
     protected ?string $color = null;
 
+    #[ORM\ManyToOne(targetEntity: Pokemon::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
+    protected ?Pokemon $pokemon = null;
+
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'circuitTour', cascade: ['persist', 'remove'])]
     protected $comments;
 
@@ -84,6 +89,18 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     public function setColor(?string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getPokemon(): ?Pokemon
+    {
+        return $this->pokemon;
+    }
+
+    public function setPokemon(?Pokemon $pokemon): self
+    {
+        $this->pokemon = $pokemon;
 
         return $this;
     }

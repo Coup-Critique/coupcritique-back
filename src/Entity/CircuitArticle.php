@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Abstracts\AbstractArticle;
 use App\Entity\Abstracts\AbstractTag;
+use App\Entity\Interfaces\HasTourInterface;
 use App\Repository\CircuitArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CircuitArticleRepository::class)]
-class CircuitArticle extends AbstractArticle
+class CircuitArticle extends AbstractArticle implements HasTourInterface
 {
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'circuitArticle', cascade: ['persist', 'remove'])]
@@ -21,9 +22,10 @@ class CircuitArticle extends AbstractArticle
     #[Groups(['read:article', 'read:list', 'read:list:article', 'update:article', 'insert:article'])]
     protected $tags;
 
-    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\ManyToOne(targetEntity: CircuitTour::class, inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['read:article', 'update:article', 'insert:article'])]
-    private ?CircuitTour $tour = null;
+    private $tour;
 
     public function __construct()
     {

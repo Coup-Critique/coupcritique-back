@@ -14,6 +14,7 @@ class Player
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:player', 'read:list'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]

@@ -23,7 +23,7 @@ class CircuitTourRepository extends AbstractArticleRepository
         $endDate = new \DateTime();
         $endDate->modify('+1 year');
         $endDate->setDate($endDate->format('Y'), $endDate->format('m'), date('t', $endDate->getTimestamp()));
-        
+
         return $this->createQueryBuilder('c')
             ->where('c.endDate >= :startDate')
             ->andWhere('c.endDate <= :endDate')
@@ -41,6 +41,17 @@ class CircuitTourRepository extends AbstractArticleRepository
             ->leftJoin('a.user', 'u')
             ->where('a.id = :id')
             ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findOneByTitle(string $title): ?AbstractArticle
+    {
+        return  $this->createQueryBuilder('a')
+            ->addSelect('u')
+            ->leftJoin('a.user', 'u')
+            ->where('a.title LIKE :title')
+            ->setParameter('title', "$title%")
             ->getQuery()
             ->getOneOrNullResult();
     }

@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\CircuitVideo;
 use App\Normalizer\EntityNormalizer;
 use App\Repository\CircuitVideoRepository;
+use App\Service\CircuitTourJoiner;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +43,7 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 	#[Route(path: '/circuit-videos', name: 'insert_circuit_video', methods: ['POST'])]
 	public function insertCircuitVideo(
 		Request $request,
+		CircuitTourJoiner $circuitTourJoiner,
 		SerializerInterface $serializer
 	) {
 		$json = $request->getContent();
@@ -56,11 +58,9 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 
 			$this->repo->insert($video);
 		} catch (NotEncodableValueException) {
-			// return $this->json(
-			// 	['message' => $e->getMessage()],
-			// 	Response::HTTP_BAD_REQUEST
-			// );
 		}
+
+		$circuitTourJoiner->joinTour($video, $json);
 
 		return $this->json(
 			['message' => 'Vidéo enregistrée', 'circuitVideo' => $video],
@@ -74,12 +74,13 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 	public function updateCircuitVideo(
 		$id,
 		Request $request,
+		CircuitTourJoiner $circuitTourJoiner,
 		SerializerInterface $serializer
 	) {
 		$json = $request->getContent();
 		try {
 			$video = $this->repo->find($id);
-			$newCircuitVideo = $serializer->deserialize(
+			$video = $serializer->deserialize(
 				$json,
 				CircuitVideo::class,
 				'json',
@@ -89,13 +90,11 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 					EntityNormalizer::UPDATE_ENTITIES      => [CircuitVideo::class]
 				]
 			);
-			$this->repo->update($newCircuitVideo);
+			$this->repo->update($video);
 		} catch (NotEncodableValueException) {
-			// return $this->json(
-			// 	['message' => $e->getMessage()],
-			// 	Response::HTTP_BAD_REQUEST
-			// );
 		}
+
+		$circuitTourJoiner->joinTour($video, $json);
 
 		return new JsonResponse(
 			['message' => "Vidéo $id mise à jour", 'id' => $id],

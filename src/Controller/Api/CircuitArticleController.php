@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\CircuitArticle;
 use App\Normalizer\EntityNormalizer;
 use App\Repository\CircuitArticleRepository;
+use App\Service\CircuitTourJoiner;
 use App\Service\DescriptionParser;
 use App\Service\ErrorManager;
 use App\Service\ImageArticleManager;
@@ -112,6 +113,7 @@ class CircuitArticleController extends AbstractController implements ContributeC
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
 		ErrorManager $errorManager,
+		CircuitTourJoiner $circuitTourJoiner,
 		DescriptionParser $descriptionParser,
 		GenRequestManager $genRequestManager
 	) {
@@ -120,11 +122,9 @@ class CircuitArticleController extends AbstractController implements ContributeC
 			/** @var CircuitArticle $circuitArticle */
 			$circuitArticle = $serializer->deserialize($json, CircuitArticle::class, 'json');
 		} catch (NotEncodableValueException) {
-			// return $this->json(
-			// 	['message' => $e->getMessage()],
-			// 	Response::HTTP_BAD_REQUEST
-			// );
 		}
+
+		$circuitTourJoiner->joinTour($circuitArticle, $json);
 
 		$errors = $validator->validate($circuitArticle);
 		if (count($errors) > 0) {
@@ -156,6 +156,7 @@ class CircuitArticleController extends AbstractController implements ContributeC
 		Request $request,
 		EntityManagerInterface $em,
 		ImageArticleManager $imageArticleManager,
+		CircuitTourJoiner $circuitTourJoiner,
 		SerializerInterface $serializer,
 		ValidatorInterface $validator,
 		ErrorManager $errorManager,
@@ -191,6 +192,8 @@ class CircuitArticleController extends AbstractController implements ContributeC
 				Response::HTTP_BAD_REQUEST
 			);
 		}
+
+		$circuitTourJoiner->joinTour($circuitArticle, $json);
 
 		$errors = $validator->validate($circuitArticle);
 		if (count($errors) > 0) {
