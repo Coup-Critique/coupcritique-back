@@ -96,7 +96,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	public function findAllForAdmin(?string $search = null): array
 	{
 		$query = $this->createQueryBuilder('u')
-			->orderBy('u.date_creation', 'DESC');
+			->orderBy('u.date_creation', 'DESC')
+			->addOrderBy('u.id', 'DESC');
 
 		if ($search) {
 			$query->where('u.username LIKE :search')

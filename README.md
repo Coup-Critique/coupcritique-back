@@ -73,23 +73,6 @@ JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
 JWT_PASSPHRASE="your secret phrase"
 ```
 
-#### 6. Install Node dependencies
-```bash
-yarn
-```
-
-#### 7. Start React App
-
-Without SSR : 
-```bash
-yarn watch
-```
-
-With SSR :
-```bash
-yarn ssr-watch
-```
-
 #### 8. Start Symfony App
 
 Through the built-in PHP development server : 
@@ -186,13 +169,7 @@ docker-compose command :
 ```bash
 docker-compose exec php bin/console doctrine:schema:update --force
 ```
-
-#### 7. Install Node dependencies
-
-docker-compose command :
-```bash
-UID=$(id -u) GID=$(id -g) docker-compose run --rm node yarn
-```
+docker-compose run --rm node yarn
 
 <h3 id="docker-utilities">Utilities</h3>
 

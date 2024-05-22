@@ -46,7 +46,7 @@ abstract class AbstractMessengerListener
         $this->chatter->send($chat);
     }
 
-    protected function isUpdateSufficient(string $prevValue, string $value): bool
+    protected function isUpdateSufficient(?string $prevValue, ?string $value): bool
     {
         return !empty($value) && (empty($prevValue)
             || abs(strlen($prevValue) - strlen($value)) > self::STR_LEN_COMPARISON

@@ -6,6 +6,8 @@ use App\Entity\Abstracts\AbstractArticle;
 use App\Entity\Actuality;
 use App\Entity\Guide;
 use App\Entity\Tournament;
+use App\Entity\CircuitTour;
+use App\Entity\CircuitArticle;
 use App\Entity\User;
 
 class ArticleDiscordMessage extends AbstractDiscordMessage
@@ -25,7 +27,9 @@ class ArticleDiscordMessage extends AbstractDiscordMessage
             $designation = "de l'actualité";
         } elseif ($this->entity instanceof Guide) {
             $designation = "du guide";
-        } else /* if ($this->entity instanceof Tournament) */ {
+        } elseif ($this->entity instanceof CircuitArticle) {
+            $designation = "de l'article";
+        } else /* if ($this->entity instanceof Tournament || $this->entity instanceof CircuitTour) */ {
             $designation = "du tournois";
         }
         return $this->getAction() . " " . $designation . " : " . $this->entity->getTitle();
@@ -43,9 +47,14 @@ class ArticleDiscordMessage extends AbstractDiscordMessage
             return "actualities";
         } elseif ($this->entity instanceof Guide) {
             return "guides";
-        } else /* if ($this->entity instanceof Tournament) */ {
+        } elseif ($this->entity instanceof Tournament) {
             return "tournaments";
+        } else if ($this->entity instanceof CircuitTour) {
+            return "circuit-tours";
+        } else if ($this->entity instanceof CircuitArticle) {
+            return "circuit-article";
         }
+        throw new \Exception("Unrecognized entity.");
     }
 
     public function getContent(): string

@@ -6,6 +6,9 @@ use App\Repository\PokemonCheckRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+/**
+ * @deprecated
+ */
 #[ORM\Entity(repositoryClass: PokemonCheckRepository::class)]
 class PokemonCheck
 {
@@ -14,8 +17,9 @@ class PokemonCheck
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: TierUsage::class, inversedBy: 'pokemonChecks')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    // #[ORM\ManyToOne(targetEntity: TierUsage::class, inversedBy: 'pokemonChecks')]
+    // #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\Column(type: 'integer')] // TEMP for review
     private $tierUsage;
 
     #[ORM\ManyToOne(targetEntity: Pokemon::class)]

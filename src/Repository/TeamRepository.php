@@ -202,7 +202,8 @@ class TeamRepository extends ServiceEntityRepository
 			$query->orderBy('recentOrder', 'ASC')
 				->addOrderBy('certifOrder', 'DESC')
 				->addOrderBy('t.date_creation', 'DESC')
-				->addOrderBy('tag.sortOrder', 'ASC');
+				->addOrderBy('tag.sortOrder', 'ASC')
+				->addOrderBy('t.id', 'DESC');
 
 			foreach ($params as $key => $value) {
 				$query->setParameter($key, $value);
@@ -216,20 +217,20 @@ class TeamRepository extends ServiceEntityRepository
 
 	public function getLastTopWeek(): ?Team
 	{
-		$result = $this->baseQuery()
+		$query = $this->baseQuery()
+			->andWhere('t.banned IS NULL OR t.banned = 0')
 			->orderBy('t.top_week', 'DESC')
-			->addOrderBy('tag.sortOrder', 'ASC')
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult();
+			->addOrderBy('tag.sortOrder', 'ASC');
 
-		if (!is_null($result)) {
-			foreach ($result->getPokemonInstances() as $instance) {
-				$this->pokemonInstanceRepo->findOne($instance->getId());
-			}
+		$this->setMaxResults(1);
+		$result = $this->paginate('t', $query, 1);
+
+		if (empty($result)) return null;
+		$team = $result[0];
+		foreach ($team->getPokemonInstances() as $instance) {
+			$this->pokemonInstanceRepo->findOne($instance->getId());
 		}
-
-		return $result;
+		return $team;
 	}
 
 	/**
@@ -333,7 +334,8 @@ class TeamRepository extends ServiceEntityRepository
 		if (empty($this->order)) {
 			$query->addOrderBy('t.certified', 'DESC')
 				->addOrderBy('t.date_creation', 'DESC')
-				->addOrderBy('tag.sortOrder', 'ASC');
+				->addOrderBy('tag.sortOrder', 'ASC')
+				->addOrderBy('t.id', 'DESC');
 		} else {
 			$this->setOrderInQuery($query);
 		}
@@ -379,25 +381,25 @@ class TeamRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
-	public function findLastUserTeam(User $user):?Team
+	public function findLastUserTeam(User $user): ?Team
 	{
-		$result = $this->baseListQuery()
+		$query = $this->baseListQuery()
 			->where('t.user = :user')
 			->andWhere('t.banned IS NULL OR t.banned = 0')
 			->setParameter('user', $user)
 			->orderBy('t.date_creation', 'DESC')
 			->addOrderBy('tag.sortOrder', 'ASC')
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult();
+			->addOrderBy('t.id', 'DESC');
 
-		if (!is_null($result)) {
-			foreach ($result->getPokemonInstances() as $instance) {
-				$this->pokemonInstanceRepo->findOne($instance->getId());
-			}
+		$this->setMaxResults(1);
+		$result = $this->paginate('t', $query, 1);
+
+		if (empty($result)) return null;
+		$team = $result[0];
+		foreach ($team->getPokemonInstances() as $instance) {
+			$this->pokemonInstanceRepo->findOne($instance->getId());
 		}
-
-		return $result;
+		return $team;
 	}
 
 	private function setSearchToQuery(QueryBuilder $query, string $search, int $i = 0): void
@@ -431,33 +433,40 @@ class TeamRepository extends ServiceEntityRepository
 
 		switch ($this->order) {
 			case 'name':
-				$query->orderBy('t.name', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('t.name', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'certified':
 				$this->addPaginatorSelect('CASE WHEN t.certified = 1 THEN 1 ELSE 0 END AS HIDDEN certifOrder', $query);
-				$query->orderBy('certifOrder', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('certifOrder', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'user':
-				$query->orderBy('u.username', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('u.username', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'tier':
 				$this->addPaginatorSelect('-ti.sortOrder AS HIDDEN inverse_order', $query);
-				$query->orderBy('inverse_order', $od === 'ASC' ? 'DESC' : 'ASC');
-				$query->addOrderBy('ti.name', 'ASC');
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('inverse_order', $od === 'ASC' ? 'DESC' : 'ASC')
+					->addOrderBy('ti.name', 'ASC')
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'tag':
-				$query->orderBy('tag.name', $od);
-				$query->addOrderBy('t.date_creation', 'DESC');
+				$query->orderBy('tag.name', $od)
+					->addOrderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 			case 'date_creation':
-				$query->orderBy('t.date_creation', $od);
+				$query->orderBy('t.date_creation', $od)
+					->addOrderBy('t.id', $od);
 				break;
 			default:
-				$query->orderBy('t.date_creation', 'DESC');
+				$query->orderBy('t.date_creation', 'DESC')
+					->addOrderBy('t.id', 'DESC');
 				break;
 		}
 		$query->addOrderBy('tag.sortOrder', 'ASC');

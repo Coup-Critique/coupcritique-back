@@ -4,6 +4,7 @@ namespace App\Repository\Abstracts;
 
 use App\Entity\Abstracts\AbstractArticle;
 use App\Entity\User;
+use App\Repository\Traits\MaxLengthTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -14,19 +15,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 abstract class AbstractArticleRepository extends ServiceEntityRepository
 {
+    use MaxLengthTrait;
+
     final public const ASC = 'ASC';
     final public const DESC = 'DESC';
 
-    protected int $maxLength = 500;
     protected string $order = self::DESC;
-
-    public function setMaxLength($maxLength): void
-    {
-        $maxLength = intval($maxLength);
-        if ($maxLength > 0 && $maxLength < 500) {
-            $this->maxLength = $maxLength;
-        }
-    }
 
     public function insert(AbstractArticle $article, User $user): AbstractArticle
     {
@@ -53,13 +47,13 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->where('a.title LIKE :keyword');
 
         $statement->setParameter('keyword', "%$keywords%")
-            ->orderBy('a.date_creation', $this->order);
+            ->orderBy('a.date_creation', $this->order)
+            ->addOrderBy('a.id', $this->order);
 
         if ($limit != null) $statement->setMaxResults($limit);
 
         return $statement->getQuery()->getResult();
     }
-
 
     public function findOne($id): ?AbstractArticle
     {
@@ -83,17 +77,18 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->leftJoin("a.tags", 'tag')
             ->leftJoin('a.user', 'u')
             ->addOrderBy('a.date_creation', $this->order)
+            ->addOrderBy('a.id', $this->order)
             ->setMaxResults($this->maxLength)
             ->getQuery()
             ->getResult();
     }
-
 
     public function findWithMax($max): array
     {
         $ids = $this->createQueryBuilder('a')
             ->select('a.id')
             ->addOrderBy('a.date_creation', self::DESC)
+            ->addOrderBy('a.id', self::DESC)
             ->setMaxResults($max)
             ->getQuery()
             ->getArrayResult();
@@ -110,6 +105,7 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             ->leftJoin('a.tags', 'tag')
             ->andWhere("a.id IN (" . implode(',', $ids) . ")")
             ->addOrderBy('a.date_creation',  self::DESC)
+            ->addOrderBy('a.id', self::DESC)
             ->getQuery()->getResult();
     }
 
@@ -141,7 +137,8 @@ abstract class AbstractArticleRepository extends ServiceEntityRepository
             }
         }
 
-        $query->addOrderBy('a.date_creation', $this->order);
+        $query->addOrderBy('a.date_creation', $this->order)
+            ->addOrderBy('a.id', $this->order);
 
         return $query->getQuery()->getResult();
     }

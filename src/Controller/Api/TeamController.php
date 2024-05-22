@@ -97,6 +97,62 @@ class TeamController extends AbstractController
         );
     }
 
+    /**
+     * Doit se trouver avant /teams/{id}
+     */
+    #[Route(path: '/teams/top', name: 'top_week_team', methods: ['GET'])]
+    public function getTopTeam()
+    {
+        $team = $this->repo->getLastTopWeek();
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user && $team) {
+            $team->setIsOwnUserFavorite($user);
+        }
+        return $this->json(
+            ['team' => $team],
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['read:team']]
+        );
+    }
+
+    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
+    public function getTeamById($id)
+    {
+        $team = $this->repo->findOne($id);
+
+        if (empty($team)) {
+            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
+        }
+
+        $groups = ['read:team'];
+        /** @var User $user */
+        $user = $this->getUser();
+        $isModo = false;
+        if ($user) {
+            $team->setIsOwnUserFavorite($user);
+            if ($user->getIsModo()) {
+                $groups[] = 'read:team:admin';
+                $isModo = true;
+            }
+        }
+        if (
+            $team->getBanned()
+            && !$isModo
+            && (!$user || $user->getId() != $team->getUser()->getId())
+        ) {
+            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json(
+            ['team' => $team],
+            Response::HTTP_OK,
+            [],
+            ['groups' => $groups]
+        );
+    }
+
     #[Route(path: '/teams/state', name: 'teams_by_state', methods: ['GET'])]
     public function getTeamsByState(Request $request)
     {
@@ -149,20 +205,6 @@ class TeamController extends AbstractController
             Response::HTTP_OK,
             [],
             ['groups' => $groups]
-        );
-    }
-
-    /**
-     * Doit se trouver avant /teams/{id}
-     */
-    #[Route(path: '/teams/top', name: 'top_week_team', methods: ['GET'])]
-    public function getTopTeam()
-    {
-        return $this->json(
-            ['team' => $this->repo->getLastTopWeek()],
-            Response::HTTP_OK,
-            [],
-            ['groups' => ['read:team']]
         );
     }
 
@@ -408,43 +450,6 @@ class TeamController extends AbstractController
         return new JsonResponse(
             ['message' => $message],
             Response::HTTP_OK
-        );
-    }
-
-
-    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
-    public function getTeamById($id)
-    {
-        $team = $this->repo->findOne($id);
-
-        if (empty($team)) {
-            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
-        }
-
-        $groups = ['read:team'];
-        /** @var User $user */
-        $user = $this->getUser();
-        $isModo = false;
-        if ($user) {
-            $team->setIsOwnUserFavorite($user);
-            if ($user->getIsModo()) {
-                $groups[] = 'read:team:admin';
-                $isModo = true;
-            }
-        }
-        if (
-            $team->getBanned()
-            && !$isModo
-            && (!$user || $user->getId() != $team->getUser()->getId())
-        ) {
-            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
-        }
-
-        return $this->json(
-            ['team' => $team],
-            Response::HTTP_OK,
-            [],
-            ['groups' => $groups]
         );
     }
 

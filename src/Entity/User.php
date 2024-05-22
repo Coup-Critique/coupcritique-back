@@ -28,9 +28,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     private $id;
 
-    #[CustomAssert\TextConstraint(
-        message: "Ce nom n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(['read:user', 'insert:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
     #[Assert\Length(max: 180, maxMessage: 'Le nom utilisateur peut faire au maximum 180 caractères.')]
@@ -45,14 +43,30 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     private $roles = [];
 
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private bool $is_admin = false;
+    private ?bool $is_admin = null;
 
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private bool $is_modo = false;
+    private ?bool $is_modo = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
-    private $is_tiper;
+    private ?bool $is_tiper = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_winner = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_weeker = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_certified = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
+    private ?bool $is_content_creator = null;
 
     #[ORM\Column(type: 'string')]
     #[Groups(['insert:user'])]
@@ -75,7 +89,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:user:admin'])]
     private $date_creation;
 
-    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:user', 'insert:user', 'read:list'])]
     #[Assert\Length(max: 50, maxMessage: 'Le pseudo discord peut faire au maximum 50 caractères.')]
     private $discord_name;
@@ -84,12 +98,12 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'read:list', 'read:team', 'read:list:team'])]
     private $picture;
 
-    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:user', 'insert:user', 'read:list'])]
     #[Assert\Length(max: 50, maxMessage: 'Le pseudo showdown peut faire au maximum 50 caractères.')]
     private $showdown_name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true, length: 1000)]
     #[Groups(['read:user:admin'])]
     private $history;
 
@@ -99,9 +113,13 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private $ips = [];
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Player::class)]
+    private Collection $players;
+
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
+        $this->players = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -328,6 +346,54 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getIsWinner(): ?bool
+    {
+        return $this->is_winner;
+    }
+
+    public function setIsWinner(bool $is_winner): self
+    {
+        $this->is_winner = $is_winner;
+
+        return $this;
+    }
+
+    public function getIsWeeker(): ?bool
+    {
+        return $this->is_weeker;
+    }
+
+    public function setIsWeeker(bool $is_weeker): self
+    {
+        $this->is_weeker = $is_weeker;
+
+        return $this;
+    }
+
+    public function getIsCertified(): ?bool
+    {
+        return $this->is_certified;
+    }
+
+    public function setIsCertified(bool $is_certified): self
+    {
+        $this->is_certified = $is_certified;
+
+        return $this;
+    }
+
+    public function getIsContentCreator(): ?bool
+    {
+        return $this->is_content_creator;
+    }
+
+    public function setIsContentCreator(bool $is_content_creator): self
+    {
+        $this->is_content_creator = $is_content_creator;
+
+        return $this;
+    }
+
     public function getHistory(): ?string
     {
         return $this->history;
@@ -384,5 +450,35 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function getIps(): ?array
     {
         return $this->ips;
+    }
+
+    /**
+     * @return Collection<int, Player>
+     */
+    public function getPlayers(): Collection
+    {
+        return $this->players;
+    }
+
+    public function addPlayer(Player $player): self
+    {
+        if (!$this->players->contains($player)) {
+            $this->players->add($player);
+            $player->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlayer(Player $player): self
+    {
+        if ($this->players->removeElement($player)) {
+            // set the owning side to null (unless already changed)
+            if ($player->getUser() === $this) {
+                $player->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

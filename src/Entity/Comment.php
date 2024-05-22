@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\CommentParentInterface;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
-use Doctrine\ORM\Mapping\MappedSuperclass;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -21,10 +19,8 @@ class Comment
     #[Groups(['read:list'])]
     protected $id;
 
-    #[CustomAssert\TextConstraint(
-        message: "Ce commentaire n'est pas acceptable car il contient le ou les mots : {{ banWords }}."
-    )]
-    #[ORM\Column(type: 'text', length: 3000)]
+    #[CustomAssert\TextConstraint()]
+    #[ORM\Column(type: 'text', length: 3000, options: ['default' => ''])]
     #[Groups(['read:list', 'insert:comment'])]
     #[Assert\NotNull(message: 'Un message est requis.')]
     #[Assert\Length(max: 3000, maxMessage: 'Le commentaire peut faire au maximum 3000 caractères.')]
@@ -81,6 +77,12 @@ class Comment
 
     #[ORM\ManyToOne(targetEntity: Tournament::class, inversedBy: 'comments')]
     private $tournament;
+
+    #[ORM\ManyToOne(targetEntity: CircuitTour::class, inversedBy: 'comments')]
+    private $circuitTour;
+
+    #[ORM\ManyToOne(targetEntity: CircuitArticle::class, inversedBy: 'comments')]
+    private $circuitArticle;
 
     public function __construct()
     {
@@ -357,6 +359,28 @@ class Comment
     public function setTournament(?Tournament $tournament): self
     {
         $this->tournament = $tournament;
+        return $this;
+    }
+
+    public function getCircuitTour(): ?CircuitTour
+    {
+        return $this->circuitTour;
+    }
+
+    public function setCircuitTour(?CircuitTour $circuitTour): self
+    {
+        $this->circuitTour = $circuitTour;
+        return $this;
+    }
+
+    public function getCircuitArticle(): ?CircuitArticle
+    {
+        return $this->circuitArticle;
+    }
+
+    public function setCircuitArticle(?CircuitArticle $circuitArticle): self
+    {
+        $this->circuitArticle = $circuitArticle;
         return $this;
     }
 }

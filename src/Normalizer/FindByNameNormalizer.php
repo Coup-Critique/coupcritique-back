@@ -5,20 +5,23 @@ namespace App\Normalizer;
 use App\Service\GenRequestManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
-
+// use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+// use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
+ * @deprecated
  * Entity normalizer
  */
-class FindByNameNormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+class FindByNameNormalizer implements DenormalizerInterface/* , DenormalizerAwareInterface */
 {
-    use DenormalizerAwareTrait;
+    // Cannot use it, makes infinite loop
+    // use DenormalizerAwareTrait;
 
     public function __construct(
         protected readonly EntityManagerInterface $em,
         protected readonly GenRequestManager $genRequestManager,
+        protected readonly ObjectNormalizer $objectNormalizer
     ) {
     }
 
@@ -56,6 +59,6 @@ class FindByNameNormalizer implements DenormalizerInterface, DenormalizerAwareIn
                 if (!empty($entity)) return $entity;
             }
         }
-        return $this->denormalizer->denormalize($data, $class, $format, $context);
+        return $this->objectNormalizer->denormalize($data, $class, $format, $context);
     }
 }

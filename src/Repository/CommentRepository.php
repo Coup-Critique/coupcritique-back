@@ -93,6 +93,7 @@ class CommentRepository extends ServiceEntityRepository
         return $query->addOrderBy('_aba', 'DESC')
             ->addOrderBy('_approval', 'DESC')
             ->addOrderBy('ct.date_creation', 'DESC')
+            ->addOrderBy('ct.id', 'DESC')
             ->getQuery()
             ->getResult();
     }

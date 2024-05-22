@@ -146,9 +146,7 @@ class PokemonInstance
     #[Assert\GreaterThanOrEqual(value: 0, message: 'Les evs doivent être positifs.')]
     private $spe_ev;
 
-    #[CustomAssert\TextConstraint(
-        message: "Cette description n'est pas acceptable car elle contient le ou les mots : {{ banWords }}."
-    )]
+    #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'text', nullable: true, length: 5000)]
     #[Groups(['read:team', 'insert:team', 'update:team'])]
     #[Assert\Length(max: 5000, maxMessage: 'La description peut faire au maximum 5000 caractères.')]
@@ -521,6 +519,11 @@ class PokemonInstance
         $this->move_4 = $move_4;
 
         return $this;
+    }
+
+    public function getMoves(): array
+    {
+        return [$this->move_1, $this->move_2, $this->move_3, $this->move_4];
     }
 
     public function setTeam(?Team $team): self
