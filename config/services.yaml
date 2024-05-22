@@ -68,3 +68,7 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.controller }
       - { name: kernel.event_listener, event: kernel.response }
+
+when@dev:
+when@test:
+ App\DataFixtures\Faker\UsageNameProvider: ~

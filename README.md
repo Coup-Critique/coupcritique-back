@@ -26,7 +26,7 @@ git clone git@github.com:GeoDaz/coupcritique
 
 <h3 id="local-requirements">Requirements</h3>
 
-- PHP 7.4
+- PHP 8.2
 - PHPCSFixer executable (must be installed if you want to use it)
 - MariaDB 10.2
 - Composer
@@ -149,21 +149,11 @@ docker-compose command :
 UID=$(id -u) GID=$(id -g) docker-compose up -d
 ```
 
-make command :
-```bash
-make up
-```
-
 #### 4. Install composer dependencies
 
 docker-compose command :
 ```bash
 docker-compose exec php composer install
-```
-
-make command :
-```bash
-make composer arg=install
 ```
 
 #### 5. Create database if it doesn't exist
@@ -173,22 +163,13 @@ docker-compose command :
 docker-compose exec php bin/console doctrine:database:create
 ```
 
-make command :
-```bash
-make sf-console arg=doctrine:database:create
-```
-
 #### 6. Update the database with entities schema
 
 docker-compose command :
 ```bash
 docker-compose exec php bin/console doctrine:schema:update --force
 ```
-
-make command : 
-```bash
-make sf-console arg="doctrine:schema:update --force"
-```
+docker-compose run --rm node yarn
 
 <h3 id="docker-utilities">Utilities</h3>
 
@@ -197,63 +178,51 @@ make sf-console arg="doctrine:schema:update --force"
 <table>
   <tr>
     <th>Utility</th>
-    <th>docker-compose command</th>
-    <th>make command</th>
   </tr>
   <tr>
     <td>Stop all services</td>
     <td>docker-compose stop</td>
-    <td>make stop</td>
   </tr>
   <tr>
     <td>Stop one service</td>
     <td>docker-compose stop &lt;service&gt;</td>
-    <td>make stop service=&lt;service&gt;</td>
   </tr>
   <tr>
     <td>Stops and remove all services</td>
     <td>docker-compose down</td>
-    <td>make down</td>
   </tr>
   <tr>
     <td>Starts a shell interpreter into a service</td>
     <td>docker-compose exec &lt;service&gt; sh</td>
-    <td>make sh service=&lt;service&gt;</td>
   </tr>
   <tr>
     <td>Starts a bash interpreter into a service</td>
-    <td>docker-compose exec &lt;service&gt; sh</td>
+    <td>docker-compose exec &lt;service&gt; bash</td>
     <td>make bash service=&lt;service&gt;</td>
   </tr>
   <tr>
-    <td>Run composer with provided arguments (must be surrounded by double quotes for the make command if it has spaces)</td>
+    <td>Run composer with provided arguments</td>
     <td>docker-compose exec php composer &lt;args&gt;</td>
-    <td>make composer args=&lt;args&gt;</td>
   </tr>
   <tr>
     <td>Start a CLI into coupcritique MariaDB server</td>
     <td>docker-compose exec db mysql -u root -proot coupcritique</td>
-    <td>make db-cli</td>
   </tr>
   <tr>
     <td>Starts a redis CLI</td> 
     <td>docker-compose exec redis redis-cli</td>
-    <td>make redis-cli</td> 
   </tr>
   <tr>
     <td>Flush the redis cache</td>
     <td>docker-compose exec redis redis-cli flushall</td>
-    <td>make redis-flush</td>
   </tr>
   <tr>
     <td>Import a SQL file into the MariaDB service</td>
     <td>docker-compose exec -T db mysql -u root -proot coucpritique < &lt;path&gt;</td>
-    <td>make sql-import path="&lt;path&gt;"</td>
   </tr>
   <tr>
     <td>Produce a dump of the MariaDB service's coupcritique database with today's timestamp</td>
     <td>docker-compose exec -T db mysqldump -u root -proot coucpritique > coupcritique_$(date +"%Y-%m-%d").sql</td>
-    <td>make sql-dump</td>
   </tr>
 </table>
 
@@ -266,12 +235,6 @@ By default docker-compose's services are using the following ports :
 - adminer : 8888
 - maildev : 8700
 - matomo : 8889
-
-You can easily switch their ports thanks to make : 
-
-```bash
-make up-port service=<your service> port=<new port>
-```
 
 # Post-installation
 
@@ -287,6 +250,7 @@ Then, you can customize the rules at your convenience :
 - For PHPCodeSniffer : create `phpcs.xml` from `phpcs.xml.dist`.
 
 - For PHPStan : create `phpstan.neon` from `phpstan.neon.dist` and replace `"phpstan.neon.dist"` in your GrumPHP's config.
+
 ## Feed the database
 
 After the installation, you must feed your database, especially for Showdown's data.
@@ -303,9 +267,4 @@ mysql -u <user> -p<password> coupcritique < <path of the downloaded dump>
 docker-compose command :
 ```bash
 docker-compose exec -T db mysql -u <user> -p<password> coupcritique < <path of the downloaded dump>
-```
-
-make command : 
-```bash
-make sql-import path="<path of the downloaded dump>" 
 ```

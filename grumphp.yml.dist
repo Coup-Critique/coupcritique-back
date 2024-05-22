@@ -9,7 +9,7 @@ grumphp:
     phpcs:
     phpunit:
       group: ['Unit']
-    environment:
-      files:
-        - .env.test
-        - .env.test.local
+  environment:
+    files:
+      - .env.test
+      - .env.test.local

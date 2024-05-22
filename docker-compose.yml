@@ -34,21 +34,6 @@ services:
           ports:
             - ${SERVER_HOST_PORT:-7800}:80
 
-        node:
-           user: ${UNAME:-devcoupcrd}
-           build:
-                   context: .
-                   dockerfile: ./docker/node.Dockerfile
-                   args:
-                     UID: ${UID:-1000}
-                     GID: ${GID:-1000}
-                     UNAME: ${UNAME:-devcoupcrd}
-           volumes:
-             - .:/home/devcoupcrd/coupcritique
-           environment:
-             ENV: ${ENV:-dev} # for yarn compilation
-           working_dir: /home/devcoupcrd/coupcritique
-
         db:
            image: mariadb:latest
            volumes:

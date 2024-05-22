@@ -1,0 +1,69 @@
+App\Entity\Item:
+  item (template):
+    usageName: '<usageName(name())>'
+
+  firestone_{1..9} (extends item):
+    name: 'Fire Stone'
+    nom: 'Pierre Feu'
+    description: 'Fait évoluer Goupix en Feunard, Caninos en Arcanin et Évoli en Pyroli lorsqu''elle est utilisée.'
+    gen: '<current()>'
+
+  greatball_{1..9} (extends item):
+    name: 'Great Ball'
+    nom: 'Super Ball'
+    description: 'Une ball très performante qui offre un taux de capture plus élevé qu''une Poké Ball.'
+    gen: '<current()>'
+
+  masterball_{1..9} (extends item):
+    name: 'Master Ball'
+    nom: 'Master Ball'
+    description: 'La Ball avec les meilleures performances. Elle attrape tous les Pokémon sauvages à coup sûr.'
+    gen: '<current()>'
+
+  moonstone_{1..9} (extends item):
+    name: 'Moon Stone'
+    nom: 'Pierre Lune'
+    description: 'Fait évoluer Nidorina en Nidoqueen, Nidorino en Nidoking, Mélofée en Mélodelfe et Rondoudou en Grodoudou lorsqu''elle est utilisée.'
+    gen: '<current()>'
+
+  pokeball_{1..9} (extends item):
+    name: 'Poke Ball'
+    nom: 'Poké Ball'
+    description: 'Un dispositif pour attraper des Pokémon sauvages. Il est conçu comme un système de capsules.'
+    gen: '<current()>'
+
+  safariball_{1..9} (extends item):
+    name: 'Safari Ball'
+    nom: 'Safari Ball'
+    description: 'Une ball spéciale qui n''est utilisée que dans la Zone Safari et le Grand Marais.'
+    gen: '<current()>'
+
+  ultraball_{1..9} (extends item):
+    name: 'Ultra Ball'
+    nom: 'Hyper Ball'
+    description: 'Une Ball ultra-performante qui offre un taux de capture supérieur à celui d''une Super Ball.'
+    gen: '<current()>'
+
+  waterstone_{1..9} (extends item):
+    name: 'Water Stone'
+    nom: 'Pierre Eau'
+    description: 'Fait évoluer Têtarte en Tartard, Kokiyas en Crustabri, Stari en Staross et Évoli en Aquali lorsqu''elle est utilisée.'
+    gen: '<current()>'
+
+  noitem_{1..9} (extends item):
+    name: 'No Item'
+    nom: 'Pas d''objet'
+    description: 'Pas d''objet tenu'
+    gen: '<current()>'
+
+  leafstone_{1..9} (extends item):
+    name: 'Leaf Stone'
+    nom: 'Pierre Plante'
+    description: 'Fait évoluer Ortide en Rafflesia, Boustiflor en Empiflor et Noeunoeuf en Noadkoko lorsqu''elle est utilisée.'
+    gen: '<current()>'
+
+  thunderstone_{1..9} (extends item):
+    name: 'Thunder Stone'
+    nom: 'Pierre Foudre'
+    description: 'Fait évoluer Pikachu en Raichu et Évoli en Voltali lorsqu''elle est utilisée.'
+    gen: '<current()>'

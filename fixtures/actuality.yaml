@@ -1,0 +1,6 @@
+App\Entity\Actuality:
+  actuality_{1..3}:
+    user: '@admin'
+    title: 'Actualité <current()>'
+    description: '<text(15)>'
+    dateCreation: '<(new DateTime())>'

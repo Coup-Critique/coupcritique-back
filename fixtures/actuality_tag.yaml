@@ -1,0 +1,14 @@
+App\Entity\ActualityTag:
+  tierShift:
+    name: 'Tier Shift'
+  
+  smogon:
+    name: 'Smogon'
+  
+  bss:
+    name: 'Battle Stadium Singles'
+    shortName: 'BSS'
+  
+  vgc:
+    name: 'VGC'
+    shortName: 'VGC'
