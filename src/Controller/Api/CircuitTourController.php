@@ -65,9 +65,10 @@ class CircuitTourController extends AbstractController implements ContributeCont
 				break;
 			}
 		}
+		$currentTours = array_reverse($currentTours);
 
 		return $this->json(
-			['calendar' => $calendarMaker->makeCalendar($circuitTours), 'currentTour' => end($currentTours)],
+			['calendar' => $calendarMaker->makeCalendar($circuitTours), 'currentTours' => array_slice($currentTours, 0, 2)],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:list']
