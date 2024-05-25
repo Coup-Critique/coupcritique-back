@@ -1,0 +1,2088 @@
+App\Entity\Move:
+  acrobatics_{5..9}:
+    name: Acrobatics
+    category: Physical
+    power: 55
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  aerialace_{3..9}:
+    name: Aerial Ace
+    category: Physical
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  aircutter_{4..9}:
+    name: Air Cutter
+    category: Special
+    power: 60
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  airslash_{4..9}:
+    name: Air Slash
+    category: Special
+    power: 75
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  amnesia_{4..8}:
+    name: Amnesia
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"
+
+  ancientpower_{2..9}:
+    name: Ancient Power
+    category: Special
+    power: 60
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@rock_<current()>"
+    gen: "<current()>"
+
+  aquajet_{4..8}:
+    name: Aqua Jet
+    category: Physical
+    power: 40
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  aquaring_{4..8}:
+    name: Aqua Ring
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  aquatail_{4..8}:
+    name: Aqua Tail
+    category: Physical
+    power: 90
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  attract_{2..8}:
+    name: Attract
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  aurasphere_{6..8}:
+    name: Aura Sphere
+    category: Special
+    power: 80
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  avalanche_{4..8}:
+    name: Avalanche
+    category: Physical
+    power: 60
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  beatup_{2..8}:
+    name: Beat Up
+    category: Physical
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  bellydrum_{2..9}:
+    name: Belly Drum
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  bide_{1..7}:
+    name: Bide
+    category: Physical
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  bind_{5..8}:
+    name: Bind
+    category: Physical
+    power: 15
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  bite_{2..9}:
+    name: Bite
+    category: Physical
+    power: 60
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  blastburn_{3..9}:
+    name: Blast Burn
+    category: Special
+    power: 150
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  blazekick_{8}:
+    name: Blaze Kick
+    category: Physical
+    power: 85
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  blizzard_{1..8}:
+    name: Blizzard
+    category: Special
+    power: 120
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  block_{4..8}:
+    name: Block
+    category: Status
+    power: 0
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  bodypress_{8}:
+    name: Body Press
+    category: Physical
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  bodyslam_{1..9}:
+    name: Body Slam
+    category: Physical
+    power: 85
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  breakingswipe_{8}:
+    name: Breaking Swipe
+    category: Physical
+    power: 60
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  brickbreak_{3..9}:
+    name: Brick Break
+    category: Physical
+    power: 75
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  brine_{4..8}:
+    name: Brine
+    category: Special
+    power: 65
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  brutalswing_{7..8}:
+    name: Brutal Swing
+    category: Physical
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  bubble_{1..7}:
+    name: Bubble
+    category: Special
+    power: 20
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  bubblebeam_{1..8}:
+    name: Bubble Beam
+    category: Special
+    power: 65
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  bulldoze_{5..9}:
+    name: Bulldoze
+    category: Physical
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  bulletseed_{3..8}:
+    name: Bullet Seed
+    category: Physical
+    power: 10
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  captivate_{4..7}:
+    name: Captivate
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  celebrate_{6..8}:
+    name: Celebrate
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  charm_{6..8}:
+    name: Charm
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fairy_<current()>"
+    gen: "<current()>"
+
+  confide_{6..8}:
+    name: Confide
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  confusion_{2..8}:
+    name: Confusion
+    category: Special
+    power: 50
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"
+
+  counter_{1..9}:
+    name: Counter
+    category: Physical
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  crunch_{2..9}:
+    name: Crunch
+    category: Physical
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  curse_{2..8}:
+    name: Curse
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ghost_<current()>"
+    gen: "<current()>"
+
+  cut_{1..8}:
+    name: Cut
+    category: Physical
+    power: 50
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  darkpulse_{6..8}:
+    name: Dark Pulse
+    category: Special
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  defensecurl_{2..8}:
+    name: Defense Curl
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  defog_{4..8}:
+    name: Defog
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  dig_{1..9}:
+    name: Dig
+    category: Physical
+    power: 60
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  dive_{3..8}:
+    name: Dive
+    category: Physical
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  doubleteam_{1..8}:
+    name: Double Team
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  doubleedge_{1..8}:
+    name: Double-Edge
+    category: Physical
+    power: 120
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  dragonbreath_{2..9}:
+    name: Dragon Breath
+    category: Special
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dragonclaw_{3..9}:
+    name: Dragon Claw
+    category: Physical
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dragondance_{3..9}:
+    name: Dragon Dance
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dragonpulse_{4..9}:
+    name: Dragon Pulse
+    category: Special
+    power: 85
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dragonrage_{1..7}:
+    name: Dragon Rage
+    category: Special
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dragonrush_{4..9}:
+    name: Dragon Rush
+    category: Physical
+    power: 100
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dragontail_{5..9}:
+    name: Dragon Tail
+    category: Physical
+    power: 60
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  dualwingbeat_{8}:
+    name: Dual Wingbeat
+    category: Physical
+    power: 40
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  dynamicpunch_{2..8}:
+    name: Dynamic Punch
+    category: Physical
+    power: 100
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  earthpower_{8}:
+    name: Earth Power
+    category: Special
+    power: 90
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  earthquake_{1..9}:
+    name: Earthquake
+    category: Physical
+    power: 100
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  echoedvoice_{5..8}:
+    name: Echoed Voice
+    category: Special
+    power: 40
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  ember_{1..9}:
+    name: Ember
+    category: Special
+    power: 40
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  endure_{2..9}:
+    name: Endure
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  energyball_{4..8}:
+    name: Energy Ball
+    category: Special
+    power: 90
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  facade_{3..9}:
+    name: Facade
+    category: Physical
+    power: 70
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  fakeout_{4..8}:
+    name: Fake Out
+    category: Physical
+    power: 40
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  falseswipe_{5..9}:
+    name: False Swipe
+    category: Physical
+    power: 40
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  fireblast_{1..9}:
+    name: Fire Blast
+    category: Special
+    power: 110
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  firefang_{4..9}:
+    name: Fire Fang
+    category: Physical
+    power: 65
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  firepledge_{5..9}:
+    name: Fire Pledge
+    category: Special
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  firepunch_{2..9}:
+    name: Fire Punch
+    category: Physical
+    power: 75
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  firespin_{1..9}:
+    name: Fire Spin
+    category: Special
+    power: 35
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  fissure_{1..8}:
+    name: Fissure
+    category: Physical
+    power: 0
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  flail_{2..8}:
+    name: Flail
+    category: Physical
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  flameburst_{5..7}:
+    name: Flame Burst
+    category: Special
+    power: 70
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  flamecharge_{5..9}:
+    name: Flame Charge
+    category: Physical
+    power: 50
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  flamethrower_{1..9}:
+    name: Flamethrower
+    category: Special
+    power: 90
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  flareblitz_{4..9}:
+    name: Flare Blitz
+    category: Physical
+    power: 120
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  flash_{2..7}:
+    name: Flash
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  flashcannon_{4..8}:
+    name: Flash Cannon
+    category: Special
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@steel_<current()>"
+    gen: "<current()>"
+
+  fling_{4..9}:
+    name: Fling
+    category: Physical
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  flipturn_{8}:
+    name: Flip Turn
+    category: Physical
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  fly_{1..9}:
+    name: Fly
+    category: Physical
+    power: 70
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  focusblast_{4..9}:
+    name: Focus Blast
+    category: Special
+    power: 120
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  focuspunch_{3..8}:
+    name: Focus Punch
+    category: Physical
+    power: 150
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  followme_{5..8}:
+    name: Follow Me
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  foresight_{2..7}:
+    name: Foresight
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  frenzyplant_{3..8}:
+    name: Frenzy Plant
+    category: Special
+    power: 150
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  frustration_{2..7}:
+    name: Frustration
+    category: Physical
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  furycutter_{2..8}:
+    name: Fury Cutter
+    category: Physical
+    power: 10
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@bug_<current()>"
+    gen: "<current()>"
+
+  furyswipes_{8}:
+    name: Fury Swipes
+    category: Physical
+    power: 18
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  gigadrain_{2..8}:
+    name: Giga Drain
+    category: Special
+    power: 75
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  gigaimpact_{4..9}:
+    name: Giga Impact
+    category: Physical
+    power: 150
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  grassknot_{4..8}:
+    name: Grass Knot
+    category: Special
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  grasspledge_{5..8}:
+    name: Grass Pledge
+    category: Special
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  grasswhistle_{3..7}:
+    name: Grass Whistle
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  grassyglide_{8}:
+    name: Grassy Glide
+    category: Physical
+    power: 70
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  grassyterrain_{6..8}:
+    name: Grassy Terrain
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  growl_{1..9}:
+    name: Growl
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  growth_{1..8}:
+    name: Growth
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  gyroball_{4..8}:
+    name: Gyro Ball
+    category: Physical
+    power: 0
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@steel_<current()>"
+    gen: "<current()>"
+
+  hail_{3..8}:
+    name: Hail
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  haze_{2..8}:
+    name: Haze
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  headbutt_{2..8}:
+    name: Headbutt
+    category: Physical
+    power: 70
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  heatcrash_{8}:
+    name: Heat Crash
+    category: Physical
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  heatwave_{3..9}:
+    name: Heat Wave
+    category: Special
+    power: 100
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  helpinghand_{8..9}:
+    name: Helping Hand
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  hiddenpower_{2..7}:
+    name: Hidden Power
+    category: Physical
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  holdhands_{6..8}:
+    name: Hold Hands
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  honeclaws_{5..8}:
+    name: Hone Claws
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  howl_{4..8}:
+    name: Howl
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  hurricane_{8..9}:
+    name: Hurricane
+    category: Special
+    power: 110
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  hydrocannon_{3..8}:
+    name: Hydro Cannon
+    category: Special
+    power: 150
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  hydropump_{1..8}:
+    name: Hydro Pump
+    category: Special
+    power: 120
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  hyperbeam_{1..9}:
+    name: Hyper Beam
+    category: Special
+    power: 150
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  icebeam_{1..8}:
+    name: Ice Beam
+    category: Special
+    power: 95
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  icepunch_{2..8}:
+    name: Ice Punch
+    category: Physical
+    power: 75
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  icywind_{2..8}:
+    name: Icy Wind
+    category: Special
+    power: 55
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  incinerate_{5..8}:
+    name: Incinerate
+    category: Special
+    power: 60
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  inferno_{5..9}:
+    name: Inferno
+    category: Special
+    power: 100
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  ingrain_{4..8}:
+    name: Ingrain
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  irondefense_{4..8}:
+    name: Iron Defense
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@steel_<current()>"
+    gen: "<current()>"
+
+  irontail_{2..9}:
+    name: Iron Tail
+    category: Physical
+    power: 100
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@steel_<current()>"
+    gen: "<current()>"
+
+  knockoff_{4..8}:
+    name: Knock Off
+    category: Physical
+    power: 65
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@dark_<current()>"
+    gen: "<current()>"
+
+  leafstorm_{4..8}:
+    name: Leaf Storm
+    category: Special
+    power: 130
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  leechseed_{1..8}:
+    name: Leech Seed
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  leer_{1..8}:
+    name: Leer
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  lifedew_{8}:
+    name: Life Dew
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  lightscreen_{2..8}:
+    name: Light Screen
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"
+
+  liquidation_{7..8}:
+    name: Liquidation
+    category: Physical
+    power: 85
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  magicalleaf_{3..8}:
+    name: Magical Leaf
+    category: Special
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  megadrain_{1..8}:
+    name: Mega Drain
+    category: Special
+    power: 40
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  megakick_{1..8}:
+    name: Mega Kick
+    category: Physical
+    power: 120
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  megapunch_{1..8}:
+    name: Mega Punch
+    category: Physical
+    power: 80
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  metalclaw_{3..9}:
+    name: Metal Claw
+    category: Physical
+    power: 50
+    pp: 35
+    usage_name: "<usageName(name())>"
+    type: "@steel_<current()>"
+    gen: "<current()>"
+
+  mimic_{1..8}:
+    name: Mimic
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  mirrorcoat_{2..8}:
+    name: Mirror Coat
+    category: Special
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"
+
+  mist_{2..8}:
+    name: Mist
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@ice_<current()>"
+    gen: "<current()>"
+
+  mudsport_{3..7}:
+    name: Mud Sport
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  mudslap_{2..8}:
+    name: Mud-Slap
+    category: Physical
+    power: 20
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  muddywater_{4..8}:
+    name: Muddy Water
+    category: Special
+    power: 95
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  mysticalfire_{8}:
+    name: Mystical Fire
+    category: Special
+    power: 75
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  naturalgift_{4..7}:
+    name: Natural Gift
+    category: Physical
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  naturepower_{4..8}:
+    name: Nature Power
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  ominouswind_{4..7}:
+    name: Ominous Wind
+    category: Special
+    power: 60
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@ghost_<current()>"
+    gen: "<current()>"
+
+  outrage_{2..9}:
+    name: Outrage
+    category: Physical
+    power: 120
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  overheat_{3..9}:
+    name: Overheat
+    category: Special
+    power: 130
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  petalblizzard_{6..8}:
+    name: Petal Blizzard
+    category: Physical
+    power: 90
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  petaldance_{2..8}:
+    name: Petal Dance
+    category: Special
+    power: 90
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  poisonpowder_{1..8}:
+    name: Poison Powder
+    category: Status
+    power: 0
+    pp: 35
+    usage_name: "<usageName(name())>"
+    type: "@poison_<current()>"
+    gen: "<current()>"
+
+  powerwhip_{4..8}:
+    name: Power Whip
+    category: Physical
+    power: 120
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  poweruppunch_{6..8}:
+    name: Power-Up Punch
+    category: Physical
+    power: 40
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  protect_{2..9}:
+    name: Protect
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  quickattack_{4..8}:
+    name: Quick Attack
+    category: Physical
+    power: 40
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  rage_{1..7}:
+    name: Rage
+    category: Physical
+    power: 20
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  raindance_{2..8}:
+    name: Rain Dance
+    category: Status
+    power: 0
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  rapidspin_{2..8}:
+    name: Rapid Spin
+    category: Physical
+    power: 50
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  razorleaf_{1..8}:
+    name: Razor Leaf
+    category: Special
+    power: 55
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  razorwind_{2..7}:
+    name: Razor Wind
+    category: Special
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  reflect_{1..8}:
+    name: Reflect
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"
+
+  refresh_{3..7}:
+    name: Refresh
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  rest_{1..9}:
+    name: Rest
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"
+
+  return_{2..7}:
+    name: Return
+    category: Physical
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  roar_{2..8}:
+    name: Roar
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  rockclimb_{4}:
+    name: Rock Climb
+    category: Physical
+    power: 90
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  rockslide_{2..9}:
+    name: Rock Slide
+    category: Physical
+    power: 75
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@rock_<current()>"
+    gen: "<current()>"
+
+  rocksmash_{2..8}:
+    name: Rock Smash
+    category: Physical
+    power: 20
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  rocktomb_{4..9}:
+    name: Rock Tomb
+    category: Physical
+    power: 60
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@rock_<current()>"
+    gen: "<current()>"
+
+  rollout_{2..8}:
+    name: Rollout
+    category: Physical
+    power: 30
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@rock_<current()>"
+    gen: "<current()>"
+
+  roost_{4..8}:
+    name: Roost
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  round_{5..8}:
+    name: Round
+    category: Special
+    power: 60
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  safeguard_{2..8}:
+    name: Safeguard
+    category: Status
+    power: 0
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  sandstorm_{2..9}:
+    name: Sandstorm
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@rock_<current()>"
+    gen: "<current()>"
+
+  scald_{5..8}:
+    name: Scald
+    category: Special
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  scaleshot_{8}:
+    name: Scale Shot
+    category: Physical
+    power: 25
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  scaryface_{2..9}:
+    name: Scary Face
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  scorchingsands_{8}:
+    name: Scorching Sands
+    category: Special
+    power: 70
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  scratch_{1..9}:
+    name: Scratch
+    category: Physical
+    power: 40
+    pp: 35
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  secretpower_{3..7}:
+    name: Secret Power
+    category: Physical
+    power: 70
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  seedbomb_{4..8}:
+    name: Seed Bomb
+    category: Physical
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  seismictoss_{1..8}:
+    name: Seismic Toss
+    category: Physical
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  shadowclaw_{4..9}:
+    name: Shadow Claw
+    category: Physical
+    power: 70
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@ghost_<current()>"
+    gen: "<current()>"
+
+  shellsmash_{8}:
+    name: Shell Smash
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  signalbeam_{4..7}:
+    name: Signal Beam
+    category: Special
+    power: 75
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@bug_<current()>"
+    gen: "<current()>"
+
+  skullbash_{1..8}:
+    name: Skull Bash
+    category: Physical
+    power: 100
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  skydrop_{5..7}:
+    name: Sky Drop
+    category: Physical
+    power: 60
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  slash_{1..9}:
+    name: Slash
+    category: Physical
+    power: 70
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  sleeppowder_{1..8}:
+    name: Sleep Powder
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  sleeptalk_{2..9}:
+    name: Sleep Talk
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  sludge_{4..8}:
+    name: Sludge
+    category: Special
+    power: 65
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@poison_<current()>"
+    gen: "<current()>"
+
+  sludgebomb_{3..8}:
+    name: Sludge Bomb
+    category: Special
+    power: 90
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@poison_<current()>"
+    gen: "<current()>"
+
+  smackdown_{5..8}:
+    name: Smack Down
+    category: Physical
+    power: 50
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@rock_<current()>"
+    gen: "<current()>"
+
+  smokescreen_{2..9}:
+    name: Smokescreen
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  snore_{2..8}:
+    name: Snore
+    category: Special
+    power: 50
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  solarbeam_{1..9}:
+    name: Solar Beam
+    category: Special
+    power: 120
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  steelwing_{2..8}:
+    name: Steel Wing
+    category: Physical
+    power: 70
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@steel_<current()>"
+    gen: "<current()>"
+
+  stompingtantrum_{7..8}:
+    name: Stomping Tantrum
+    category: Physical
+    power: 75
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@ground_<current()>"
+    gen: "<current()>"
+
+  strength_{1..8}:
+    name: Strength
+    category: Physical
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  stringshot_{4..8}:
+    name: String Shot
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@bug_<current()>"
+    gen: "<current()>"
+
+  submission_{1..8}:
+    name: Submission
+    category: Physical
+    power: 80
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@fighting_<current()>"
+    gen: "<current()>"
+
+  substitute_{1..9}:
+    name: Substitute
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  sunnyday_{2..9}:
+    name: Sunny Day
+    category: Status
+    power: 0
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  surf_{1..8}:
+    name: Surf
+    category: Special
+    power: 95
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  swagger_{2..8}:
+    name: Swagger
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  sweetscent_{2..8}:
+    name: Sweet Scent
+    category: Status
+    power: 0
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  swift_{1..9}:
+    name: Swift
+    category: Special
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  swordsdance_{1..9}:
+    name: Swords Dance
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  synthesis_{2..8}:
+    name: Synthesis
+    category: Status
+    power: 0
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  tackle_{1..8}:
+    name: Tackle
+    category: Physical
+    power: 35
+    pp: 35
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  tailwhip_{1..8}:
+    name: Tail Whip
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  tailwind_{4..8}:
+    name: Tailwind
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  takedown_{1..9}:
+    name: Take Down
+    category: Physical
+    power: 90
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  terablast_{9}:
+    name: Tera Blast
+    category: Special
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  terrainpulse_{8}:
+    name: Terrain Pulse
+    category: Special
+    power: 50
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  thunderpunch_{4..9}:
+    name: Thunder Punch
+    category: Physical
+    power: 75
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@electric_<current()>"
+    gen: "<current()>"
+
+  toxic_{1..8}:
+    name: Toxic
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@poison_<current()>"
+    gen: "<current()>"
+
+  twister_{4..8}:
+    name: Twister
+    category: Special
+    power: 40
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@dragon_<current()>"
+    gen: "<current()>"
+
+  venoshock_{5..8}:
+    name: Venoshock
+    category: Special
+    power: 65
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@poison_<current()>"
+    gen: "<current()>"
+
+  vinewhip_{1..8}:
+    name: Vine Whip
+    category: Special
+    power: 35
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  watergun_{1..8}:
+    name: Water Gun
+    category: Special
+    power: 40
+    pp: 25
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  waterpledge_{5..8}:
+    name: Water Pledge
+    category: Special
+    power: 80
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  waterpulse_{3..8}:
+    name: Water Pulse
+    category: Special
+    power: 60
+    pp: 20
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  waterspout_{4..8}:
+    name: Water Spout
+    category: Special
+    power: 150
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  waterfall_{2..8}:
+    name: Waterfall
+    category: Physical
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  weatherball_{5..8}:
+    name: Weather Ball
+    category: Special
+    power: 50
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  whirlpool_{2..8}:
+    name: Whirlpool
+    category: Special
+    power: 35
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  willowisp_{4..9}:
+    name: Will-O-Wisp
+    category: Status
+    power: 0
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@fire_<current()>"
+    gen: "<current()>"
+
+  wingattack_{2..8}:
+    name: Wing Attack
+    category: Physical
+    power: 60
+    pp: 35
+    usage_name: "<usageName(name())>"
+    type: "@flying_<current()>"
+    gen: "<current()>"
+
+  withdraw_{1..8}:
+    name: Withdraw
+    category: Status
+    power: 0
+    pp: 40
+    usage_name: "<usageName(name())>"
+    type: "@water_<current()>"
+    gen: "<current()>"
+
+  workup_{7..8}:
+    name: Work Up
+    category: Status
+    power: 0
+    pp: 30
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  worryseed_{4..8}:
+    name: Worry Seed
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@grass_<current()>"
+    gen: "<current()>"
+
+  yawn_{3..8}:
+    name: Yawn
+    category: Status
+    power: 0
+    pp: 10
+    usage_name: "<usageName(name())>"
+    type: "@normal_<current()>"
+    gen: "<current()>"
+
+  zapcannon_{2}:
+    name: Zap Cannon
+    category: Special
+    power: 100
+    pp: 5
+    usage_name: "<usageName(name())>"
+    type: "@electric_<current()>"
+    gen: "<current()>"
+
+  zenheadbutt_{4..8}:
+    name: Zen Headbutt
+    category: Physical
+    power: 80
+    pp: 15
+    usage_name: "<usageName(name())>"
+    type: "@psychic_<current()>"
+    gen: "<current()>"

@@ -1,0 +1,255 @@
+App\Entity\Tier:
+  tier (template):
+    name: <name()>
+    playable: <playable()>
+    usageName: <usageName(shortName())>
+    rank: 3
+    gen: <gen()>
+    sort_order: 1
+    tera_ban: 0
+    official: 0
+
+  1v1_{2..9} (extends tier):
+      name: 1v1
+      shortName: 1v1
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  ag_{4..9} (extends tier):
+      name: 'Anything Goes'
+      shortName: AG
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  bss_{8..8} (extends tier):
+      name: 'BSS 2022 s12'
+      shortName: BSS
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  bssrc_{9..9} (extends tier):
+      name: 'BSS 2023 RC'
+      shortName: BSSrc
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  bss_{9..9} (extends tier):
+      name: 'BSS 2023 RD'
+      shortName: BSS
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  bsss1_{9..9} (extends tier):
+      name: 'BSS 2023 s1'
+      shortName: BSSs1
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  bsss2_{9..9} (extends tier):
+      name: 'BSS 2023 s2'
+      shortName: BSSs2
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  dou_{6..8} (extends tier):
+      name: 'Doubles OU'
+      shortName: DOU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  dou_{5..9} (extends tier):
+      name: 'Doubles OU'
+      shortName: DOU
+      playable: true
+      ladderRef: 1695
+      gen: <current()>
+
+  lc_{1..9} (extends tier):
+      name: 'Little Cup'
+      shortName: LC
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  mono_{5..9} (extends tier):
+      name: Monotype
+      shortName: Mono
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  nu_{2..6} (extends tier):
+      name: NeverUsed
+      shortName: NU
+      playable: true
+      ladderRef: 0
+      gen: <current()>
+
+  nu_{1..9} (extends tier):
+      name: NeverUsed
+      shortName: NU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  nubl_{1..9} (extends tier):
+      name: 'NeverUsed BorderLine'
+      shortName: NUBL
+      playable: false
+      ladderRef: 0
+      gen: <current()>
+
+  nfe_{1..9} (extends tier):
+      name: 'Not Fully Evolved'
+      shortName: NFE
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  ou_{1..8} (extends tier):
+      name: OverUsed
+      shortName: OU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  ou_{9..9} (extends tier):
+      name: OverUsed
+      shortName: OU
+      playable: true
+      ladderRef: 1695
+      gen: <current()>
+
+  pu_{1..5} (extends tier):
+      name: PU
+      shortName: PU
+      playable: true
+      ladderRef: 0
+      gen: <current()>
+
+  pu_{6..9} (extends tier):
+      name: PU
+      shortName: PU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  publ_{1..9} (extends tier):
+      name: 'PU BorderLine'
+      shortName: PUBL
+      playable: false
+      ladderRef: 0
+      gen: <current()>
+
+  ru_{5..9} (extends tier):
+      name: RarelyUsed
+      shortName: RU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  rubl_{5..9} (extends tier):
+      name: 'RarelyUsed BorderLine'
+      shortName: RUBL
+      playable: false
+      ladderRef: 0
+      gen: <current()>
+
+  uber_{3..3} (extends tier):
+      name: Uber
+      shortName: Uber
+      playable: true
+      ladderRef: 0
+      gen: <current()>
+
+  uber_{1..9} (extends tier):
+      name: Uber
+      shortName: Uber
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  uu_{1..9} (extends tier):
+      name: UnderUsed
+      shortName: UU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  uubl_{1..9} (extends tier):
+      name: 'UnderUsed BorderLine'
+      shortName: UUBL
+      playable: false
+      ladderRef: 0
+      gen: <current()>
+
+  uubl_{2..2} (extends tier):
+      name: 'UnderUsed BorderLine'
+      shortName: UUBL
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  untiered_{1..9} (extends tier):
+      name: Untiered
+      shortName: Untiered
+      playable: false
+      ladderRef: 0
+      gen: <current()>
+
+  vgc_{8..8} (extends tier):
+      name: 'VGC 2022 s12'
+      shortName: VGC
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  vgcrc_{9..9} (extends tier):
+      name: 'VGC 2023 RC'
+      shortName: VGCrc
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  vgc_{9..9} (extends tier):
+      name: 'VGC 2023 RD'
+      shortName: VGC
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
+
+  vgcs1_{9..9} (extends tier):
+      name: 'VGC 2023 s1'
+      shortName: VGCs1
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  vgcs2_{9..9} (extends tier):
+      name: 'VGC 2023 s2'
+      shortName: VGCs2
+      playable: false
+      ladderRef: 1630
+      gen: <current()>
+
+  zu_{7..7} (extends tier):
+      name: ZeroUsed
+      shortName: ZU
+      playable: true
+      ladderRef: 0
+      gen: <current()>
+
+  zu_{8..9} (extends tier):
+      name: ZeroUsed
+      shortName: ZU
+      playable: true
+      ladderRef: 1630
+      gen: <current()>
