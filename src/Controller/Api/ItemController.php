@@ -36,7 +36,7 @@ class ItemController extends AbstractController
 		);
 	}
 
-	#[Route(path: '/items/{id}', name: 'item_by_id', methods: ['GET'])]
+	#[Route(path: '/items/{id}', name: 'item_by_id', methods: ['GET'], priority: -1)]
 	public function getItemById($id, Request $request)
 	{
 		// gen include in id

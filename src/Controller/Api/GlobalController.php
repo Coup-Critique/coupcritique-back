@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class GlobalController extends AbstractController
 {
 	#[Route(path: '/test', name: 'test')]
- public function test()
+	public function test()
 	{
 		return $this->json(
 			['success' => true],
@@ -29,7 +29,7 @@ class GlobalController extends AbstractController
 	}
 
 	#[Route(path: '/search/{string}', name: 'search')]
- public function search(
+	public function search(
 		$string,
 		GenRequestManager $genRequestManager,
 		PokemonRepository $pokemonRepository,
@@ -81,7 +81,7 @@ class GlobalController extends AbstractController
 	}
 
 	#[Route(path: '/search/previews/{string}', name: 'previews')]
- public function getPreviews(
+	public function getPreviews(
 		$string,
 		GlobalRepository $globalRepository
 	) {

@@ -27,11 +27,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GuideController extends AbstractController implements ContributeControllerInterface
 {
 	public function __construct(private readonly GuideRepository $repo)
- {
- }
+	{
+	}
 
 	#[Route(path: '/guides', name: 'guides', methods: ['GET'])]
- public function getGuides(Request $request)
+	public function getGuides(Request $request)
 	{
 		if (!empty($request->get('maxLength'))) {
 			$guides = $this->repo->findWithMax($request->get('maxLength'));
@@ -58,8 +58,8 @@ class GuideController extends AbstractController implements ContributeController
 		);
 	}
 
-	#[Route(path: '/guides/{id}', name: 'guide_by_id', methods: ['GET'])]
- public function getGuideById($id)
+	#[Route(path: '/guides/{id}', name: 'guide_by_id', methods: ['GET'], priority: -1)]
+	public function getGuideById($id)
 	{
 		$guide = $this->repo->findOne($id);
 
@@ -79,7 +79,7 @@ class GuideController extends AbstractController implements ContributeController
 	}
 
 	#[Route(path: '/guides/{id}/images', name: 'guide_images', methods: ['POST'])]
- public function setGuideImages(
+	public function setGuideImages(
 		$id,
 		Request $request,
 		EntityManagerInterface $em,
@@ -114,7 +114,7 @@ class GuideController extends AbstractController implements ContributeController
 	}
 
 	#[Route(path: '/guides', name: 'insert_guide', methods: ['POST'])]
- public function insertGuide(
+	public function insertGuide(
 		Request $request,
 		EntityManagerInterface $em,
 		SerializerInterface $serializer,
@@ -180,7 +180,7 @@ class GuideController extends AbstractController implements ContributeController
 	}
 
 	#[Route(path: '/guides/{id}', name: 'update_guide', methods: ['PUT'])]
- public function updateGuide(
+	public function updateGuide(
 		$id,
 		Request $request,
 		EntityManagerInterface $em,
@@ -270,7 +270,7 @@ class GuideController extends AbstractController implements ContributeController
 	}
 
 	#[Route(path: '/guides/{id}', name: 'delete_guide', methods: ['DELETE'])]
- public function deleteGuide($id, ImageArticleManager $imageArticleManager)
+	public function deleteGuide($id, ImageArticleManager $imageArticleManager)
 	{
 		$guide = $this->repo->find($id);
 		if (empty($guide)) {

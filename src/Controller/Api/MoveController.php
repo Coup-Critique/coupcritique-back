@@ -24,8 +24,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MoveController extends AbstractController implements ContributeControllerInterface
 {
-    public function __construct(private readonly MoveRepository $repo, private readonly GenRequestManager $genRequestManager)
-    {
+    public function __construct(
+        private readonly MoveRepository $repo,
+        private readonly GenRequestManager $genRequestManager
+    ) {
     }
 
     #[Route(path: '/moves', name: 'moves', methods: ['GET'])]
@@ -41,7 +43,7 @@ class MoveController extends AbstractController implements ContributeControllerI
         );
     }
 
-    #[Route(path: '/moves/{id}', name: 'move_by_id', methods: ['GET'])]
+    #[Route(path: '/moves/{id}', name: 'move_by_id', methods: ['GET'], priority: -1)]
     public function getMoveById($id, Request $request)
     {
         $move = $this->repo->find($id);

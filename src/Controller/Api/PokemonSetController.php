@@ -29,7 +29,7 @@ class PokemonSetController extends AbstractController implements ContributeContr
     {
     }
 
-    #[Route(path: '/pokemon_set/{id}', name: 'pokemon_sets_by_pokemon_id', methods: ['GET'])]
+    #[Route(path: '/pokemon_set/{id}', name: 'pokemon_sets_by_pokemon_id', methods: ['GET'], priority: -1)]
     public function getPokemonSetsByPokemonId($id, PokemonRepository $pokemonRepo)
     {
         $pokemon = $pokemonRepo->find($id);

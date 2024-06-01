@@ -64,7 +64,7 @@ class TierController extends AbstractController implements ContributeControllerI
         );
     }
 
-    #[Route(path: '/tiers/{id}', name: 'tier_by_id', methods: ['GET'])]
+    #[Route(path: '/tiers/{id}', name: 'tier_by_id', methods: ['GET'], priority: -1)]
     public function getTierById(
         $id,
         TierManager $tierManager,

@@ -38,7 +38,7 @@ class AbilityController extends AbstractController
 		);
 	}
 
-	#[Route(path: '/abilities/{id}', name: 'ability_by_id', methods: ['GET'])]
+	#[Route(path: '/abilities/{id}', name: 'ability_by_id', methods: ['GET'], priority: -1)]
 	public function getAbilityById($id, Request $request)
 	{
 		// gen include in id

@@ -123,7 +123,7 @@ class CommentController extends AbstractController
         );
     }
 
-    #[Route(path: '/comments/{entity}/{id}', name: 'comments', methods: ['GET'])]
+    #[Route(path: '/comments/{entity}/{id}', name: 'comments', methods: ['GET'], priority: -1)]
     public function getComments($entity, $id)
     {
         $parentRepo = $this->getParentRepo($entity);

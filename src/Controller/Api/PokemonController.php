@@ -48,7 +48,7 @@ class PokemonController extends AbstractController implements ContributeControll
         );
     }
 
-    #[Route(path: '/pokemons/{id}', name: 'pokemon_by_id', methods: ['GET'])]
+    #[Route(path: '/pokemons/{id}', name: 'pokemon_by_id', methods: ['GET'], priority: -1)]
     public function getPokemonById(
         $id,
         SerializerInterface $serializer,

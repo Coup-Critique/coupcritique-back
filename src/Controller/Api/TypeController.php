@@ -55,7 +55,7 @@ class TypeController extends AbstractController
 		);
 	}
 
-	#[Route(path: '/types/{id}', name: 'type_by_id', methods: ['GET'])]
+	#[Route(path: '/types/{id}', name: 'type_by_id', methods: ['GET'], priority: -1)]
 	public function getTypeById($id, SerializerInterface $serializer)
 	{
 		$type = $this->repo->find($id);

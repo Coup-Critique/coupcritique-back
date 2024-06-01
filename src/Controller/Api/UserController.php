@@ -180,7 +180,7 @@ class UserController extends AbstractController
 		);
 	}
 
-	#[Route(path: '/users/{id}', name: 'user', methods: ['GET'])]
+	#[Route(path: '/users/{id}', name: 'user', methods: ['GET'], priority: -1)]
 	public function getUserById($id, CommentRepository $tcRepo)
 	{
 		$user = $this->repo->find($id);

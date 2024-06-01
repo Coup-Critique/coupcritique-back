@@ -50,7 +50,7 @@ class TournamentController extends AbstractController implements ContributeContr
 		);
 	}
 
-	#[Route(path: '/tournaments/{id}', name: 'tournament_by_id', methods: ['GET'])]
+	#[Route(path: '/tournaments/{id}', name: 'tournament_by_id', methods: ['GET'], priority: -1)]
 	public function getTournamentById($id)
 	{
 		$tournament = $this->repo->findOne($id);

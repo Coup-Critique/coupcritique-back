@@ -52,7 +52,7 @@ class CircuitArticleController extends AbstractController implements ContributeC
 	}
 
 
-	#[Route(path: '/circuit-articles/{id}', name: 'circuit-article_by_id', methods: ['GET'])]
+	#[Route(path: '/circuit-articles/{id}', name: 'circuit-article_by_id', methods: ['GET'], priority: -1)]
 	public function getCircuitArticleById($id)
 	{
 		$circuitArticle = $this->repo->findOne($id);

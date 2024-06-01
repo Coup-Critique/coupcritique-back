@@ -117,7 +117,7 @@ class TeamController extends AbstractController
         );
     }
 
-    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'])]
+    #[Route(path: '/teams/{id}', name: 'team_by_id', methods: ['GET'], priority: -1)]
     public function getTeamById($id)
     {
         $team = $this->repo->findOne($id);

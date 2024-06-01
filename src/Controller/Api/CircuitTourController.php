@@ -75,7 +75,7 @@ class CircuitTourController extends AbstractController implements ContributeCont
 		);
 	}
 
-	#[Route(path: '/circuit-tours/{id}', name: 'circuit-tour_by_id', methods: ['GET'])]
+	#[Route(path: '/circuit-tours/{id}', name: 'circuit-tour_by_id', methods: ['GET'], priority: -1)]
 	public function getCircuitTourById($id)
 	{
 		$circuitTour = $this->repo->findOne($id);

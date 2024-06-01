@@ -16,11 +16,11 @@ class DrivedFileController extends AbstractController implements ContributeContr
 	final public const IMAGE_SIZE = 1078;
 
 	public function __construct(private readonly DrivedFileRepository $repo)
- {
- }
+	{
+	}
 
 	#[Route(path: '/drive', name: 'drive', methods: ['GET'])]
- public function getFiles(Request $request)
+	public function getFiles(Request $request)
 	{
 		$files = $this->repo->findBy([], ['id' => 'DESC']);
 
@@ -32,7 +32,7 @@ class DrivedFileController extends AbstractController implements ContributeContr
 
 
 	#[Route(path: '/drive', name: 'drive_post_files', methods: ['POST'])]
- public function setDrivedFileImages(Request $request, ImageArticleManager $imageArticleManager)
+	public function setDrivedFileImages(Request $request, ImageArticleManager $imageArticleManager)
 	{
 		if (!count($request->files)) {
 			return $this->json(
@@ -52,7 +52,7 @@ class DrivedFileController extends AbstractController implements ContributeContr
 	}
 
 	#[Route(path: '/drive/{id}', name: 'delete_file', methods: ['DELETE'])]
- public function deleteFile($id, FileManager $fileManager)
+	public function deleteFile($id, FileManager $fileManager)
 	{
 		$file = $this->repo->find($id);
 		if (empty($file)) {

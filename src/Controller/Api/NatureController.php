@@ -33,7 +33,7 @@ class NatureController extends AbstractController
 		);
 	}
 
-	#[Route(path: '/natures/{id}', name: 'nature_by_id', methods: ['GET'])]
+	#[Route(path: '/natures/{id}', name: 'nature_by_id', methods: ['GET'], priority: -1)]
 	public function getNatureById($id, Request $request)
 	{
 		$nature = $this->repo->find($id);

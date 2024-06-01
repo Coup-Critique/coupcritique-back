@@ -35,9 +35,9 @@ class ResourceController extends AbstractController implements ContributeControl
         foreach ($resources as $resource) {
             $tier = $resource->getTier();
             $tier = $resource->getTier();
-            if(!$resource->getGen() || !$tier || $tier->getShortName() === 'VGC' || $tier->getShortName() === 'BSS'){
+            if (!$resource->getGen() || !$tier || $tier->getShortName() === 'VGC' || $tier->getShortName() === 'BSS') {
                 $gen = 0;
-            }else{
+            } else {
                 $gen = 'Gen ' . $resource->getGen();
             }
             $cat = $resource->getCategory();
@@ -50,9 +50,9 @@ class ResourceController extends AbstractController implements ContributeControl
             $resourcesByGenAndCat[$gen][$cat][] = $resource;
         }
 
-        uksort($resourcesByGenAndCat, function($k1, $k2): int{
-            if($k1 == '0') return -1;
-            if($k2 == '0') return -1;
+        uksort($resourcesByGenAndCat, function ($k1, $k2): int {
+            if ($k1 == '0') return -1;
+            if ($k2 == '0') return -1;
             return $k1 > $k2 ? -1 : 1;
         });
 

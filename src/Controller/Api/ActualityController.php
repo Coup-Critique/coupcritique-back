@@ -50,7 +50,7 @@ class ActualityController extends AbstractController implements ContributeContro
 		);
 	}
 
-	#[Route(path: '/actualities/{id}', name: 'actuality_by_id', methods: ['GET'])]
+	#[Route(path: '/actualities/{id}', name: 'actuality_by_id', methods: ['GET'], priority: -1)]
 	public function getActualityById($id)
 	{
 		$actuality = $this->repo->findOne($id);
