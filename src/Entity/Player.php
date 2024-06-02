@@ -40,6 +40,10 @@ class Player
     #[Groups(['read:player', 'read:list'])]
     private int $points = 0;
 
+    #[ORM\Column(type: 'float')]
+    #[Groups(['read:player', 'read:list'])]
+    private float $prize = 0;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups(['read:player', 'read:list'])]
     #[Assert\Length(max: 255, maxMessage: 'Le titre peut faire au maximum 255 caractères.')]
@@ -110,6 +114,18 @@ class Player
     public function setPoints(?int $points): self
     {
         $this->points = $points;
+
+        return $this;
+    }
+
+    public function getPrize(): ?float
+    {
+        return $this->prize;
+    }
+
+    public function setPrize(?float $prize): self
+    {
+        $this->prize = $prize;
 
         return $this;
     }

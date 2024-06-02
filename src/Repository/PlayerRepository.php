@@ -21,6 +21,14 @@ class PlayerRepository extends ServiceEntityRepository
         parent::__construct($registry, Player::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.points', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findTopPlayers()
     {
         return $this->createQueryBuilder('p')

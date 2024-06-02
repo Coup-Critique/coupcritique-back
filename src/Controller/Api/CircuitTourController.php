@@ -31,8 +31,10 @@ class CircuitTourController extends AbstractController implements ContributeCont
 	}
 
 	#[Route(path: '/circuit-tours', name: 'circuit-tours', methods: ['GET'])]
-	public function getCircuitTours(Request $request)
-	{
+	public function getCircuitTours(
+		Request $request,
+		SerializerInterface $serializer
+	) {
 		if (!empty($request->get('maxLength'))) {
 			$circuitTours = $this->repo->findWithMax($request->get('maxLength'));
 		} else {
@@ -47,13 +49,20 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			['circuitTours' => $circuitTours],
 			Response::HTTP_OK,
 			[],
-			['groups' => 'read:list']
+			[
+				'groups' => 'read:list',
+				AbstractNormalizer::CALLBACKS => [
+					'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
+				],
+			]
 		);
 	}
 
 	#[Route(path: '/circuit-tours/calendar', name: 'circuit-tours_calendar', methods: ['GET'])]
-	public function circuitCalendar(CalendarMaker $calendarMaker)
-	{
+	public function circuitCalendar(
+		CalendarMaker $calendarMaker,
+		SerializerInterface $serializer
+	) {
 		$circuitTours = $this->repo->findForCalendar();
 		$currentTours  = [];
 		$dateNow = new \DateTime();
@@ -71,7 +80,12 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			['calendar' => $calendarMaker->makeCalendar($circuitTours), 'currentTours' => array_slice($currentTours, 0, 2)],
 			Response::HTTP_OK,
 			[],
-			['groups' => 'read:list']
+			[
+				'groups' => 'read:list',
+				AbstractNormalizer::CALLBACKS => [
+					'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
+				],
+			]
 		);
 	}
 
