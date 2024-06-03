@@ -7,9 +7,6 @@ framework:
         # The data in this cache should persist between deploys.
         # Other options include:
 
-        # Redis
-        app: cache.adapter.redis
-        default_redis_provider: '%env(resolve:REDIS_URL)%'
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu
 
@@ -17,15 +14,15 @@ framework:
         pools:
             # Specific cache pool for doctrine's result_cache_driver configuration
             doctrine.result_cache_pool:
-                adapter: cache.adapter.redis # the adapter is the redis one that is created above
+                adapter: cache.app
 
             # Specific pool for doctrine's system_cache_pool configuration (entites metadata interpretation)
             doctrine.system_cache_pool:
-                adapter: cache.adapter.redis
+                adapter: cache.system
             
             # Specific pool for usage data
             usages_cache:
-                adapter: cache.adapter.redis
+                adapter: cache.app
                 # No default lifetime is provided
                 # The pool will be deleted by the GitHub Workflow that is in charge of updating usages
                 # default_lifetime: 1296000
