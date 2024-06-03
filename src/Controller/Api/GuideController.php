@@ -101,12 +101,12 @@ class GuideController extends AbstractController implements ContributeController
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($guide, $request->files, 'guides');
+		$errors = $imageArticleManager->setImagesToEntity($guide, $request->files, 'guides');
 
 		$em->flush();
 
 		return $this->json(
-			['guide' => $guide],
+			['guide' => $guide, 'errors' => $errors],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']

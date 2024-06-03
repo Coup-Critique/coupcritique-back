@@ -14,8 +14,9 @@ class ImageArticleManager
     {
     }
 
-    public function setImagesToEntity(object $entity, FileBag $files, string $storageFolderName): void
+    public function setImagesToEntity(object $entity, FileBag $files, string $storageFolderName): array
     {
+        $errors = [];
         $images = $entity->getImages();
 
         /** @var UploadedFile $file */
@@ -27,29 +28,37 @@ class ImageArticleManager
                 'images/uploads/' . $storageFolderName . '/' . self::TEASER_IMAGE_SIZE . 'px'
             );
             // resize image
-            $this->fileManager->resize($filePath, self::IMAGE_SIZE);
-            $this->fileManager->resize($fileTeaserPath, self::TEASER_IMAGE_SIZE);
-
-            $images[] = $fileName;
+            try {
+                $this->fileManager->resize($filePath, self::IMAGE_SIZE);
+                $this->fileManager->resize($fileTeaserPath, self::TEASER_IMAGE_SIZE);
+                $images[] = $fileName;
+            } catch (\Exception) {
+                $errors[] = $fileName;
+            }
         }
 
         $entity->setImages($images);
+        return $errors;
     }
 
     public function upload(FileBag $files, string $storageFolderName = 'drive', int $size = self::IMAGE_SIZE): array
     {
         $images = [];
+        $errors = [];
         /** @var UploadedFile $file */
         foreach ($files as $file) {
             $fileName      = $this->fileManager->upload($file, 'images/upload/' . $storageFolderName);
             $filePath      = "images/uploads/$storageFolderName/$fileName";
             // resize image
-            $this->fileManager->resize($filePath, $size);
-
-            $images[] = $fileName;
+            try {
+                $this->fileManager->resize($filePath, $size);
+                $images[] = $fileName;
+            } catch (\Exception) {
+                $errors[] = $fileName;
+            }
         }
 
-        return $images;
+        return [$images, $errors];
     }
 
     /**

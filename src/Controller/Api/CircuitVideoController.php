@@ -25,15 +25,39 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 	public function getAll(Request $request): Response
 	{
 		if (!empty($request->get('maxLength'))) {
-			$this->repo->setMaxLength($request->get('maxLength'));
+			$circuitVideos = $this->repo->findWithMax($request->get('maxLength'));
+		} else {
+			$criteria = null;
+			if (!empty($request->get('tags'))) {
+				$criteria = explode(',', $request->get('tags'));
+			}
+			$author = $request->get('author');
+			$circuitVideos = $this->repo->findWithQuery($criteria, $author);
 		}
-		$criteria = null;
-		if (!empty($request->get('tags'))) {
-			$criteria = explode(',', $request->get('tags'));
-		}
-		$author = $request->get('author');
 		return $this->json(
-			['circuitVideos' => $this->repo->findWithQuery($criteria, $author)],
+			['circuitVideos' => $circuitVideos],
+			Response::HTTP_OK,
+			[],
+			['groups' => 'read:video']
+		);
+	}
+
+	#[Route(path: '/circuit-videos/tour/{id}', name: 'circuit_videos_by_tour', methods: ['GET'])]
+	public function getByTour($id, Request $request): Response
+	{
+		if (!empty($request->get('maxLength'))) {
+			$circuitVideos = $this->repo->findWithMax($request->get('maxLength'), $id);
+		} else {
+			$criteria = null;
+			if (!empty($request->get('tags'))) {
+				$criteria = explode(',', $request->get('tags'));
+			}
+			$author = $request->get('author');
+			$circuitVideos = $this->repo->findByTour($id, $criteria, $author);
+		}
+
+		return $this->json(
+			['circuitVideos' => $circuitVideos],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:video']
@@ -55,13 +79,12 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 				'json',
 				['groups' => ['insert:video']]
 			);
-
-			$this->repo->insert($video);
 		} catch (NotEncodableValueException) {
 		}
 
 		$circuitTourJoiner->joinTour($video, $json);
 
+		$this->repo->insert($video);
 		return $this->json(
 			['message' => 'Vidéo enregistrée', 'circuitVideo' => $video],
 			Response::HTTP_OK,
@@ -90,11 +113,11 @@ class CircuitVideoController extends AbstractController implements ContributeCon
 					EntityNormalizer::UPDATE_ENTITIES      => [CircuitVideo::class]
 				]
 			);
-			$this->repo->update($video);
 		} catch (NotEncodableValueException) {
 		}
 
 		$circuitTourJoiner->joinTour($video, $json);
+		$this->repo->update($video);
 
 		return new JsonResponse(
 			['message' => "Vidéo $id mise à jour", 'id' => $id],

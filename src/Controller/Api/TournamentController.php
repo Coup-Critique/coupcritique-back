@@ -93,12 +93,12 @@ class TournamentController extends AbstractController implements ContributeContr
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($tournament, $request->files, 'tournaments');
+		$errors = $imageArticleManager->setImagesToEntity($tournament, $request->files, 'tournaments');
 
 		$em->flush();
 
 		return $this->json(
-			['tournament' => $tournament],
+			['tournament' => $tournament, 'errors' => $errors],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']

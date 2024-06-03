@@ -132,12 +132,12 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($circuitTour, $request->files, 'circuit-tours');
+		$errors = $imageArticleManager->setImagesToEntity($circuitTour, $request->files, 'circuit-tours');
 
 		$em->flush();
 
 		return $this->json(
-			['circuitTour' => $circuitTour],
+			['circuitTour' => $circuitTour, 'errors' => $errors],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']

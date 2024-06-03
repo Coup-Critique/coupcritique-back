@@ -93,12 +93,12 @@ class ActualityController extends AbstractController implements ContributeContro
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($actuality, $request->files, 'actualities');
+		$errors = $imageArticleManager->setImagesToEntity($actuality, $request->files, 'actualities');
 
 		$em->flush();
 
 		return $this->json(
-			['actuality' => $actuality],
+			['actuality' => $actuality, 'errors' => $errors],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']

@@ -41,12 +41,12 @@ class DrivedFileController extends AbstractController implements ContributeContr
 			);
 		}
 
-		$images = $imageArticleManager->upload($request->files, 'drive', self::IMAGE_SIZE);
+		[$images, $errors] = $imageArticleManager->upload($request->files, 'drive', self::IMAGE_SIZE);
 
 		$files = $this->repo->save($images);
 
 		return $this->json(
-			['message' => 'Fichier sauvegardé', 'files' => $files],
+			['message' => 'Fichier sauvegardé', 'files' => $files, 'errors' => $errors],
 			Response::HTTP_OK
 		);
 	}

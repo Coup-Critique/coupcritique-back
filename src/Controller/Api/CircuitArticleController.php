@@ -51,6 +51,27 @@ class CircuitArticleController extends AbstractController implements ContributeC
 		);
 	}
 
+	#[Route(path: '/circuit-articles/tour/{id}', name: 'circuit-articles_by_tour', methods: ['GET'])]
+	public function getCircuitArticlesByTour($id, Request $request)
+	{
+		if (!empty($request->get('maxLength'))) {
+			$circuitArticles = $this->repo->findWithMax($request->get('maxLength'), $id);
+		} else {
+			$criteria = null;
+			if (!empty($request->get('tags'))) {
+				$criteria = explode(',', $request->get('tags'));
+			}
+			$circuitArticles = $this->repo->findByTour($id, $criteria);
+		}
+
+		return $this->json(
+			['circuitArticles' => $circuitArticles],
+			Response::HTTP_OK,
+			[],
+			['groups' => 'read:list']
+		);
+	}
+
 
 	#[Route(path: '/circuit-articles/{id}', name: 'circuit-article_by_id', methods: ['GET'], priority: -1)]
 	public function getCircuitArticleById($id)
@@ -95,12 +116,12 @@ class CircuitArticleController extends AbstractController implements ContributeC
 			);
 		}
 
-		$imageArticleManager->setImagesToEntity($circuitArticle, $request->files, 'circuit-articles');
+		$errors = $imageArticleManager->setImagesToEntity($circuitArticle, $request->files, 'circuit-articles');
 
 		$em->flush();
 
 		return $this->json(
-			['circuitArticle' => $circuitArticle],
+			['circuitArticle' => $circuitArticle, 'errors' => $errors],
 			Response::HTTP_OK,
 			[],
 			['groups' => 'read:article']
