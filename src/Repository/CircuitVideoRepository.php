@@ -52,7 +52,7 @@ class CircuitVideoRepository extends AbstractVideoRepository
     {
         $query = $this->createQueryBuilder('v')
             ->addSelect(['tag'])
-            ->andWhere('a.tour = :idTour')
+            ->andWhere('v.tour = :idTour')
             ->setParameter('idTour', $idTour);
 
         if ($tags != null) {
