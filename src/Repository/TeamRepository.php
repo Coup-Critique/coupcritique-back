@@ -299,6 +299,7 @@ class TeamRepository extends ServiceEntityRepository
 		$query = $this->baseListQuery()
 			->where('t.certified = 1')
 			->andWhere('t.banned IS NULL OR t.banned = 0')
+			->andWhere('ti.playable = 1')
 			->andWhere("(
 				pi1.pokemon = :pokemon
 				OR pi2.pokemon = :pokemon
@@ -316,7 +317,8 @@ class TeamRepository extends ServiceEntityRepository
 	public function findByPokemons(array $pokemons): array
 	{
 		$query = $this->baseListQuery()
-			->where('t.banned IS NULL OR t.banned = 0');
+			->where('t.banned IS NULL OR t.banned = 0')
+			->andWhere('ti.playable = 1');
 
 		foreach ($pokemons as $i => $pokemon) {
 			$query

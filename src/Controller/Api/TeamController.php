@@ -153,6 +153,7 @@ class TeamController extends AbstractController
         );
     }
 
+    // Utilisé que dans l'admin au final
     #[Route(path: '/teams/state', name: 'teams_by_state', methods: ['GET'])]
     public function getTeamsByState(Request $request)
     {
