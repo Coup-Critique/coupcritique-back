@@ -138,7 +138,7 @@ class TeamController extends AbstractController
             }
         }
         if (
-            $team->getBanned()
+            ($team->getBanned() && !$team->getCertified())
             && !$isModo
             && (!$user || $user->getId() != $team->getUser()->getId())
         ) {
@@ -279,10 +279,13 @@ class TeamController extends AbstractController
             );
         }
 
-        if (is_null($this->getUser())) {
+        /** @var User $user */
+        $ownUser = $this->getUser();
+
+        if ($ownUser == null) {
             $teams = $this->repo->findbyUser($user, false);
         } else {
-            $teams = $this->repo->findbyUser($user, $user->getId() == $this->getUser()->getId());
+            $teams = $this->repo->findbyUser($user, $user->getId() == $ownUser->getId() || $ownUser->getIsModo());
         }
         return $this->json(
             [

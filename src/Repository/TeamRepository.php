@@ -351,7 +351,7 @@ class TeamRepository extends ServiceEntityRepository
 			->setParameter('user', $user);
 
 		if (!$banned) {
-			$query->andWhere('t.banned IS NULL OR t.banned = 0');
+			$query->andWhere('t.banned IS NULL OR t.banned = 0 OR t.certified = 1');
 		}
 
 		$this->setOrderInQuery($query);
