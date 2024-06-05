@@ -13,9 +13,11 @@ class CircuitTourJoiner
 
     public function joinTour(HasTourInterface $el, string $json): void
     {
-        if ($el->getTour()->getId()) return;
+        if ($el->getTour()?->getId()) return;
 
         $articleJson = json_decode($json);
+        if (empty($articleJson->tour)) return;
+
         $tourTitle = $articleJson->tour;
 
         $tour = $this->ctRepo->findOneByTitle($tourTitle);
