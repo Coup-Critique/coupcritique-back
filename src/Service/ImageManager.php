@@ -2,12 +2,21 @@
 
 namespace App\Service;
 
+use GdImage;
+
 class ImageManager
 {
     private $current_path;
 
     final public const SMALL_SIZE = 220;
     final public const NORMAL_SIZE = 455;
+
+    private const AVIF_MIME_TYPE = 'image/avif';
+    private const GIF_MIME_TYPE = 'image/gif';
+    private const JPEG_MIME_TYPE = 'image/jpeg';
+    private const PNG_MIME_TYPE = 'image/png';
+    private const WEBP_MIME_TYPE = 'image/webp';
+    
 
     public function __construct()
     {
@@ -80,9 +89,8 @@ class ImageManager
 
     public function resizeImage(string $image_path, int $desired_size = self::NORMAL_SIZE): \GdImage|false
     {
-        $image = getimagesize($image_path)["mime"] == 'image/png' 
-            ? imagecreatefrompng($image_path) 
-            : imagecreatefromjpeg($image_path);
+        $image = self::createImageFromPath($image_path);
+        
         $image_x = imageSX($image);
         $image_y = imageSY($image);
 
@@ -95,5 +103,82 @@ class ImageManager
         }
 
         return imagescale($image, $new_x, $new_y);
+    }
+
+    public function createImageFromPath(string $image_path): GdImage|null {
+        $mimetype = getimagesize($image_path)["mime"];
+        $image = null;
+
+        switch($mimetype) {
+            case self::AVIF_MIME_TYPE:
+                $image = imageCreateFromAVIF($image_path);
+                break;
+
+            case self::GIF_MIME_TYPE:
+                $image = imageCreateFromGIF($image_path);
+                break;
+
+            case self::JPEG_MIME_TYPE:
+                $image = imageCreateFromJPEG($image_path);
+                break;
+
+            case self::PNG_MIME_TYPE:
+                $image = imageCreateFromPNG($image_path);
+                break;
+            
+            case self::WEBP_MIME_TYPE:
+                $image = imageCreateFromWEBP($image_path);
+                break;
+        }
+        
+        return $image;
+    }
+
+    public function saveImage(GdImage $image, string $path) {
+        $mimetype = getimagesize($path)["mime"];
+
+        switch($mimetype) {
+            case self::AVIF_MIME_TYPE:
+                imageAvif($image, $path);
+                return;
+
+            case self::GIF_MIME_TYPE:
+                imageGIF($image, $path);
+                return;
+
+            case self::JPEG_MIME_TYPE:
+                imageJPEG($image, $path);
+                return;
+
+            case self::PNG_MIME_TYPE:
+                imagePNG($image, $path);
+                return;
+            
+            case self::WEBP_MIME_TYPE:
+                imageWEBP($image, $path);
+                return;
+        }
+    }
+
+    public function cropCenter(GdImage $image): GdImage {
+
+        // Formula from https://stackoverflow.com/a/49851547
+        $calculatePixelsForAlign = fn($imageSize, $cropSize) => [ max(0, floor(($imageSize / 2) - ($cropSize / 2))), min($cropSize, $imageSize) ];
+
+        $width = imageSX($image);
+        $height = imageSY($image);
+        // Determine the horizontal coordinate of the center
+        $horizontalAlignPixels = $calculatePixelsForAlign($width, min($width, $height));
+        // Determine the vertical coordinate of the center
+        $verticalAlignPixels = $calculatePixelsForAlign($height, min($width, $height));
+        $image = imageCrop($image, [
+            'x' => $horizontalAlignPixels[0],
+            'y' => $verticalAlignPixels[0],
+            // Make sure that the image produced has a square shape
+            'width' => min($width, $height),
+            'height' => min($width, $height),
+        ]);
+        
+        return $image;
     }
 }
