@@ -202,6 +202,7 @@ class OwnUserController extends AbstractController
 		try {
 			$fileManager->resize($filePath, self::USER_IMAGE_SIZE);
 			$fileManager->resize($fileMiniPath, self::USER_MINI_IMAGE_SIZE);
+			$fileManager->imageCropCenter($fileMiniPath);
 		} catch (\Exception) {
 			$fileManager->remove($filePath);
 			return $this->json(
