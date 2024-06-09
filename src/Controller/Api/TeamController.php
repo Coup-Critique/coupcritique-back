@@ -129,21 +129,21 @@ class TeamController extends AbstractController
         $groups = ['read:team'];
         /** @var User $user */
         $user = $this->getUser();
-        $isModo = false;
+        // $isModo = false;
         if ($user) {
             $team->setIsOwnUserFavorite($user);
             if ($user->getIsModo()) {
                 $groups[] = 'read:team:admin';
-                $isModo = true;
+                // $isModo = true;
             }
         }
-        if (
-            ($team->getBanned() && !$team->getCertified())
-            && !$isModo
-            && (!$user || $user->getId() != $team->getUser()->getId())
-        ) {
-            return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
-        }
+        // if (
+        //     ($team->getBanned() && !$team->getCertified())
+        //     && !$isModo
+        //     && (!$user || $user->getId() != $team->getUser()->getId())
+        // ) {
+        //     return new JsonResponse(['message' => "Equipe introuvable"], Response::HTTP_NOT_FOUND);
+        // }
 
         return $this->json(
             ['team' => $team],
