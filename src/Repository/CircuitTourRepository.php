@@ -19,10 +19,9 @@ class CircuitTourRepository extends AbstractArticleRepository
     public function findForCalendar(): array
     {
         $startDate = new \DateTime();
-        $startDate->setDate($startDate->format('Y'), $startDate->format('m'), 1);
+        $startDate->setDate($startDate->format('Y'), 1, 1);
         $endDate = new \DateTime();
-        $endDate->modify('+1 year');
-        $endDate->setDate($endDate->format('Y'), $endDate->format('m'), date('t', $endDate->getTimestamp()));
+        $endDate->setDate($endDate->format('Y'), 12, 31);
 
         return $this->createQueryBuilder('c')
             ->where('c.endDate >= :startDate')
