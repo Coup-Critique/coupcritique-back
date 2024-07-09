@@ -27,6 +27,10 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
     protected ?string $color = null;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    #[Groups(['read:article', 'update:article', 'insert:article'])]
+    protected ?float $cashprize = null;
+
     #[ORM\ManyToOne(targetEntity: Pokemon::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
@@ -89,6 +93,18 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     public function setColor(?string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getCashprize(): ?float
+    {
+        return $this->cashprize;
+    }
+
+    public function setCashprize(?float $cashprize): self
+    {
+        $this->cashprize = $cashprize;
 
         return $this;
     }
