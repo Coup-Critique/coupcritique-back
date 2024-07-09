@@ -132,7 +132,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     /**
      * 
      * @param TournamentTag $tag 
-     * @return Tournament 
+     * @return CircuitTour 
      */
     public function addTag(AbstractTag $tag): self
     {
@@ -146,7 +146,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     /**
      * 
      * @param TournamentTag $tag 
-     * @return Tournament 
+     * @return CircuitTour 
      */
     public function removeTag(AbstractTag $tag): self
     {
