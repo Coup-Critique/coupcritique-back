@@ -38,7 +38,7 @@ class PlayerController extends AbstractController
                 if (!$scores) continue;
 
                 foreach ($scores as $score) {
-                    if ($score['p'] === $player['showdown_name']) {
+                    if ($score['player'] === $player['showdown_name']) {
                         $player['scores'][$tour->getId()] = $score;
                         break;
                     }

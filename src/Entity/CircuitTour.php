@@ -28,7 +28,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     protected ?string $color = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    #[Groups(['read:article', 'update:article', 'insert:article'])]
+    #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
     protected ?float $cashprize = null;
 
     #[ORM\ManyToOne(targetEntity: Pokemon::class)]
@@ -48,7 +48,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['read:article'])]
-    private ?array $results = null;
+    private ?array $rounds = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['read:article'])]
@@ -217,14 +217,14 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
         return $this;
     }
 
-    public function getResults(): ?array
+    public function getRounds(): ?array
     {
-        return $this->results;
+        return $this->rounds;
     }
 
-    public function setResults(?array $results): self
+    public function setRounds(?array $rounds): self
     {
-        $this->results = $results;
+        $this->rounds = $rounds;
 
         return $this;
     }
