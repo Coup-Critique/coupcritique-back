@@ -51,9 +51,9 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			[],
 			[
 				'groups' => 'read:list',
-				AbstractNormalizer::CALLBACKS => [
-					'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
-				],
+				// AbstractNormalizer::CALLBACKS => [
+				// 	'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
+				// ],
 			]
 		);
 	}
@@ -82,9 +82,9 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			[],
 			[
 				'groups' => 'read:list',
-				AbstractNormalizer::CALLBACKS => [
-					'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
-				],
+				// AbstractNormalizer::CALLBACKS => [
+				// 	'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
+				// ],
 			]
 		);
 	}

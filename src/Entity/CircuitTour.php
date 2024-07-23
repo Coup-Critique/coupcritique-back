@@ -33,7 +33,7 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
 
     #[ORM\ManyToOne(targetEntity: Pokemon::class)]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['read:article', 'read:list', 'update:article', 'insert:article'])]
+    #[Groups(['read:article', 'read:with_pokemon', 'update:article', 'insert:article'])]
     protected ?Pokemon $pokemon = null;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'circuitTour', cascade: ['persist', 'remove'])]

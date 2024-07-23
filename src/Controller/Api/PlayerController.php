@@ -52,12 +52,50 @@ class PlayerController extends AbstractController
             ['players' => $players, 'circuitTours' => $tours],
             Response::HTTP_OK,
             [],
-            [
-                'groups' => 'read:list',
-                AbstractNormalizer::CALLBACKS => [
-                    'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
-                ],
-            ]
+            ['groups' => 'read:list']
+        );
+    }
+
+    #[Route(path: '/players/user/{id}', name: 'player_by_user', methods: ['GET'])]
+    public function byUser(
+        CircuitTourRepository $tourRepo,
+        SerializerInterface $serializer,
+        int $id
+    ) {
+        $players = $this->repo->findByUser($id);
+        if (empty($players)) {
+            return $this->json(
+                ['message' => 'Player not found'],
+                Response::HTTP_OK
+            );
+        }
+        $tours = $tourRepo->findAll();
+
+        /** @var Player $player */
+        foreach ($players as $i => $player) {
+            $player = $serializer->normalize($player, null, ['groups' => 'read:list']);
+
+            /** @var CircuitTour $tour */
+            foreach ($tours as $tour) {
+                $scores = $tour->getScores();
+                if (!$scores) continue;
+
+                foreach ($scores as $score) {
+                    if ($score['player'] === $player['showdown_name']) {
+                        $player['scores'][$tour->getId()] = $score;
+                        break;
+                    }
+                }
+
+                $players[$i] = $player;
+            }
+        }
+
+        return $this->json(
+            ['players' => $players, 'circuitTours' => $tours],
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'read:list']
         );
     }
 
