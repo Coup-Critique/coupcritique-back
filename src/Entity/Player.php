@@ -30,12 +30,6 @@ class Player
     #[ORM\ManyToOne(inversedBy: 'players', targetEntity: User::class)]
     private ?User $user = null;
 
-    #[ORM\Column(type: 'string', length: 2)]
-    #[Assert\NotBlank(message: 'Le pays est requis.')]
-    #[Assert\Length(max: 2, maxMessage: 'Le pays peut faire au maximum 2 caractères.')]
-    #[Groups(['read:player', 'read:list'])]
-    private ?string $country = null;
-
     #[ORM\Column(type: 'integer')]
     #[Groups(['read:player', 'read:list'])]
     private int $points = 0;
@@ -48,10 +42,6 @@ class Player
     #[Groups(['read:player', 'read:list'])]
     #[Assert\Length(max: 255, maxMessage: 'Le titre peut faire au maximum 255 caractères.')]
     protected $title;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['read:player', 'read:list'])]
-    private $image;
 
     public function getId(): ?int
     {
@@ -94,18 +84,6 @@ class Player
         return $this;
     }
 
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
     public function getPoints(): ?int
     {
         return $this->points;
@@ -138,18 +116,6 @@ class Player
     public function setTitle(?string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
