@@ -25,12 +25,12 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
+    #[Groups(['read:user', 'read:list', 'read:name', 'read:player', 'read:team', 'read:list:team'])]
     private $id;
 
     #[CustomAssert\TextConstraint()]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['read:user', 'insert:user', 'read:list', 'read:name', 'read:team', 'read:list:team'])]
+    #[Groups(['read:user', 'insert:user', 'read:list', 'read:name', 'read:player', 'read:team', 'read:list:team'])]
     #[Assert\Length(max: 180, maxMessage: 'Le nom utilisateur peut faire au maximum 180 caractères.')]
     private $username;
 

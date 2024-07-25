@@ -20,7 +20,7 @@ class Player
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:player', 'read:list'])]
     #[Assert\Length(max: 50, maxMessage: 'Le pseudo showdown peut faire au maximum 50 caractères.')]
-    private ?string $showdown_name = null;
+    private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     #[Groups(['read:player', 'read:list'])]
@@ -28,18 +28,19 @@ class Player
     private ?string $discord_name = null;
 
     #[ORM\ManyToOne(inversedBy: 'players', targetEntity: User::class)]
+    #[Groups(['read:player'])]
     private ?User $user = null;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:player', 'read:list'])]
+    #[Groups(['read:player'])]
     private int $points = 0;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(['read:player', 'read:list'])]
+    #[Groups(['read:player'])]
     private float $prize = 0;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['read:player', 'read:list'])]
+    #[Groups(['read:player'])]
     #[Assert\Length(max: 255, maxMessage: 'Le titre peut faire au maximum 255 caractères.')]
     protected $title;
 
@@ -48,14 +49,14 @@ class Player
         return $this->id;
     }
 
-    public function getShowdownName(): ?string
+    public function getName(): ?string
     {
-        return $this->showdown_name;
+        return $this->name;
     }
 
-    public function setShowdownName(?string $showdown_name): self
+    public function setName(?string $name): self
     {
-        $this->showdown_name = $showdown_name;
+        $this->name = $name;
 
         return $this;
     }

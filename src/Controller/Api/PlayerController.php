@@ -30,7 +30,7 @@ class PlayerController extends AbstractController
 
         /** @var Player $player */
         foreach ($players as $i => $player) {
-            $player = $serializer->normalize($player, null, ['groups' => 'read:list']);
+            $player = $serializer->normalize($player, null, ['groups' => 'read:player']);
 
             /** @var CircuitTour $tour */
             foreach ($tours as $tour) {
@@ -38,7 +38,7 @@ class PlayerController extends AbstractController
                 if (!$scores) continue;
 
                 foreach ($scores as $score) {
-                    if ($score['player'] === $player['showdown_name']) {
+                    if ($score['player'] === $player['name']) {
                         $player['scores'][$tour->getId()] = $score;
                         break;
                     }
@@ -73,7 +73,7 @@ class PlayerController extends AbstractController
 
         /** @var Player $player */
         foreach ($players as $i => $player) {
-            $player = $serializer->normalize($player, null, ['groups' => 'read:list']);
+            $player = $serializer->normalize($player, null, ['groups' => 'read:player']);
 
             /** @var CircuitTour $tour */
             foreach ($tours as $tour) {
@@ -81,7 +81,7 @@ class PlayerController extends AbstractController
                 if (!$scores) continue;
 
                 foreach ($scores as $score) {
-                    if ($score['player'] === $player['showdown_name']) {
+                    if ($score['player'] === $player['name']) {
                         $player['scores'][$tour->getId()] = $score;
                         break;
                     }
