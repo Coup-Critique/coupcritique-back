@@ -29,6 +29,11 @@ abstract class AbstractVideo
     #[Assert\Length(max: 255, maxMessage: "L'url peut faire au maximum 255 caractères.")]
     protected $url;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:video', 'insert:video', 'read:list'])]
+    #[Assert\Length(max: 255, maxMessage: "L'url peut faire au maximum 255 caractères.")]
+    protected $youtube_id;
+
     #[ORM\Column(type: 'text', length: 600, nullable: true)]
     #[Groups(['read:video', 'insert:video', 'read:list'])]
     #[Assert\Length(max: 600, maxMessage: 'La description peut faire au maximum 600 caractères.')]
@@ -78,6 +83,18 @@ abstract class AbstractVideo
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getYoutubeId(): ?string
+    {
+        return $this->youtube_id;
+    }
+
+    public function setYoutubeId(string $youtube_id): self
+    {
+        $this->youtube_id = $youtube_id;
 
         return $this;
     }
