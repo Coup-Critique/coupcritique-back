@@ -16,7 +16,10 @@ class CircuitTourJoiner
         if ($el->getTour()?->getId()) return;
 
         $articleJson = json_decode($json);
-        if (empty($articleJson->tour)) return;
+        if (empty($articleJson->tour)) {
+            $el->setTour(null);
+            return;
+        }
 
         $tourTitle = $articleJson->tour;
 
@@ -24,6 +27,7 @@ class CircuitTourJoiner
         if ($tour) {
             $el->setTour($tour);
         } else {
+            $el->setTour(null);
             throw new \Exception("Tour $tourTitle not found");
         }
     }
