@@ -54,6 +54,10 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     #[Groups(['read:article'])]
     private ?array $scores = null;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read:article'])]
+    private ?array $cycles = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -237,6 +241,18 @@ class CircuitTour extends AbstractArticle implements CalendableInterface
     public function setScores(?array $scores): self
     {
         $this->scores = $scores;
+
+        return $this;
+    }
+
+    public function getCycles(): ?array
+    {
+        return $this->cycles;
+    }
+
+    public function setCycles(?array $cycles): self
+    {
+        $this->cycles = $cycles;
 
         return $this;
     }
