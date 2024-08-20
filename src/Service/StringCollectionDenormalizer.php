@@ -7,9 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class StringCollectionDenormalizer
 {
-    public function __construct(protected EntityManagerInterface $em)
-    {
-    }
+    public function __construct(protected EntityManagerInterface $em) {}
 
     public function denormalize($entity, string $className, array $jsonArray, $gen): void
     {
@@ -20,6 +18,7 @@ class StringCollectionDenormalizer
             if (!strstr($value, "/")) continue;
 
             $attrName = substr($key, 4);
+
             // attribute name not found
             if (!$reflectionClass->hasProperty($attrName)) continue;
 
@@ -30,24 +29,24 @@ class StringCollectionDenormalizer
             // generated getter name not found
             if (!$reflectionClass->hasMethod($getter)) continue;
 
-            $attrClassName = $this->getClassNameFromAnnotations($reflectionClass, $attrName);
+            $AttrClass = $this->getClassNameFromAnnotations($reflectionClass, $attrName);
             // class not found in annotations
-            if (is_null($attrClassName)) continue;
+            if ($AttrClass == null) continue;
 
-            $AttrClass = 'App\\Entity\\' . $attrClassName;
-            $targetEntityClassName = ltrim($attrClassName, 'PokemonSet');
+            $targetEntityClassName = ltrim($AttrClass, 'App\\Entity\\PokemonSet');
             $targetEntityClassName = preg_replace('/(One|Two|Three|Four)/', '', $targetEntityClassName);
             if ($targetEntityClassName === 'Tera') {
                 $TargetEntityClass = Type::class;
             } else {
                 $TargetEntityClass = 'App\\Entity\\' . $targetEntityClassName;
             }
+            // Setter of the subEntity. $AttrClass is an ASSOC Table, so after removing One after PokemonSetMoveOne, setMove on PokemonSetMoveOne 
             $targetEntityGetter = 'get' . $targetEntityClassName;
             $targetEntitySetter = 'set' . $targetEntityClassName;
             $targetEntityRepository = $this->em->getRepository($TargetEntityClass);
 
             $oldValueStr = $entity->$getter()->reduce(
-                fn ($str, $el) => ($str ? "$str/" : '')
+                fn($str, $el) => ($str ? "$str/" : '')
                     . $el->$targetEntityGetter()->getName(),
                 ''
             );
@@ -84,19 +83,10 @@ class StringCollectionDenormalizer
         \ReflectionClass $reflectionClass,
         string $attrName
     ): ?string {
-        // entities_set annotations
-        $annotations = explode(
-            PHP_EOL,
-            $reflectionClass->getProperty($attrName)->getDocComment()
-        );
-        // scrap annotations to find key entity name
-        foreach ($annotations as $annotation) {
-            if (preg_match(
-                '/targetEntity=([A-Za-z]*)::/',
-                $annotation,
-                $result
-            )) {
-                return $result[1];
+        foreach ($reflectionClass->getProperty($attrName)->getAttributes() as $attr) {
+            if (str_starts_with($attr->getName(), 'Doctrine\ORM\Mapping')) {
+                return $attr->getArguments()['targetEntity'];
+                break;
             }
         }
         return null;
