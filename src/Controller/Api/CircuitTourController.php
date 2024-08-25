@@ -26,15 +26,11 @@ class CircuitTourController extends AbstractController implements ContributeCont
 	final public const TOURNAMENT_IMAGE_SIZE        = 300;
 	final public const TOURNAMENT_TEASER_IMAGE_SIZE = 250;
 
-	public function __construct(private readonly CircuitTourRepository $repo)
-	{
-	}
+	public function __construct(private readonly CircuitTourRepository $repo) {}
 
 	#[Route(path: '/circuit-tours', name: 'circuit-tours', methods: ['GET'])]
-	public function getCircuitTours(
-		Request $request,
-		SerializerInterface $serializer
-	) {
+	public function getCircuitTours(Request $request)
+	{
 		if (!empty($request->get('maxLength'))) {
 			$circuitTours = $this->repo->findWithMax($request->get('maxLength'));
 		} else {
@@ -49,25 +45,18 @@ class CircuitTourController extends AbstractController implements ContributeCont
 			['circuitTours' => $circuitTours],
 			Response::HTTP_OK,
 			[],
-			[
-				'groups' => 'read:list',
-				// AbstractNormalizer::CALLBACKS => [
-				// 	'pokemon' => fn ($p) => $serializer->normalize($p, null, ['groups' => 'read:name']),
-				// ],
-			]
+			['groups' => 'read:list']
 		);
 	}
 
 	#[Route(path: '/circuit-tours/calendar', name: 'circuit-tours_calendar', methods: ['GET'])]
-	public function circuitCalendar(
-		CalendarMaker $calendarMaker,
-		SerializerInterface $serializer
-	) {
+	public function circuitCalendar(CalendarMaker $calendarMaker)
+	{
 		$circuitTours = $this->repo->findForCalendar();
 		$currentTours  = [];
 		$dateNow = new \DateTime();
 		foreach ($circuitTours as $circuitTour) {
-			if ($circuitTour->getStartDate() <= $dateNow && $circuitTour->getEndDate() >= $dateNow) {
+			if ($circuitTour->getStartDate() <= $dateNow /*  && $circuitTour->getEndDate() >= $dateNow */) {
 				$currentTours[] = $circuitTour;
 			}
 			if ($circuitTour->getStartDate() > $dateNow) {
