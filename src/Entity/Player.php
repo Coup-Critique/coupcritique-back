@@ -32,15 +32,15 @@ class Player
     private ?User $user = null;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:player'])]
+    #[Groups(['read:player', 'read:list'])]
     private int $points = 0;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(['read:player'])]
+    #[Groups(['read:player', 'read:list'])]
     private float $prize = 0;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['read:player'])]
+    #[Groups(['read:player', 'read:list'])]
     #[Assert\Length(max: 255, maxMessage: 'Le titre peut faire au maximum 255 caractères.')]
     protected $title;
 
