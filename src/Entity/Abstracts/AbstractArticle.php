@@ -28,12 +28,17 @@ abstract class AbstractArticle implements CommentParentInterface
     protected $title;
 
     #[CustomAssert\HtmlTagConstraint()]
-    #[ORM\Column(type: 'text', nullable: true, length: 50000)]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['read:article'])]
-    #[Assert\Length(max: 50000, maxMessage: 'La description peut faire au maximum 20000 caractères.')]
+    #[Assert\Length(max: 500000, maxMessage: 'La description peut faire au maximum 500000 caractères.')]
+    #[Assert\Regex(
+        pattern: "/(blob:|data:image|;base64,)/",
+        match: false,
+        message: "Vous avez déposé directement des images dans la description de cet article. Ce n'est pas autorisé. Veillez passser par le drive."
+    )]
     protected $description;
 
-    #[ORM\Column(type: 'text', nullable: true, length: 50000)]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['read:article'])]
     protected $parsedDescription;
 
