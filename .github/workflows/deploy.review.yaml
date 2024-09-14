@@ -38,4 +38,4 @@ jobs:
     - name: Execute deployment tasks
       run: >
         ssh -p ${{ secrets.PORT_REVIEW }} ${{ secrets.USERNAME_REVIEW }}@${{ secrets.HOST_REVIEW }} -o StrictHostKeyChecking=no
-        "cd ${{ secrets.REMOTE_PATH_REVIEW }}/ && ./deploy.review.sh"    
+        "cd ${{ secrets.REMOTE_PATH_REVIEW }}/ && ./deploy.sh"    
