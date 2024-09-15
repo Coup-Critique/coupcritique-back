@@ -109,7 +109,7 @@ class CircuitTourRepository extends AbstractArticleRepository
             }
         }
 
-        $query->addOrderBy('a.date_creation', $this->order);
+        $query->addOrderBy('a.endDate', $this->order);
 
         return $query->getQuery()->getResult();
     }

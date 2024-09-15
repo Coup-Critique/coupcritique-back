@@ -75,11 +75,20 @@ class TeamRepository extends ServiceEntityRepository
 	{
 		return $this->createQueryBuilder('t')
 			->addSelect([
-				'u', 'e', 'ti', 'tag', 'r',
-				'pi1', 'pi2', 'pi3', 'pi4', 'pi5', 'pi6'
+				'u',
+				'enj',
+				'ti',
+				'tag',
+				'r',
+				'pi1',
+				'pi2',
+				'pi3',
+				'pi4',
+				'pi5',
+				'pi6'
 			])
 			->leftJoin('t.user', 'u')
-			->leftJoin('t.enjoyers', 'e')
+			->leftJoin('t.enjoyers', 'enj')
 			->leftJoin('t.tier', 'ti')
 			->leftJoin('t.tags', 'tag')
 			->leftJoin('t.replays', 'r')
@@ -121,9 +130,22 @@ class TeamRepository extends ServiceEntityRepository
 	{
 		$query = $this->createQueryBuilder('t')
 			->addSelect([
-				'u', 'enj', 'ti', 'tag',
-				'pi1', 'pi2', 'pi3', 'pi4', 'pi5', 'pi6',
-				'pk1', 'pk2', 'pk3', 'pk4', 'pk5', 'pk6'
+				'u',
+				'enj',
+				'ti',
+				'tag',
+				'pi1',
+				'pi2',
+				'pi3',
+				'pi4',
+				'pi5',
+				'pi6',
+				'pk1',
+				'pk2',
+				'pk3',
+				'pk4',
+				'pk5',
+				'pk6'
 			])
 			->leftJoin('t.user', 'u')
 			->leftJoin('t.enjoyers', 'enj')
@@ -465,6 +487,15 @@ class TeamRepository extends ServiceEntityRepository
 			case 'date_creation':
 				$query->orderBy('t.date_creation', $od)
 					->addOrderBy('t.id', $od);
+				break;
+			case 'countEnjoyers':
+				$subquery = $this->_em->getRepository(User::class)->createQueryBuilder('subu')
+					->select('COUNT(subu.id)')
+					->innerJoin('subu.favorites', 'subt')
+					->where('subt.id = t.id')
+					->getDQL();
+				$this->addPaginatorSelect("($subquery) AS HIDDEN countEnjoyers", $query);
+				$query->orderBy('countEnjoyers', $od)->addOrderBy('t.id', $od);
 				break;
 			default:
 				$query->orderBy('t.date_creation', 'DESC')
