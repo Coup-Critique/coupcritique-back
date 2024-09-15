@@ -13,7 +13,6 @@ class CircuitTourRepository extends AbstractArticleRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CircuitTour::class);
-        $this->order = self::ASC;
     }
 
     public function findForCalendar(): array
@@ -82,7 +81,7 @@ class CircuitTourRepository extends AbstractArticleRepository
             return [];
         }
 
-        $ids = array_map(fn ($res) => $res['id'], $ids);
+        $ids = array_map(fn($res) => $res['id'], $ids);
 
         return $this->createQueryBuilder('a')
             ->addSelect('u')
