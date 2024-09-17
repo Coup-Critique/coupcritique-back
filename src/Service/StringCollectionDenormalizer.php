@@ -33,7 +33,7 @@ class StringCollectionDenormalizer
             // class not found in annotations
             if ($AttrClass == null) continue;
 
-            $targetEntityClassName = ltrim($AttrClass, 'App\\Entity\\PokemonSet');
+            $targetEntityClassName = substr($AttrClass, 21);
             $targetEntityClassName = preg_replace('/(One|Two|Three|Four)/', '', $targetEntityClassName);
             if ($targetEntityClassName === 'Tera') {
                 $TargetEntityClass = Type::class;
