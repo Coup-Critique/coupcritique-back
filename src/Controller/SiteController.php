@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Repository\AbilityRepository;
 use App\Repository\ActualityRepository;
+use App\Repository\CircuitArticleRepository;
+use App\Repository\CircuitTourRepository;
 use App\Repository\GuideRepository;
 use App\Repository\ItemRepository;
 use App\Repository\MoveRepository;
@@ -40,7 +42,9 @@ class SiteController extends AbstractController
         TypeRepository $typeRepository,
         ActualityRepository $actualityRepository,
         GuideRepository $guideRepository,
-        TournamentRepository $tournamentRepository,
+        // TournamentRepository $tournamentRepository,
+        CircuitTourRepository $circuitTourRepository,
+        CircuitArticleRepository $circuitArticleRepository,
         TeamRepository $teamRepository,
         TierRepository $tierRepository
     ) {
@@ -58,12 +62,14 @@ class SiteController extends AbstractController
         $teams = $teamRepository->findBy([], ['date_creation' => 'DESC']);
         $actualities = $actualityRepository->findAll();
         $guides = $guideRepository->findAll();
-        $tournaments = $tournamentRepository->findAll();
+        // $tournaments = $tournamentRepository->findAll();
+        $tours = $circuitTourRepository->findAll();
+        $circuitArticles = $circuitArticleRepository->findAll();
         $tiers = $tierRepository->findList($lastGen);
 
         $urls = [];
         $urls[] = [
-            'loc' => $this->generateUrl('home'),
+            'loc' => $this->generateFrontUrl('/'),
             'lastmod' => $dateNow,
             'priority' => '1.00',
             'image' => [
@@ -77,59 +83,34 @@ class SiteController extends AbstractController
             $teamsDate = $teams[0]->getDateCreation();
         }
         $urls[] = [
-            // 'loc' => $this->generateUrl('teams'),
-            'loc' => $this->generateUrl('home') . 'entity/teams',
+            'loc' => $this->generateFrontUrl('/entity/teams'),
             'lastmod' =>  $teamsDate ? ($teamsDate)->format('Y-m-d') : $dateNow,
             'priority' => '1.00'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('home') . 'entity/teams/create',
-            'lastmod' => '2022-05-27',
+            'loc' => $this->generateFrontUrl('/entity/teams/create'),
+            'lastmod' => '2024-09-16',
             'priority' => '0.80'
         ];
 
         $topTeam = $teamRepository->getLastTopWeek();
         if ($topTeam != null) {
             $urls[] = [
-                'loc' => $this->generateUrl('home') . 'entity/teams/top',
+                'loc' => $this->generateFrontUrl('/entity/teams/top'),
                 'lastmod' => $topTeam->getDateCreation()->format('Y-m-d'),
                 'priority' => '0.80'
             ];
         }
 
-        $actualitiesDate = null;
-        if (count($actualities)) {
-            $actualitiesDate = $actualities[0]->getDateCreation();
-        }
-        $urls[] = [
-            'loc' => $this->generateUrl('actualities'),
-            'lastmod' => $actualitiesDate ? ($actualitiesDate)->format('Y-m-d') : null,
-            'priority' => '0.90'
-        ];
-
-        $guidesDate = null;
-        if (count($guides)) {
-            $guidesDate = $guides[0]->getDateCreation();
-        }
-        $urls[] = [
-            'loc' => $this->generateUrl('guides'),
-            'lastmod' => $guidesDate ? ($guidesDate)->format('Y-m-d') : null,
-            'priority' => '0.80'
-        ];
-
-        $tournamentsDate = null;
-        if (count($tournaments)) {
-            $tournamentsDate = $tournaments[0]->getDateCreation();
-        }
-        $urls[] = [
-            'loc' => $this->generateUrl('tournaments'),
-            'lastmod' => $tournamentsDate ? ($tournamentsDate)->format('Y-m-d') : null,
-            'priority' => '0.80'
-        ];
+        $urls[] = $this->generateArticles($actualities, 'actualities');
+        $urls[] = $this->generateArticles($guides, 'guides');
+        // $urls[]= $this->generateArticles($tournaments, 'tournaments');
+        $urls[] = $this->generateArticles($tours, 'circuit-tours');
+        $urls[] = $this->generateArticles($circuitArticles, 'circuit-articles');
 
         foreach ($pokemons as $pokemon) {
             $urls[] = [
-                'loc' => $this->generateUrl('pokemons/', ['id' => $pokemon->getId()]),
+                'loc' => $this->generateFrontUrl('/entity/pokemons/' . $pokemon->getId()),
                 // first day of the month
                 'lastmod' => $monthDate,
                 'priority' => '1.00',
@@ -142,63 +123,21 @@ class SiteController extends AbstractController
 
         foreach ($teams as $team) {
             $urls[] = [
-                'loc' => $this->generateUrl('team', ['id' => $team->getId()]),
+                'loc' => $this->generateFrontUrl('/entity/teams/' . $team->getId()),
                 'lastmod' => $team->getUpdateDate() ? $team->getUpdateDate()->format('Y-m-d') : $team->getDateCreation()->format('Y-m-d'),
                 'priority' => '0.90'
             ];
         }
 
-        foreach ($actualities as $actuality) {
-            $image = null;
-            if (count($actuality->getImages())) {
-                $image = [
-                    'loc' => $this->generateImgUrl('actualities/' . $actuality->getImages()[0]),
-                    'title' => $actuality->getTitle(),
-                ];
-            }
-            $urls[] = [
-                'loc' => $this->generateUrl('actuality', ['id' => $actuality->getId()]),
-                'lastmod' => $actuality->getDateCreation()->format('Y-m-d'),
-                'priority' => '0.80',
-                'image' => $image
-            ];
-        }
-
-        foreach ($guides as $guide) {
-            $image = null;
-            if (count($guide->getImages())) {
-                $image = [
-                    'loc' => $this->generateImgUrl('guides/' . $guide->getImages()[0]),
-                    'title' => $guide->getTitle(),
-                ];
-            }
-            $urls[] = [
-                'loc' => $this->generateUrl('guide', ['id' => $guide->getId()]),
-                'lastmod' => $guide->getDateCreation()->format('Y-m-d'),
-                'priority' => '0.80',
-                'image' => $image
-            ];
-        }
-
-        foreach ($tournaments as $tournament) {
-            $image = null;
-            if (count($tournament->getImages())) {
-                $image = [
-                    'loc' => $this->generateImgUrl('tournaments/' . $tournament->getImages()[0]),
-                    'title' => $tournament->getTitle(),
-                ];
-            }
-            $urls[] = [
-                'loc' => $this->generateUrl('tournament', ['id' => $tournament->getId()]),
-                'lastmod' => $tournament->getDateCreation()->format('Y-m-d'),
-                'priority' => '0.80',
-                'image' => $image
-            ];
-        }
+        $urls += $this->generateAnArticle($actualities, 'actualities');
+        $urls += $this->generateAnArticle($guides, 'guides');
+        // $urls+= $this->generateAnArticle($tournaments, 'tournaments');
+        $urls += $this->generateAnArticle($tours, 'circuit-tours');
+        $urls += $this->generateAnArticle($circuitArticles, 'circuit-articles');
 
         foreach ($items as $item) {
             $urls[] = [
-                'loc' => $this->generateUrl('item', ['id' => $item->getId()]),
+                'loc' => $this->generateFrontUrl('/entity/items/' . $item->getId()),
                 // first day of the month
                 'lastmod' => $monthDate,
                 'priority' => '1.00',
@@ -211,7 +150,7 @@ class SiteController extends AbstractController
 
         foreach ($abilities as $ability) {
             $urls[] = [
-                'loc' => $this->generateUrl('ability', ['id' => $ability->getId()]),
+                'loc' => $this->generateFrontUrl('/entity/abilities/' . $ability->getId()),
                 // first day of the month
                 'lastmod' => $monthDate,
                 'priority' => '0.90'
@@ -220,7 +159,7 @@ class SiteController extends AbstractController
 
         foreach ($moves as $move) {
             $urls[] = [
-                'loc' => $this->generateUrl('move', ['id' => $move->getId()]),
+                'loc' => $this->generateFrontUrl('/entity/moves/' . $move->getId()),
                 // first day of the month
                 'lastmod' => $monthDate,
                 'priority' => '0.90'
@@ -229,21 +168,20 @@ class SiteController extends AbstractController
 
         foreach ($types as $type) {
             $urls[] = [
-                'loc' => $this->generateUrl('type', ['id' => $type->getId()]),
-                'lastmod' => '2023-12-01',
+                'loc' => $this->generateFrontUrl('/entity/types/' . $type->getId()),
+                'lastmod' => '2024-09-16',
                 'priority' => '0.90'
             ];
         }
 
         $urls[] = [
-            // 'loc' => $this->generateUrl('tiers'),
-            'loc' => $this->generateUrl('home') . 'entity/tiers',
+            'loc' => $this->generateFrontUrl('/entity/tiers'),
             'lastmod' => $monthDate,
             'priority' => '0.70'
         ];
         foreach ($tiers as $tier) {
             $urls[] = [
-                'loc' => $this->generateUrl('tier', ['id' => $tier->getId()]),
+                'loc' => $this->generateFrontUrl('/entity/tiers/' . $tier->getId()),
                 // first day of the month
                 'lastmod' => $monthDate,
                 'priority' => '1.00',
@@ -255,23 +193,23 @@ class SiteController extends AbstractController
         }
 
         $urls[] = [
-            'loc' => $this->generateUrl('home') . 'videos',
+            'loc' => $this->generateFrontUrl('/videos'),
             'lastmod' => $monthDate,
             'priority' => '0.20'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('home') . 'remerciements',
-            'lastmod' => '2022-05-27',
+            'loc' => $this->generateFrontUrl('/remerciements'),
+            'lastmod' => '2024-09-16',
             'priority' => '0.10'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('home') . 'cgu',
-            'lastmod' => '2022-05-27',
+            'loc' => $this->generateFrontUrl('/cgu'),
+            'lastmod' => '2024-09-16',
             'priority' => '0.10'
         ];
         $urls[] = [
-            'loc' => $this->generateUrl('home') . 'mentions-legales',
-            'lastmod' => '2022-05-27',
+            'loc' => $this->generateFrontUrl('/mentions-legales'),
+            'lastmod' => '2024-09-16',
             'priority' => '0.10'
         ];
 
@@ -286,13 +224,47 @@ class SiteController extends AbstractController
         return $response;
     }
 
-    protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
+    protected function generateFrontUrl(string $route): string
     {
-        return $this->hostname . parent::generateUrl($route, $parameters, $referenceType);
+        return $this->hostname . $route;
     }
 
     protected function generateImgUrl(string $path): string
     {
         return $this->hostname . '/images/' . $path;
+    }
+
+    protected function generateArticles(array $articles, string $route)
+    {
+        $date = null;
+        if (count($articles)) {
+            $date = $articles[0]->getDateCreation();
+        }
+        return [
+            'loc' => $this->generateFrontUrl("/entity/$route"),
+            'lastmod' => $date ? ($date)->format('Y-m-d') : null,
+            'priority' => '0.80'
+        ];
+    }
+
+    protected function generateAnArticle(array $articles, string $route)
+    {
+        $urls = [];
+        foreach ($articles as $article) {
+            $image = null;
+            if (count($article->getImages())) {
+                $image = [
+                    'loc' => $this->generateImgUrl("uploads/$route/" . $article->getImages()[0]),
+                    'title' => $article->getTitle(),
+                ];
+            }
+            $urls[] = [
+                'loc' => $this->generateFrontUrl("/entity/$route" . $article->getId()),
+                'lastmod' => $article->getDateCreation()->format('Y-m-d'),
+                'priority' => '0.80',
+                'image' => $image
+            ];
+        }
+        return $urls;
     }
 }
