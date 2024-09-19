@@ -6,6 +6,7 @@ use App\Entity\Pokemon;
 use App\Repository\PokemonRepository;
 use App\Repository\TierUsageRepository;
 use App\Repository\TypeRepository;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PokemonManager
 {
@@ -13,9 +14,9 @@ class PokemonManager
         protected PokemonRepository $pokemonRepository,
         protected TypeRepository $typeRepository,
         protected TierUsageRepository $tierUsageRepository,
-        protected WeaknessManager $weaknessManager
-    ) {
-    }
+        protected WeaknessManager $weaknessManager,
+        protected SerializerInterface $serializer,
+    ) {}
 
     public function buildOnePokemonReturn(Pokemon $pokemon): array
     {
@@ -87,9 +88,21 @@ class PokemonManager
         }
 
         return [
-            'pokemon' => $pokemon,
-            'usages' => $usages,
-            'weaknesses' => $weaknesses,
+            'pokemon' => $this->serializer->normalize(
+                $pokemon,
+                'json',
+                ['groups' => 'read:pokemon']
+            ),
+            'usages' => $this->serializer->normalize(
+                $usages,
+                'json',
+                ['groups' => 'read:usage']
+            ),
+            'weaknesses' => $this->serializer->normalize(
+                $weaknesses,
+                'json',
+                ['groups' => 'read:weakness']
+            ),
             'inherit' => $inherit
         ];
     }
