@@ -92,25 +92,27 @@ class PokemonController extends AbstractController implements ContributeControll
             return new JsonResponse(['message' => "Pokemon introuvable."], Response::HTTP_NOT_FOUND);
         }
 
-        $pokemon = $this->findOneByNameDecreaseGenLoop($pokemon);
+        // $pokemon = $this->findOneByNameDecreaseGenLoop($pokemon);
 
-        $availableGens = $this->genRequestManager->formatAvailableGens(
-            $this->repo->getAvailableGens($pokemon->getUsageName())
-        );
+        // $availableGens = $this->genRequestManager->formatAvailableGens(
+        //     $this->repo->getAvailableGens($pokemon->getUsageName())
+        // );
 
-        $return = $pokemonManager->buildOnePokemonReturn($pokemon);
-        $return = $serializer->normalize(
-            $return,
-            'json',
-            ['groups' => 'read:pokemon']
-        );
+        // $return = $pokemonManager->buildOnePokemonReturn($pokemon);
+        // $return = $serializer->normalize(
+        //     $return,
+        //     'json',
+        //     ['groups' => 'read:pokemon']
+        // );
 
-        $return['gen'] = $pokemon->getGen();
-        $return['availableGens'] = $availableGens;
+        // $return['gen'] = $pokemon->getGen();
+        // $return['availableGens'] = $availableGens;
 
         return $this->json(
-            $return,
-            Response::HTTP_OK
+            ['pokemon' => $pokemon],
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'read:pokemon']
         );
     }
 
