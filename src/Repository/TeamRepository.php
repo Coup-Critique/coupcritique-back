@@ -266,6 +266,7 @@ class TeamRepository extends ServiceEntityRepository
 		}
 		if ($team) {
 			$team->setTopWeek(new \DateTime());
+            $team->getUser()->setIsWeeker(true);
 			$this->update($team);
 		}
 		return $team;

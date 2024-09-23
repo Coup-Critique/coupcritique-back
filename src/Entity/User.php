@@ -104,6 +104,11 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     private $showdown_name;
 
     #[ORM\Column(type: 'text', nullable: true, length: 1000)]
+    #[Groups(['read:user', 'insert:user', 'read:list'])]
+    #[Assert\Length(max: 150, maxMessage: 'La bio peut faire au maximum 1000 caractères.')]
+    private $biography;
+
+    #[ORM\Column(type: 'text', nullable: true, length: 1000)]
     #[Groups(['read:user:admin'])]
     private $history;
 
@@ -274,18 +279,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getShowdownName(): ?string
     {
         return $this->showdown_name;
@@ -294,6 +287,30 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function setShowdownName(?string $showdown_name): self
     {
         $this->showdown_name = $showdown_name;
+
+        return $this;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): self
+    {
+        $this->biography = $biography;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }

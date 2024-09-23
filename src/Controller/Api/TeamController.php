@@ -31,9 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TeamController extends AbstractController
 {
-    public function __construct(private readonly TeamRepository $repo)
-    {
-    }
+    public function __construct(private readonly TeamRepository $repo) {}
 
     #[Route(path: '/teams', name: 'teams', methods: ['GET'])]
     public function getTeams(Request $request)
@@ -225,10 +223,11 @@ class TeamController extends AbstractController
             );
         }
 
-        if (!is_null($team->getTopWeek()) && $team->getTopWeek()->format('Y-m-d') === (new \DateTime())->format('Y-m-d')) {
+        if ($team->getTopWeek() !== null && $team->getTopWeek()->format('Y-m-d') === (new \DateTime())->format('Y-m-d')) {
             $team->setTopWeek(null);
             $this->repo->update($team);
 
+            // remove notification
             $notification = $notificationRepository->findOneBy([
                 'entityName' => 'team',
                 'entityId' => $id,
@@ -238,7 +237,7 @@ class TeamController extends AbstractController
                 $notificationRepository->remove($notification, false);
             }
         } else {
-            $this->repo->setTopWeek($team);
+            $this->repo->setTopWeek($team); // manage user badge
 
             $notification = new Notification();
             $notification->setUser($team->getUser());
@@ -279,7 +278,7 @@ class TeamController extends AbstractController
             );
         }
 
-        /** @var User $user */
+        /** @var User $ownUser */
         $ownUser = $this->getUser();
 
         if ($ownUser == null) {
@@ -396,9 +395,17 @@ class TeamController extends AbstractController
     //         ['groups' => ['read:list:team', 'read:team:admin']]
     //     );
     // }
+
     #[Route(path: '/teams/favorite', name: 'get_favorite_teams', methods: ['GET'])]
     public function getFavoriteTeamForUser(Request $request)
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user == null) {
+            // return ok for loading
+            $this->json([], Response::HTTP_OK);
+        }
+
         if (!empty($request->get('order'))) {
             $this->repo->setOrder($request->get('order'));
             $this->repo->setOrderDirection($request->get('orderDirection'));
@@ -408,12 +415,6 @@ class TeamController extends AbstractController
             $this->repo->setPage($request->get('page'));
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-        if (is_null($user)) {
-            // return ok for loading
-            $this->json([], Response::HTTP_OK);
-        }
         $teams = $this->repo->findbyFavorites($user);
         foreach ($teams as $team) {
             $team->setIsOwnUserFavorite($user);
@@ -727,6 +728,9 @@ class TeamController extends AbstractController
             $certified ? 'certifié' : 'décertifié',
             $this->getUser()
         );
+        if ($certified) {
+            $team->getUser()->setIsCertified(true);
+        }
         $team = $this->repo->update($team);
 
         $notification = new Notification();
