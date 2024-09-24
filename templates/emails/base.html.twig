@@ -7,11 +7,11 @@
 		<title>
 			{% block title %}{% endblock %}
 		</title>
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 		<style>
-			@media screen and (max-width: 450px) {
-				.content{
+			@media screen and(max-width: 450px) {
+				.content {
 					width: 350px !important;
 				}
 			}
@@ -19,10 +19,9 @@
 	</head>
 	<body style="font-weight: 300; font-family: 'poppins', Roboto, Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol, Apple Color Emoji; color: black;">
 		<div style="text-align: center">
-			<img style="width: 350px; margin-bottom: 0px;"src="{{ absolute_url(asset('images/coupcritique.png')) }}" alt="Logo Coup Critique"/>
+			<img style="width: 350px; margin-bottom: 0px;" src="{{ app.request.getSchemeAndHttpHost() ~ '/images/coupcritique.png' }}" alt="Logo Coup Critique"/>
 		</div>
-		<div class="content" style="width: 450px; max-width: 100%; margin-right: auto; margin-left: auto; padding: 30px">
-			{% block body %}{% endblock body %}
+		<div class="content" style="width: 450px; max-width: 100%; margin-right: auto; margin-left: auto; padding: 30px"> {% block body %}{% endblock body %}
 			<hr style="margin: 20px 5px 20px 5px"/>
 		</div>
 		<footer style="text-align: center">
