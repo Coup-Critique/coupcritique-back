@@ -12,7 +12,18 @@ abstract class AbstractTag
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:list', 'read:list:team', 'read:list:article', 'read:video', 'read:article', 'read:team', 'insert:team', 'update:team'])]
+    #[Groups([
+        'read:list',
+        'read:list:team',
+        'read:list:article',
+        'read:video',
+        'read:article',
+        'read:team',
+        'insert:team',
+        'update:team',
+        'insert:article',
+        'update:article'
+    ])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 25)]
@@ -22,7 +33,7 @@ abstract class AbstractTag
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
     #[Groups(['read:list', 'read:list:team', 'read:team', 'read:list:article', 'read:video', 'read:article'])]
     protected $shortName;
-    
+
     #[ORM\Column(type: 'integer', nullable: true)]
     #[Groups(['read:list', 'read:list:team', 'read:team', 'read:list:article', 'read:video', 'read:article'])]
     protected $sortOrder;

@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EntityNormalizer implements DenormalizerInterface
@@ -11,8 +12,7 @@ class EntityNormalizer implements DenormalizerInterface
 
 	public function __construct(
 		protected readonly EntityManagerInterface $em
-	) {
-	}
+	) {}
 
 	/** {@inheritdoc} */
 	public function getSupportedTypes(?string $format): array
@@ -39,7 +39,16 @@ class EntityNormalizer implements DenormalizerInterface
 	public function denormalize(mixed $data, string $class, string $format = null, array $context = []): mixed
 	{
 		// Lazy Loading
-		return $this->em->find($class, $data['id']);
+		$result = $this->em->find($class, $data['id']);
+		if ($result === null) {
+			throw new NotFoundHttpException('L\'élément ' . $this->getEntityName($class) . ' avec l\'id ' . $data['id'] . ' n\'existe pas.');
+		}
+		return $result;
 		// No Lazy Loading : return $this->em->getRepository($class)->findOneById($data['id']);
+	}
+
+	private function getEntityName(string $class): string
+	{
+		return str_replace('App\\Entity\\', '', $class);
 	}
 }
