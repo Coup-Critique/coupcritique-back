@@ -106,7 +106,7 @@ class Team implements CommentParentInterface
     private $banned;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups(['read:team'])]
+    #[Groups(['read:team', 'read:list', 'read:list:team'])]
     private $top_week;
 
     #[ORM\Column(type: 'string', length: 17, nullable: true)]
