@@ -25,19 +25,18 @@ class PasswordTokenRenewRepository extends ServiceEntityRepository
 		/** @var PasswordTokenRenew|null $refresh_token */
 		$refresh_token = $this->findOneByUser($user);
 
-		if (is_null($refresh_token)) {
-			$refresh_token = new PasswordTokenRenew;
-			$refresh_token->createToken($user);
-			$this->_em->persist($refresh_token);
-		} else {
-			$refresh_token->createToken($user);
+		if (!is_null($refresh_token)) {
+			$this->_em->remove($refresh_token);
+			$this->_em->flush();
 		}
-		
+		$refresh_token = new PasswordTokenRenew;
+		$refresh_token->createToken($user);
+		$this->_em->persist($refresh_token);
 		$this->_em->flush();
 
 		return $refresh_token;
 	}
-	
+
 	public function delete(PasswordTokenRenew $passwordTokenRenew): void
 	{
 		$this->_em->remove($passwordTokenRenew);
