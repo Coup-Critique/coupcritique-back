@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\Team;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -104,5 +105,25 @@ class NotificationRepository extends ServiceEntityRepository
             ->setParameter('entityId', $entityId)
             ->getQuery()
             ->getResult();
+    }
+
+    public function autoRemoveNotifications(): int
+    {
+        $notifications = $this->createQueryBuilder('n')
+            ->leftJoin(Team::class, 't', 'WITH', 'n.entityId = t.id')
+            ->andWhere("n.entityName = 'team'")
+            ->andWhere('t.id IS NULL')
+            ->getQuery()
+            ->getResult();
+
+        $count = count($notifications);
+
+        foreach ($notifications as $notification) {
+            $this->_em->remove($notification);
+        }
+
+        $this->_em->flush();
+
+        return $count;
     }
 }
